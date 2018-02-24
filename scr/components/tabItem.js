@@ -3,13 +3,12 @@ import {Image} from "react-native";
 
 export default class TabBarItem extends Component {
     render() {
-        let selectedImage = this.props.selectedImage ? this.props.selectedImage : this.props.normalImage;
+        let showImage = this.props.focused ? this.props.selectedImage : this.props.normalImage;
         return (
             <Image
-                source={this.props.focused
-                    ? selectedImage
-                    : this.props.normalImage}
-                style={{tintColor: this.props.tintColor, width: 25, height: 25}}
+                source={showImage}
+                style={{ width: 22, height: 24}}
+                // style={{tintColor: this.props.tintColor, width: 20, height: 24}}
             />
         );
     }

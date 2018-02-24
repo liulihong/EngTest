@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {Image} from "react-native"
 import TabBarItem from '../components/tabItem';
 import HomePage from "./homePage";
 import TaskPage from "./taskPage"
@@ -6,15 +7,16 @@ import MinePage from "./minePage";
 // import HomeDetail from "./pages/homeDetail";
 import { StackNavigator, TabBarBottom, TabNavigator} from "react-navigation";
 import Login from './loginPage'
+import utils from '../utils'
 
 
-const color  = {
-    theme: '#dc143c',
-    theme1: '#979797',
-    border: '#e0e0e0',
-    background: '#f8f8ff',
-    background1: '#dcdcdc',
-};
+// const color  = {
+//     theme: '#12b7f5',
+//     theme1: '#333333',
+//     border: '#e0e0e0',
+//     background: '#f8f8ff',
+//     background1: '#dcdcdc',
+// };
 
 export default class MainRoute extends Component {
 	constructor() {
@@ -43,6 +45,8 @@ export const Tab = TabNavigator(
 					<TabBarItem
 						tintColor={tintColor}
 						focused={focused}
+                        selectedImage={require("../imgs/tabIcon/icon_lx_click.png")}
+                        normalImage={require("../imgs/tabIcon/icon_lx.png")}
 					/>
 				)
 			})
@@ -61,6 +65,8 @@ export const Tab = TabNavigator(
                     <TabBarItem
                         tintColor={tintColor}
                         focused={focused}
+                        selectedImage={require("../imgs/tabIcon/icon_zy_click.png")}
+                        normalImage={require("../imgs/tabIcon/icon_zy.png")}
                     />
                 )
             })
@@ -72,6 +78,7 @@ export const Tab = TabNavigator(
 			navigationOptions: ({navigation}) => ({
 				//选项卡名称
                 // tabBarLabel: '我的',
+                header: null,
                 title: '我',
 				//选项卡图标 focused：是否选中 tintColor：选中颜色
 				tabBarIcon: ({focused, tintColor}) => (
@@ -79,6 +86,8 @@ export const Tab = TabNavigator(
 					<TabBarItem
 						tintColor={tintColor}
 						focused={focused}
+                        selectedImage={require("../imgs/tabIcon/icon_my_click.png")}
+                        normalImage={require("../imgs/tabIcon/icon_my.png")}
 					/>
 				)
 			})
@@ -93,13 +102,13 @@ export const Tab = TabNavigator(
 		lazy: true,//是否根据需要懒惰呈现标签，而不是提前制作
 		tabBarOptions: {
 			//ios
-			activeTintColor: color.theme,//活动标签的标签和图标颜色
-			activeBackgroundColor: color.background,//活动选项卡的背景颜色
-			inactiveTintColor: color.theme1,//非活动标签的标签和图标颜色
-			inactiveBackgroundColor: color.background,//非活动标签的背景颜色
+			activeTintColor: utils.COLORS.theme,//活动标签的标签和图标颜色
+			activeBackgroundColor: utils.COLORS.background,//活动选项卡的背景颜色
+			inactiveTintColor: utils.COLORS.theme1,//非活动标签的标签和图标颜色
+			inactiveBackgroundColor: utils.COLORS.background,//非活动标签的背景颜色
 			showLabel: true,//是否显示标签的标签，默认为true
 			//style: {backgroundColor: 'blue',},//标签栏的样式对象
-			labelStyle: {fontSize: 12,},//标签标签的样式对象
+			labelStyle: {fontSize: 10,},//标签标签的样式对象
 			tabStyle: {width: 100,},//标签栏的样式对象
 			//android
 			scrollEnabled: true,//是否启用可滚动选项卡
@@ -118,7 +127,7 @@ const Navigator = StackNavigator(
              //    header: null
 			// },
 			cardStyle: {
-				backgroundColor: color.background,
+				backgroundColor: utils.COLORS.background,
             },
         },
         Login: {
@@ -133,7 +142,15 @@ const LogRouter = StackNavigator(
             screen: Login,
             navigationOptions: {
                 //设置隐藏标题。HeaderProps null
-                header: null,
+                // header: null,
+                headerStyle:{
+                    // backgroundImage:'../imgs/tabIcon/top_bg_z.png'
+                    backgroundColor: '#aaa',
+					// backgroundImage:{
+                    	// source:'../imgs/tabIcon/top_bg_z.png'
+					// }
+					// backgroundImage: (<Image source={require('../imgs/tabIcon/top_bg_z.png')}/>)
+				}
             },
         },
         HomePage: {
@@ -145,7 +162,7 @@ const LogRouter = StackNavigator(
                 gesturesEnabled:false,
             },
             cardStyle: {
-                backgroundColor: color.background,
+                backgroundColor: utils.COLORS.background,
             },
         },
     },

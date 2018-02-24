@@ -64,14 +64,13 @@ module.exports = {
             else
             {
 
-                // 解压成功，将zip删除
-                // RNFS.unlink(downloadDestName).then(() => {
-                // });
+                //解压成功，将zip删除
+                RNFS.unlink(downloadDestName).then(() => {
+
+                });
                 console.log('success' + RNFS.DocumentDirectoryPath)
             }
         });
-
-
         jobId = -1;
     }
 }

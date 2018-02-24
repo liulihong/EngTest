@@ -14,11 +14,11 @@ export default class HomeScreen extends Component{
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.contain}>
-                <Text style={{fontSize:30}}>英语听说考</Text>
-                <Image
-                    style={{width:'80%',height:200,marginTop:10}}
-                    source={require('../imgs/web1.png')}
-                />
+                {/*<Text style={{fontSize:30}}>英语听说考</Text>*/}
+                {/*<Image*/}
+                    {/*style={{width:'80%',height:200,marginTop:10}}*/}
+                    {/*source={require('../imgs/web1.png')}*/}
+                {/*/>*/}
                 {/*<Login nextClick={() => {this.endClick()}}/>*/}
                 {/*<Login {...this.props}/>*/}
                 <Login navigation={this.props.navigation} />
@@ -35,7 +35,7 @@ export default class HomeScreen extends Component{
 
 const styles=StyleSheet.create({
     contain: {
-        flex:1,
+        // flex:1,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'

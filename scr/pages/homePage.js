@@ -20,7 +20,7 @@ export default class HomeScreen extends Component{
 
     render() {
         return(
-            <View>
+            <View style={{backgroundColor:utils.COLORS.background1}}>
                 <Button title="选择年级" onPress={this.btnClick}/>
                 <ScrollView>
                     <View style={styles.contain}>
