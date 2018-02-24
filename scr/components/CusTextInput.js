@@ -34,7 +34,7 @@ class TextInputLogin extends Component {
             <View style={styles.container}>
                 <View style={styles.txtBorder}>
                     <Image
-                        source={require("../imgs/logIcon/login_icon_sj.png")}
+                        source={this.props.imgUrl}
                         style={styles.image}
                     />
                     {/*<Text style={styles.txtName}>{name}</Text>*/}

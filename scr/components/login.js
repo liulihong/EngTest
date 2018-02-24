@@ -52,6 +52,7 @@ class LoginView extends Component{
                 <CusTextIput
                     name='用户：'
                     txtHide='请输入用户名或邮箱'
+                    imgUrl={require("../imgs/logIcon/login_icon_sj.png")}
                     ispassword={false}
                     getValue={(v) => {
                         this.setState({
@@ -62,6 +63,7 @@ class LoginView extends Component{
                 <CusTextIput
                     name='密码：'
                     txtHide='请输入密码'
+                    imgUrl={require("../imgs/logIcon/login_icon_mm.png")}
                     ispassword={true}
                     getValue={(v) => {
                         this.setState({
