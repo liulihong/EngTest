@@ -3,6 +3,7 @@ import utils from '../utils'
 
 import {
     Text,
+    Image,
     TextInput,
     View,
     StyleSheet,
@@ -32,7 +33,11 @@ class TextInputLogin extends Component {
         return(
             <View style={styles.container}>
                 <View style={styles.txtBorder}>
-                    <Text style={styles.txtName}>{name}</Text>
+                    <Image
+                        source={require("../imgs/logIcon/login_icon_sj.png")}
+                        style={styles.image}
+                    />
+                    {/*<Text style={styles.txtName}>{name}</Text>*/}
                     <TextInput
                         underlineColorAndroid = {'transparent'}
                         style={styles.textInput}
@@ -47,6 +52,7 @@ class TextInputLogin extends Component {
                         }}
                         value={this.state.txtValue}
                     />
+                    <View style={styles.line}></View>
                 </View>
             </View>
         )
@@ -58,34 +64,39 @@ class TextInputLogin extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'center',
+        width:utils.SCREENWIDTH,
         flexDirection: 'row',
-        width:utils.SCREENWIDTH*0.7,
+        justifyContent: 'center',
+        alignItems: 'center',
         marginTop: 18,
     },
     txtBorder: {
-        height: 50,
-        flex: 1,
-        borderWidth: 1,
-        borderColor: '#51A7F9',
-        // marginLeft: 50,
-        // marginRight: 50,
-        borderRadius: 25,
-        flexDirection: 'row'
+        width: "85%",
+        height: 51,
+        flexDirection: 'row',
+        alignContent:"center",
+        flexWrap: 'wrap',
+        alignSelf:"center"
     },
-    txtName: {
-        height: 50,
-        // width: '30%',
-        marginLeft: 20,
+    image: {
+        height: 17,
+        width: 14,
+        marginLeft: 6,
         justifyContent: 'center',
-        fontSize: 16,
         marginTop: 17,
-        color: '#51A7F9',
-        // marginRight: 10,
     },
     textInput: {
+        marginLeft: 12,
         height: 50,
-        width: '65%'
+        width: '85%',
+        fontSize:16,
+        // backgroundColor:"#ff0000",
+    },
+    line: {
+        height: 1,
+        width: '100%',
+        backgroundColor:utils.COLORS.border1,
+
     }
 });
 

@@ -1,8 +1,9 @@
 import React,{ Compnents, Component } from 'react';
-import { View ,Text, StyleSheet ,Image } from 'react-native';
+import { View ,Text, StyleSheet ,Image ,ImageBackground} from 'react-native';
 import Login from '../components/login';
 import { StackNavigator } from 'react-navigation';
 import Route from  './router'
+import utils from "../utils";
 
 export default class HomeScreen extends Component{
 
@@ -14,13 +15,12 @@ export default class HomeScreen extends Component{
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.contain}>
-                {/*<Text style={{fontSize:30}}>英语听说考</Text>*/}
-                {/*<Image*/}
-                    {/*style={{width:'80%',height:200,marginTop:10}}*/}
-                    {/*source={require('../imgs/web1.png')}*/}
-                {/*/>*/}
-                {/*<Login nextClick={() => {this.endClick()}}/>*/}
-                {/*<Login {...this.props}/>*/}
+                <ImageBackground
+                    source={require("../imgs/mineIcon/my_bg.png")}
+                    style={styles.headerImg}
+                >
+                    <Text style={styles.navTitle}>英语听说考</Text>
+                </ImageBackground>
                 <Login navigation={this.props.navigation} />
             </View>
         );
@@ -35,9 +35,23 @@ export default class HomeScreen extends Component{
 
 const styles=StyleSheet.create({
     contain: {
-        // flex:1,
+        flex:1,
         flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor:"#ffffff"
+    },
+    headerImg: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        // justifyContent: 'center',
+        width:utils.SCREENWIDTH,
+        height:utils.SCREENWIDTH/750*128
+    },
+    navTitle:{
+        marginTop:30,
+        color:"#fff",
+        fontSize:18,
+        fontWeight:"900"
     },
 });

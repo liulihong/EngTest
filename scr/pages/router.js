@@ -142,15 +142,8 @@ const LogRouter = StackNavigator(
             screen: Login,
             navigationOptions: {
                 //设置隐藏标题。HeaderProps null
-                // header: null,
-                headerStyle:{
-                    // backgroundImage:'../imgs/tabIcon/top_bg_z.png'
-                    backgroundColor: '#aaa',
-					// backgroundImage:{
-                    	// source:'../imgs/tabIcon/top_bg_z.png'
-					// }
-					// backgroundImage: (<Image source={require('../imgs/tabIcon/top_bg_z.png')}/>)
-				}
+                header: null,
+
             },
         },
         HomePage: {

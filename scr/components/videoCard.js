@@ -5,16 +5,18 @@ import download from '../utils/download';
 
 export default class VideoCard extends Component{
 
-    downLoad(){
-        download.download();
+    downLoad(obj){
+        download.download(obj);
     }
 
     render(){
+
+
         return(
             <View style={styles1.contain1}>
                 <Text>上次得分：4.5</Text>
-                <Text>模拟试题1</Text>
-                <Button title="下载" onPress={() => this.downLoad()} />
+                <Text>{this.props.cardDic.Title}</Text>
+                <Button title="下载" onPress={() => this.downLoad(this.props.cardDic)} />
             </View>
         )
     }

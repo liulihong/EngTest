@@ -12,11 +12,13 @@ import Zip from '@remobile/react-native-zip';
 // const ZipArchive = require('react-native-zip-archive')
 
 let jobId = -1;
+
+
 const downloadDestName = `${RNFS.MainBundlePath}/${((Math.random() * 1000) | 0)}.zip`;
 
 
 module.exports = {
-    download (){
+    download (obj){
 
         const progress = data => {
             const percentage = ((100 * data.bytesWritten) / data.contentLength) || 0;
@@ -28,8 +30,10 @@ module.exports = {
         };
         const progressDivider = 1;
 
+        const fromurl="http://192.168.12.150:28071/"+obj.DownPath;
         const ret = RNFS.downloadFile({
-            fromUrl: 'http://github.com/liuxiaojun666/test-zip/archive/master.zip',
+            // fromUrl: 'http://github.com/liuxiaojun666/test-zip/archive/master.zip',
+            fromUrl:fromurl,
             toFile: downloadDestName,
             begin,
             progress,

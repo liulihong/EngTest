@@ -10,13 +10,15 @@ import {
 } from 'react-native';
 
 export default class mineCell extends Component {
+    constructor() {
+        super(...arguments)
+    }
 
     render () {
-        var { style, name, txtHide, ispassword } = this.props
         return(
             <View style={styles.container}>
-                <Image style={styles.image} source={require("../imgs/mineIcon/my_icon_bj.png")} />
-                <Text style={styles.title}>修改资料</Text>
+                <Image style={styles.image} source={this.props.imgurl} />
+                <Text style={styles.title}>{this.props.title}</Text>
                 <Image style={styles.arrow} source={require("../imgs/cusIcon/icon_enter.png")} />
             </View>
         )
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff",
         width:utils.SCREENWIDTH,
         height:48,
-        borderWidth:0.5,
+        borderWidth:0.7,
         borderColor:utils.COLORS.background1
     },
     image:{

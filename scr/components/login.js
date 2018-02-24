@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {View ,Text ,Button ,TextInput,Alert} from 'react-native';
+import {View, Text, Button, TextInput, Alert, StyleSheet,TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 import {Login as logReg} from '../store/actions';
 import utils from  '../utils'
@@ -48,7 +48,7 @@ class LoginView extends Component{
 
     render(){
         return (
-            <View>
+            <View style={styles.container}>
                 <CusTextIput
                     name='用户：'
                     txtHide='请输入用户名或邮箱'
@@ -69,26 +69,39 @@ class LoginView extends Component{
                         })
                     }}
                 />
-                {/*<TextInput*/}
-                    {/*style={{height: 40,width : utils.SCREENWIDTH/2, borderBottomColor: 'black', borderBottomWidth: 1}}*/}
-                    {/*onChangeText={(text) => this.setState({userNameText:text})}*/}
-                    {/*value={this.state.userNameText}*/}
-                {/*/>*/}
-                {/*<TextInput*/}
-                    {/*style={{height: 40, borderBottomColor: 'gray', borderBottomWidth: 1}}*/}
-                    {/*onChangeText={(text) => this.setState({PwdText:text})}*/}
-                    {/*value={this.state.PwdText}*/}
-                {/*/>*/}
-                <Button
+
+                <TouchableOpacity
+                    style={styles.button}
                     onPress={this.loginBtn}
-                    title="login"
-                    color="#841584"
-                    accessibilityLabel="Learn more about this purple button"
-                />
+                >
+                    <Text style={styles.buttonText}>登录</Text>
+                </TouchableOpacity>
+
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    button: {
+        height: 45,
+        width: utils.SCREENWIDTH*0.85,
+        borderRadius: 6,
+        backgroundColor: utils.COLORS.theme,
+        justifyContent: 'center',
+        marginTop: 20,
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: 'white',
+        fontSize: 18
+    }
+});
 
 const mapStateToProps = (state) => {
     const val=state.userInfo;

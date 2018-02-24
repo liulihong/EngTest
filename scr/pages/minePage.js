@@ -1,5 +1,5 @@
 import React,{ Compnents, Component } from 'react';
-import { View ,Text, StyleSheet,Button,ImageBackground,Image } from 'react-native';
+import { View ,Text, StyleSheet,Button,ImageBackground,Image,ScrollView } from 'react-native';
 import Login from './loginPage';
 import utils from "../utils";
 import MineCell from "../components/mineCell";
@@ -9,9 +9,26 @@ export default class HomeScreen extends Component{
     constructor(props){
         super(props)
     }
+
+    getArr(){
+        const arr1=["修改资料","消息中心","安全中心","未加入班级","版本检查","意见建议","退出登录"];
+        const arr2=[require("../imgs/mineIcon/my_icon_bj.png"),require("../imgs/mineIcon/my_icon_xxzx.png"),require("../imgs/mineIcon/my_icon_aqzx.png"),require("../imgs/mineIcon/my_icon_wjrbj.png"),require("../imgs/mineIcon/my_icon_bbjc.png"),require("../imgs/mineIcon/my_icon_yjjy.png"),require("../imgs/mineIcon/my_icon_tc.png")];
+
+        var cellArr=[];
+        for(let i=0;i<arr1.length;i++){
+            var title=arr1[i];
+            var imgurl=arr2[i];
+
+            cellArr.push(<MineCell key={i} title={title} imgurl={imgurl} />)
+
+        }
+        return cellArr;
+    }
+
     render() {
         return (
              
+            <ScrollView>
                 <View style={styles.contain}>
                     <ImageBackground
                         source={require("../imgs/mineIcon/my_bg.png")}
@@ -27,15 +44,14 @@ export default class HomeScreen extends Component{
                         <Text style={styles.userPhone}>13912345678</Text>
                     </ImageBackground>
 
-                    <MineCell />
-                    <MineCell />
-                    <Text style={{margin:60}}>This is home</Text>
-                    <Button 
-                        title='To Detail'
-                        onPress={()=>this.props.navigation.navigate('Login')}
-                    />
-                    <Text>This is home</Text>
+                    <View style={{marginTop:15}}>
+                        {
+                            this.getArr()
+                        }
+                    </View>
+
                 </View>
+            </ScrollView>
         );
     }
 }
