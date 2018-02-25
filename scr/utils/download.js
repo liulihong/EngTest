@@ -3,23 +3,24 @@ import React, { Component } from 'react';
 
 // import * as Config from './Config.js';
 // import NetUtil from './NetUtil.js';
-import RNFS from 'react-native-fs';
+// import RNFS from 'react-native-fs';
+var RNFS = require('react-native-fs');
 
 
-
-import Zip from '@remobile/react-native-zip';
+// import Zip from '@remobile/react-native-zip';
+var Zip = require('@remobile/react-native-zip');
 
 // const ZipArchive = require('react-native-zip-archive')
 
 let jobId = -1;
 
-
-const downloadDestName = `${RNFS.MainBundlePath}/${((Math.random() * 1000) | 0)}.zip`;
-
+// const downloadDestName = `${RNFS.MainBundlePath}/${((Math.random() * 1000) | 0)}.zip`;
+// const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000) | 0)}.zip`;
+const downloadDest=RNFS.ExternalDirectoryPath + "/aa.zip";
 
 module.exports = {
     download (obj){
-
+        // const downloadDestName = RNFS.DocumentDirectoryPath+"/OriFiles/"+obj.SecTitle+".zip";
         const progress = data => {
             const percentage = ((100 * data.bytesWritten) / data.contentLength) || 0;
             const text = `Progress ${percentage}%`;
@@ -34,7 +35,7 @@ module.exports = {
         const ret = RNFS.downloadFile({
             // fromUrl: 'http://github.com/liuxiaojun666/test-zip/archive/master.zip',
             fromUrl:fromurl,
-            toFile: downloadDestName,
+            toFile: downloadDest,
             begin,
             progress,
             progressDivider
@@ -44,11 +45,11 @@ module.exports = {
 
         ret.promise.then(res => {
             console.log("file download ");
-            console.log(downloadDestName);
+            console.log(downloadDest);
             console.log(res);
 
             // 调用解压函数
-            this.unzipNewCourse();
+            this.unzipNewCourse(obj);
 
 
         }).catch(err => {
@@ -58,8 +59,11 @@ module.exports = {
 
     },
 
-    unzipNewCourse() {
-        Zip.unzip(downloadDestName, RNFS.DocumentDirectoryPath, (err)=>{
+    unzipNewCourse(obj) {
+        // const downloadDestName = RNFS.DocumentDirectoryPath+"/"+obj.SecTitle+".zip";
+        const newPath=RNFS.ExternalDirectoryPath+"/"+obj.SecTitle;
+
+        Zip.unzip(downloadDest, newPath , (err)=>{
             if (err)
             {
                 // 解压失败
@@ -69,7 +73,7 @@ module.exports = {
             {
 
                 //解压成功，将zip删除
-                RNFS.unlink(downloadDestName).then(() => {
+                RNFS.unlink(downloadDest).then(() => {
 
                 });
                 console.log('success' + RNFS.DocumentDirectoryPath)
