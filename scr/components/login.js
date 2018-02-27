@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {Login as logReg} from '../store/actions';
 import utils from  '../utils'
 import CusTextIput from './CusTextInput'
-import SplashScreen from 'rn-splash-screen';
+// import SplashScreen from 'rn-splash-screen';
 
 
 class LoginView extends Component{
@@ -27,7 +27,7 @@ class LoginView extends Component{
         if (nextProps.val.logResult.UserID) {
             this.props.navigation.navigate('HomePage');
         }
-        SplashScreen.hide();
+        // SplashScreen.hide();
     }
 
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import utils from './index';
 
 
 // import * as Config from './Config.js';
@@ -13,10 +14,11 @@ var Zip = require('@remobile/react-native-zip');
 // const ZipArchive = require('react-native-zip-archive')
 
 let jobId = -1;
+const downloadDest=(utils.PLATNAME=="IOS")?RNFS.DocumentDirectoryPath:RNFS.ExternalDirectoryPath;
 
 // const downloadDestName = `${RNFS.MainBundlePath}/${((Math.random() * 1000) | 0)}.zip`;
 // const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000) | 0)}.zip`;
-const downloadDest=RNFS.ExternalDirectoryPath + "/aa.zip";
+// const downloadDest=RNFS.ExternalDirectoryPath + "/aa.zip";
 
 module.exports = {
     download (obj){
@@ -35,7 +37,7 @@ module.exports = {
         const ret = RNFS.downloadFile({
             // fromUrl: 'http://github.com/liuxiaojun666/test-zip/archive/master.zip',
             fromUrl:fromurl,
-            toFile: downloadDest,
+            toFile: downloadDest+"/"+obj.SecTitle+".zip",
             begin,
             progress,
             progressDivider
@@ -61,9 +63,9 @@ module.exports = {
 
     unzipNewCourse(obj) {
         // const downloadDestName = RNFS.DocumentDirectoryPath+"/"+obj.SecTitle+".zip";
-        const newPath=RNFS.ExternalDirectoryPath+"/"+obj.SecTitle;
-
-        Zip.unzip(downloadDest, newPath , (err)=>{
+        const oriPath=downloadDest+"/"+obj.SecTitle+".zip";
+        const newPath=downloadDest+"/"+obj.SecTitle;
+        Zip.unzip(oriPath, newPath , (err)=>{
             if (err)
             {
                 // 解压失败
@@ -73,10 +75,10 @@ module.exports = {
             {
 
                 //解压成功，将zip删除
-                RNFS.unlink(downloadDest).then(() => {
+                RNFS.unlink(oriPath).then(() => {
 
                 });
-                console.log('success' + RNFS.DocumentDirectoryPath)
+                console.log('success__newPath==' + newPath);
             }
         });
         jobId = -1;

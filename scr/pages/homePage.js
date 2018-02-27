@@ -4,6 +4,7 @@ import { StackNavigator } from 'react-navigation';
 import VideoCard from '../components/videoCard';
 import utils from '../utils'
 import Login from './loginPage'
+import Audio from "../utils/audioPlay"
 
 export default class HomeScreen extends Component{
 
@@ -18,13 +19,14 @@ export default class HomeScreen extends Component{
     // array1=[{id:'1'},{id:'2'},{id:'3'},{id:'4'},{id:'5'},{id:'6'},{id:'7'},{id:'8'},{id:'9'},{id:'10'},{id:'11'}];
 
     btnClick(){
-       this.props.navigation.navigate('Login');
+       this.props.navigation.navigate('Sound');
     }
 
     render() {
         return(
             <View style={{backgroundColor:utils.COLORS.background1}}>
                 <Button title="选择年级" onPress={this.btnClick}/>
+                <Audio />
                 <ScrollView>
                     <View style={styles.contain}>
                     {

@@ -8,6 +8,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.mehcode.reactnative.splashscreen.SplashScreen;
 
 import com.facebook.react.ReactActivity;
+import com.zmxv.RNSound.RNSoundPackage; // <-- New
 
 public class MainActivity extends ReactActivity {
 
@@ -24,6 +25,10 @@ public class MainActivity extends ReactActivity {
       protected void onCreate(Bundle savedInstanceState) {
           // Show the js-controlled splash screen
           SplashScreen.show(this, getReactInstanceManager());
+
+          mReactInstanceManager = ReactInstanceManager.builder();
+          .addPackage(new RNSoundPackage()); // <-- New
+
 
           super.onCreate(savedInstanceState);
 

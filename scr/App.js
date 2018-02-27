@@ -13,7 +13,7 @@ import Router from './pages/router'
 import getToken from  './request/getToken'
 import utils from './utils'
 // 引入启动页组件
-// import SplashScreen from 'rn-splash-screen';
+import SplashScreen from 'rn-splash-screen';
 // import
 
 let { store, persistor } = configureStore();
@@ -29,7 +29,7 @@ export default class App extends Component{
         };
     }
     setToken(obj) {
-        // SplashScreen.hide();
+        SplashScreen.hide();
         this.setState({
             hasToken: obj.hasToken,
             isLogin:obj.isLogin

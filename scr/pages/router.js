@@ -8,6 +8,7 @@ import MinePage from "./minePage";
 import { StackNavigator, TabBarBottom, TabNavigator} from "react-navigation";
 import Login from './loginPage'
 import utils from '../utils'
+import Sound from "../utils/soundplay"
 
 
 // const color  = {
@@ -23,8 +24,8 @@ export default class MainRoute extends Component {
 		super()
 	}
 	render() {
-		// return this.props.isLogin?<Navigator/>:<LogRouter/>
-		return <LogRouter/>
+		return this.props.isLogin?<Navigator/>:<LogRouter/>
+		// return <LogRouter/>
 	}
 }
 
@@ -132,7 +133,16 @@ const Navigator = StackNavigator(
         },
         Login: {
             screen: Login,
+            navigationOptions: {
+                //设置隐藏标题。HeaderProps null
+                header: null,
+                //禁止滑动返回
+                gesturesEnabled:false,
+            },
         },
+		Sound: {
+            screen: Sound,
+		}
 	}
 );
 
@@ -143,7 +153,8 @@ const LogRouter = StackNavigator(
             navigationOptions: {
                 //设置隐藏标题。HeaderProps null
                 header: null,
-
+				//禁止滑动返回
+                gesturesEnabled:false,
             },
         },
         HomePage: {
@@ -152,12 +163,16 @@ const LogRouter = StackNavigator(
             navigationOptions: {
                 //设置隐藏标题。HeaderProps null
                 header: null,
+                //禁止滑动返回
                 gesturesEnabled:false,
             },
             cardStyle: {
                 backgroundColor: utils.COLORS.background,
             },
         },
+        Sound: {
+            screen: Sound,
+        }
     },
 
 );

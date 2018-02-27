@@ -34,12 +34,14 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* EHearTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* EHearTestTests.m */; };
 		420426EA18F949C393CBADFF /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1CF05B867484C28B4914A7E /* libRNFS.a */; };
+		51182BF942B24723ABEFC216 /* libRNAudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F16E5BC37F24E7F83086619 /* libRNAudio.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		A9CB395091F844C6897CFAE4 /* libRCTSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F88B16AFC95544A6AA3FC44C /* libRCTSplashScreen.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		BC95C4CF203B1FD4007ED732 /* libRCTZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC95C4CE203B1FA8007ED732 /* libRCTZip.a */; };
 		BC95C4D0203B1FED007ED732 /* libRCTCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC95C4C8203B1F92007ED732 /* libRCTCordova.a */; };
+		F1021498D7B84ED7B48DB8F0 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69BA0419E7C14678B7396452 /* libRNSound.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -351,6 +353,20 @@
 			remoteGlobalIDString = 3245CDED1BFEE35C00EABF68;
 			remoteInfo = RCTSplashScreen;
 		};
+		C2BC69E82044F256002D2BDD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8D02A2D8DD06452D8C6C03AF /* RNSound.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 19825A1E1BD4A89800EE0337;
+			remoteInfo = RNSound;
+		};
+		C2BC69ED2044F261002D2BDD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E013338BA0F4481AB2FC2651 /* RNAudio.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 42F559BA1CFC90C400DC3F84;
+			remoteInfo = RNAudio;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -377,12 +393,16 @@
 		2D02E4901E0B4A5D006451C7 /* EHearTest-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "EHearTest-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		69BA0419E7C14678B7396452 /* libRNSound.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSound.a; sourceTree = "<group>"; };
 		76BEA33BC5DE4EFF84F1CA94 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		8D02A2D8DD06452D8C6C03AF /* RNSound.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
+		8F16E5BC37F24E7F83086619 /* libRNAudio.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNAudio.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		BC95C4C3203B1F92007ED732 /* RCTCordova.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCordova.xcodeproj; path = "../node_modules/@remobile/react-native-cordova/ios/RCTCordova.xcodeproj"; sourceTree = "<group>"; };
 		BC95C4C9203B1FA8007ED732 /* RCTZip.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTZip.xcodeproj; path = "../node_modules/@remobile/react-native-zip/ios/RCTZip.xcodeproj"; sourceTree = "<group>"; };
+		E013338BA0F4481AB2FC2651 /* RNAudio.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNAudio.xcodeproj; path = "../node_modules/react-native-audio/ios/RNAudio.xcodeproj"; sourceTree = "<group>"; };
 		F1CF05B867484C28B4914A7E /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		F88B16AFC95544A6AA3FC44C /* libRCTSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTSplashScreen.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -417,6 +437,8 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				A9CB395091F844C6897CFAE4 /* libRCTSplashScreen.a in Frameworks */,
 				420426EA18F949C393CBADFF /* libRNFS.a in Frameworks */,
+				F1021498D7B84ED7B48DB8F0 /* libRNSound.a in Frameworks */,
+				51182BF942B24723ABEFC216 /* libRNAudio.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,6 +627,8 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				22411AE131994FD7AB2D674A /* RCTSplashScreen.xcodeproj */,
 				76BEA33BC5DE4EFF84F1CA94 /* RNFS.xcodeproj */,
+				8D02A2D8DD06452D8C6C03AF /* RNSound.xcodeproj */,
+				E013338BA0F4481AB2FC2651 /* RNAudio.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -683,6 +707,8 @@
 			children = (
 				F88B16AFC95544A6AA3FC44C /* libRCTSplashScreen.a */,
 				F1CF05B867484C28B4914A7E /* libRNFS.a */,
+				69BA0419E7C14678B7396452 /* libRNSound.a */,
+				8F16E5BC37F24E7F83086619 /* libRNAudio.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -691,6 +717,22 @@
 			isa = PBXGroup;
 			children = (
 				C230C2CC202BE5B3002F710A /* libRCTSplashScreen.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C2BC69E52044F256002D2BDD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C2BC69E92044F256002D2BDD /* libRNSound.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C2BC69EA2044F256002D2BDD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C2BC69EE2044F261002D2BDD /* libRNAudio.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -784,7 +826,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = K4SD8A9HMF;
+						DevelopmentTeam = FPTC5BTAVM;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -871,8 +913,16 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = C2BC69EA2044F256002D2BDD /* Products */;
+					ProjectRef = E013338BA0F4481AB2FC2651 /* RNAudio.xcodeproj */;
+				},
+				{
 					ProductGroup = BC95C4BB203AED25007ED732 /* Products */;
 					ProjectRef = 76BEA33BC5DE4EFF84F1CA94 /* RNFS.xcodeproj */;
+				},
+				{
+					ProductGroup = C2BC69E52044F256002D2BDD /* Products */;
+					ProjectRef = 8D02A2D8DD06452D8C6C03AF /* RNSound.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1180,6 +1230,20 @@
 			remoteRef = C230C2CB202BE5B3002F710A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		C2BC69E92044F256002D2BDD /* libRNSound.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSound.a;
+			remoteRef = C2BC69E82044F256002D2BDD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C2BC69EE2044F261002D2BDD /* libRNAudio.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNAudio.a;
+			remoteRef = C2BC69ED2044F261002D2BDD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1309,12 +1373,16 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-splash-screen/ios/RCTSplashScreen",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
+					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 				);
 				INFOPLIST_FILE = EHearTestTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1336,12 +1404,16 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-splash-screen/ios/RCTSplashScreen",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
+					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 				);
 				INFOPLIST_FILE = EHearTestTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1364,11 +1436,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = K4SD8A9HMF;
+				DEVELOPMENT_TEAM = FPTC5BTAVM;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-splash-screen/ios/RCTSplashScreen",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
+					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 				);
 				INFOPLIST_FILE = EHearTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1378,7 +1452,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.gq.map;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.17work.EHearTest;
 				PRODUCT_NAME = EHearTest;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1390,15 +1464,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: EasyDone Beijing Technology Co.,Ltd. (528HWAB67F)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: EasyDone Beijing Technology Co.,Ltd. (528HWAB67F)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = K4SD8A9HMF;
+				DEVELOPMENT_TEAM = FPTC5BTAVM;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-splash-screen/ios/RCTSplashScreen",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
+					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 				);
 				INFOPLIST_FILE = EHearTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1408,7 +1484,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.gq.map;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.17work.EHearTest;
 				PRODUCT_NAME = EHearTest;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1431,11 +1507,15 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-splash-screen/ios/RCTSplashScreen",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
+					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 				);
 				INFOPLIST_FILE = "EHearTest-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1467,11 +1547,15 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-splash-screen/ios/RCTSplashScreen",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
+					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 				);
 				INFOPLIST_FILE = "EHearTest-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1504,6 +1588,8 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.EHearTest-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1528,6 +1614,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
