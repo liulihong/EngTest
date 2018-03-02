@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, Platform, PermissionsAndroid ,Button} from 'react-native';
-// import { Button, WingBlank, WhiteSpace } from 'antd-mobile';
-
-// import NavBar from './NavBar';
+import { View, Text, StyleSheet, TouchableHighlight, Platform, PermissionsAndroid ,Button,TouchableOpacity,DeviceEventEmitter} from 'react-native';
 import Sound from 'react-native-sound'; // 播放声音组件
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import utils from '../utils'
+
+var RNFS = require('react-native-fs');
+const downloadDest=(utils.PLATNAME=="IOS")?RNFS.DocumentDirectoryPath:RNFS.ExternalDirectoryPath;
 
 // let audioPath = AudioUtils.DocumentDirectoryPath + '/test.aac';
 // 目录/data/user/0/com.opms_rn/files/test.aac
@@ -18,7 +18,7 @@ class TestRecordAudio extends Component {
             recording: false, //是否正在录音
             stoppedRecording: false, //是否停止了录音
             finished: false, //是否完成录音
-            audioPath: AudioUtils.DocumentDirectoryPath + '/test.wav', //路径下的文件名
+            audioPath: downloadDest + '/test', //路径下的文件名
             hasPermission: undefined, //是否获取权限
         };
 
@@ -32,8 +32,16 @@ class TestRecordAudio extends Component {
 
     }
 
+    componentWillMount(){
+        DeviceEventEmitter.addListener('play', function() {
+            debugger
+            alert("send success");
+        });
+    }
+
     prepareRecordingPath(audioPath){
         AudioRecorder.prepareRecordingAtPath(audioPath, {
+
             // SampleRate: 22050,
             // Channels: 1,
             // AudioQuality: "Low", //录音质量
@@ -124,7 +132,7 @@ class TestRecordAudio extends Component {
 
         // 使用 setTimeout 是因为, 为避免发生一些问题 react-native-sound中
         setTimeout(() => {
-            var sound = new Sound(this.state.audioPath, '', (error) => {
+            var sound = new Sound(this.state.audioPath+".wav", '', (error) => {
                 if (error) {
                     console.log('failed to load the sound', error);
                 }
@@ -212,10 +220,23 @@ class TestRecordAudio extends Component {
                     {/*<Button type="primary" size="large" onClick={this.play}>播放录音</Button>*/}
                 {/*</WingBlank>*/}
 
-                <Button title="录音" onPress={this.record} />
-                <Button title="停止录音" onPress={this.stop} />
-                <Button title="暂停录音" onPress={this.pause} />
-                <Button title="播放录音" onPress={this.play} />
+                <TouchableOpacity onPress={this.record}>
+                    <Text>录音</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this.stop}>
+                    <Text>停止录音</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this.pause}>
+                    <Text>暂停录音</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this.play}>
+                    <Text>播放录音</Text>
+                </TouchableOpacity>
+
+                {/*<Button title="录音" onPress={this.record} />*/}
+                {/*<Button title="停止录音" onPress={this.stop} />*/}
+                {/*<Button title="暂停录音" onPress={this.pause} />*/}
+                {/*<Button title="播放录音" onPress={this.play} />*/}
 
             </View>
         )

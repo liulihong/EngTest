@@ -73,7 +73,6 @@ module.exports = {
             }
             else
             {
-
                 //解压成功，将zip删除
                 RNFS.unlink(oriPath).then(() => {
 

@@ -26,9 +26,6 @@ public class MainActivity extends ReactActivity {
           // Show the js-controlled splash screen
           SplashScreen.show(this, getReactInstanceManager());
 
-          mReactInstanceManager = ReactInstanceManager.builder();
-          .addPackage(new RNSoundPackage()); // <-- New
-
 
           super.onCreate(savedInstanceState);
 
