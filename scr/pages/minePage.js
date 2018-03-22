@@ -3,8 +3,10 @@ import { View ,Text, StyleSheet,Button,ImageBackground,Image,ScrollView } from '
 import Login from './loginPage';
 import utils from "../utils";
 import MineCell from "../components/mineCell";
+import {connect} from "react-redux";
+import {downFaild, saveDownUrl, saveExamPath, startDown} from "../store/actions";
 
-export default class HomeScreen extends Component{
+class MineScreen extends Component{
 
     constructor(props){
         super(props)
@@ -14,13 +16,12 @@ export default class HomeScreen extends Component{
         const arr1=["修改资料","消息中心","安全中心","未加入班级","版本检查","意见建议","退出登录"];
         const arr2=[require("../imgs/mineIcon/my_icon_bj.png"),require("../imgs/mineIcon/my_icon_xxzx.png"),require("../imgs/mineIcon/my_icon_aqzx.png"),require("../imgs/mineIcon/my_icon_wjrbj.png"),require("../imgs/mineIcon/my_icon_bbjc.png"),require("../imgs/mineIcon/my_icon_yjjy.png"),require("../imgs/mineIcon/my_icon_tc.png")];
 
-        var cellArr=[];
+        let cellArr=[];
         for(let i=0;i<arr1.length;i++){
-            var title=arr1[i];
-            var imgurl=arr2[i];
+            let title=arr1[i];
+            let imgurl=arr2[i];
 
-            cellArr.push(<MineCell key={i} title={title} imgurl={imgurl} />)
-
+            cellArr.push(<MineCell key={i} title={title} imgurl={imgurl} navigation={this.props.navigation} />)
         }
         return cellArr;
     }
@@ -41,7 +42,7 @@ export default class HomeScreen extends Component{
                                 style={{width:37,height:55}}
                             />
                         </View>
-                        <Text style={styles.userPhone}>13912345678</Text>
+                        <Text style={styles.userPhone}>{this.props.logResult.LoginName}</Text>
                     </ImageBackground>
 
                     <View style={{marginTop:15}}>
@@ -55,6 +56,20 @@ export default class HomeScreen extends Component{
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    let logResult=state.userInfo.logResult
+    return {
+        logResult,
+    };
+};
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+
+    }
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(MineScreen);
 
 const styles=StyleSheet.create({
     contain: {

@@ -1,9 +1,10 @@
 import React,{ Compnents, Component } from 'react';
-import { ScrollView , StyleSheet ,View ,Button} from 'react-native';
+import { ScrollView , StyleSheet ,View ,Button,Text} from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import VideoCard from '../components/videoCard';
-import utils from '../utils'
-import Login from './loginPage'
+import utils from '../utils';
+import Login from './loginPage';
+import NavBar from '../components/navBar';
 
 export default class TaskScreen extends Component{
 
@@ -13,7 +14,8 @@ export default class TaskScreen extends Component{
 
     }
 
-    array1=[{"ID":"ccaf30c0-2f05-4006-bbc9-6afb4c8e6c09","PriTitle":"英语辅导报","SecTitle":"模拟试题2","Title":"测试训练1","Summary":"宜昌中考","Grade":"七年级","DownPath":"train/simulation/CCAF30C0-2F05-4006-BBC9-6AFB4C8E6C09.zip"}];
+    array1=[];
+    // array1=[{"ID":"A2C77CF9-9D95-4E6E-A369-66C4D5A56B20","PriTitle":"英语辅导报","SecTitle":"模拟试题2","Title":"测试训练1","Summary":"宜昌中考","Grade":"七年级","DownPath":"train/simulation/CCAF30C0-2F05-4006-BBC9-6AFB4C8E6C09.zip"}];
     // array1=[{id:'1'},{id:'2'},{id:'3'},{id:'4'},{id:'5'},{id:'6'},{id:'7'}];
 
     btnClick(){
@@ -23,12 +25,13 @@ export default class TaskScreen extends Component{
     render() {
         return(
             <View style={{backgroundColor:utils.COLORS.background1}}>
-                <Button title="选择年级" onPress={this.btnClick}/>
+                <NavBar navtitle="作业" isBack={false}/>
+                <Text style={{margin:20,textAlign:'center'}}>{"暂时没有作业哦！"}</Text>
                 <ScrollView>
                     <View style={styles.contain}>
                         {
                             this.array1.map(element => {
-                                return  <VideoCard cardDic={element} key={element.ID}/>
+                                return  <VideoCard cardDic={element} key={element.ID} navigation={this.props.navigation}/>
                             })
                         }
                     </View>

@@ -4,11 +4,14 @@ import TabBarItem from '../components/tabItem';
 import HomePage from "./homePage";
 import TaskPage from "./taskPage"
 import MinePage from "./minePage";
-// import HomeDetail from "./pages/homeDetail";
 import { StackNavigator, TabBarBottom, TabNavigator} from "react-navigation";
-import Login from './loginPage'
-import utils from '../utils'
-import Sound from "../utils/soundplay"
+import Login from './loginPage';
+import utils from '../utils';
+import TestStart from "./testStart";
+import VideoTest from "./videoTest"
+import AnswerScreen from "./answerPage"
+import Regist from './RegistPage'
+
 
 
 // const color  = {
@@ -39,6 +42,7 @@ export const Tab = TabNavigator(
 			navigationOptions: ({navigation}) => ({
 				//选项卡名称
                 // tabBarLabel: '首页',
+                header: null,
                 title: '练习',
 				//选项卡图标 focused：是否选中 tintColor：选中颜色
 				tabBarIcon: ({focused, tintColor}) => (
@@ -59,6 +63,7 @@ export const Tab = TabNavigator(
             navigationOptions: ({navigation}) => ({
                 //选项卡名称
                 // tabBarLabel: '首页',
+                header: null,
                 title: '作业',
                 //选项卡图标 focused：是否选中 tintColor：选中颜色
                 tabBarIcon: ({focused, tintColor}) => (
@@ -140,9 +145,31 @@ const Navigator = StackNavigator(
                 gesturesEnabled:false,
             },
         },
-		Sound: {
-            screen: Sound,
-		}
+		TestStart: {
+			screen: TestStart,
+			navigationOptions: {
+				header: null,
+			}
+		},
+		VideoTest: {
+			screen: VideoTest,
+			navigationOptions: {
+                header: null,
+			}
+		},
+        AnswerScreen: {
+            screen: AnswerScreen,
+            navigationOptions: {
+                header: null,
+            }
+        },
+        Regist: {
+            screen: Regist,
+            navigationOptions: {
+                //设置隐藏标题。HeaderProps null
+                header: null,
+            },
+        },
 	}
 );
 
@@ -170,9 +197,30 @@ const LogRouter = StackNavigator(
                 backgroundColor: utils.COLORS.background,
             },
         },
-        Sound: {
-            screen: Sound,
-        }
+        TestStart: {
+            screen: TestStart,
+            navigationOptions: {
+                header: null,
+            }
+        },
+        VideoTest: {
+            screen: VideoTest,
+            navigationOptions: {
+                header: null,
+            }
+        },
+        AnswerScreen: {
+        	screen: AnswerScreen,
+            navigationOptions: {
+                header: null,
+            }
+		},
+        Regist: {
+            screen: Regist,
+            navigationOptions: {
+                //设置隐藏标题。HeaderProps null
+                header: null,
+            },
+        },
     },
-
 );

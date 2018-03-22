@@ -1,11 +1,10 @@
 import React,{ Compnents, Component } from 'react';
-import { View ,Text, StyleSheet ,Image ,ImageBackground} from 'react-native';
+import { View ,Text, StyleSheet } from 'react-native';
 import Login from '../components/login';
-import { StackNavigator } from 'react-navigation';
-import Route from  './router'
+import NavBar from '../components/navBar';
 import utils from "../utils";
 
-export default class HomeScreen extends Component{
+export default class LoginScreen extends Component{
 
     constructor(props){
         super(props);
@@ -15,12 +14,7 @@ export default class HomeScreen extends Component{
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.contain}>
-                <ImageBackground
-                    source={require("../imgs/mineIcon/my_bg.png")}
-                    style={styles.headerImg}
-                >
-                    <Text style={styles.navTitle}>英语听说考</Text>
-                </ImageBackground>
+                <NavBar navtitle="英语听说考" />
                 <Login navigation={this.props.navigation} />
             </View>
         );
@@ -40,18 +34,5 @@ const styles=StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor:"#ffffff"
-    },
-    headerImg: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        // justifyContent: 'center',
-        width:utils.SCREENWIDTH,
-        height:utils.SCREENWIDTH/750*128
-    },
-    navTitle:{
-        marginTop:30,
-        color:"#fff",
-        fontSize:18,
-        fontWeight:"900"
     },
 });

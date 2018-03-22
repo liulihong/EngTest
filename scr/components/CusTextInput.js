@@ -11,11 +11,6 @@ import {
 } from 'react-native'
 
 class TextInputLogin extends Component {
-    // static propTypes = {
-    //     name: '',
-    //     txtHide: '',
-    //     ispassword: false
-    // }
 
     static defaultProps = {
         name: '用户名：',
@@ -52,7 +47,7 @@ class TextInputLogin extends Component {
                         }}
                         value={this.state.txtValue}
                     />
-                    <View style={styles.line}></View>
+                    <View style={styles.line}/>
                 </View>
             </View>
         )
@@ -68,7 +63,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 18,
+        marginTop: 2,
     },
     txtBorder: {
         width: "85%",

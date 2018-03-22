@@ -2,7 +2,21 @@ import {
     LOGIN,
     RESETPWD,
     COOKIE,
-    ERROR
+    ERROR,
+    PAPERLIST,
+    LOADING,
+    GETCOMMON,
+    SAVEDOWNURL,
+    STARTDOWN,
+    DOWNFAILD,
+    CURRENTEXAMPATH,
+    GETEXAMDETAIL,
+    SAVEPLAYTIME,
+    GETTOPICINFO,
+    GETNEXTSTEPTOPIC,
+    SAVEANSWERS,
+    SAVEANSDIC,
+    GETANSWERBLOW,
 } from "./actionTypes";
 
 
@@ -67,29 +81,109 @@ export const error = (state = {}, action) => {
 //     }
 // }
 
-
-export const videoList = (state = {}, action) => {
+//这里每次都赋值空数组了
+export const videoList = (state = {downedUrls: []}, action) => {
     switch (action.type) {
-        // case LOGIN:
-        //     return {
-        //         ...state,
-        //         list: action.result
-        //     }
+        case PAPERLIST:
+            return {
+                ...state,
+                paperList: action.result.PaperList,
+                loading: false
+            }
+        case LOADING:
+            return {
+                ...state,
+                loading: true
+            }
+        case ERROR:
+            return {
+                ...state,
+                errorObj:action.result,
+                loading: false
+            }
+        case GETCOMMON:
+            return {
+                ...state,
+                getCommenUrl:action.result.Uri,
+            }
+        case STARTDOWN:
+            return {
+                ...state,
+                downLoading:true,
+            }
+        case SAVEDOWNURL:
+            let downUrls=state.downedUrls ? state.downedUrls : [];
+            return {
+                ...state,
+                downLoading:false,
+                downedUrls:[
+                    ...downUrls,
+                    action.result
+                ],
+            }
+        case DOWNFAILD:
+            return {
+                ...state,
+                downLoading:false,
+            }
         default:
             return state
     }
 }
 
-export const detail = (state = {}, action) => {
+export const detail = (state = {answers: {}}, action) => {
     switch (action.type) {
-        // case LOGIN:
-        //     return {
-        //         ...state,
-        //         ...action.result
-        //     }
+        case CURRENTEXAMPATH:
+            return {
+                currentExamPath:action.result,
+            }
+        case GETEXAMDETAIL:
+            return {
+                currentExamPath:state.currentExamPath,
+                examContent:action.result,
+            }
+        case GETTOPICINFO:
+            return {
+                currentExamPath:state.currentExamPath,
+                examContent:state.examContent,
+                topicInfo:action.result,
+            }
+        case GETNEXTSTEPTOPIC:
+            return {
+                ...state,
+                ...action.result,
+            }
+        case SAVEPLAYTIME:
+            return {
+                ...state,
+                currPlayTime:action.result,
+            }
+        case SAVEANSWERS:
+            let typeObj=state.answers ? state.answers[action.result.Type] : {}
+            return {
+                ...state,
+                answers:{
+                    ...state.answers,
+                    [action.result.Type]: {
+                        ...typeObj,
+                        [action.result.id]: {
+                            num: action.result.num,
+                            answer: action.result.answer
+                        },
+                    }
+                }
+            }
+        case GETANSWERBLOW:
+            return {
+                ...state,
+                answers: action.result,
+            }
+        case SAVEANSDIC:
+            return {
+                ...state,
+                answerRecord:action.result,
+            }
         default:
             return state
     }
 }
-
-

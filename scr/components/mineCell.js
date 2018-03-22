@@ -6,21 +6,39 @@ import {
     Image,
     Button,
     StyleSheet,
-    View
+    View,
+    TouchableOpacity,
+    AsyncStorage,
 } from 'react-native';
+import {LogOut} from "../store/actions";
+import {connect} from "react-redux";
+import getToken from "../request/getToken";
 
-export default class mineCell extends Component {
+class mineCell extends Component {
     constructor() {
         super(...arguments)
+        this.btnClick=this.btnClick.bind(this);
+    }
+
+    btnClick(){
+        if(this.props.title==="退出登录"){
+            this.props.logOut(()=>{
+                // AsyncStorage.setItem('token', '');
+                // getToken(store, (obj)=>{
+                //     alert(JSON.stringify(obj));
+                // });
+                this.props.navigation.navigate('Login');
+            });
+        }
     }
 
     render () {
         return(
-            <View style={styles.container}>
+            <TouchableOpacity style={styles.container} onPress={()=>{this.btnClick()}}>
                 <Image style={styles.image} source={this.props.imgurl} />
                 <Text style={styles.title}>{this.props.title}</Text>
                 <Image style={styles.arrow} source={require("../imgs/cusIcon/icon_enter.png")} />
-            </View>
+            </TouchableOpacity>
         )
     }
     // getValue () {
@@ -56,4 +74,18 @@ const styles = StyleSheet.create({
     }
 });
 
-// module.exports = mineCell;
+const mapStateToProps = (state) => {
+    let store=state;
+    return {
+        store
+    };
+};
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        logOut: (callBack) => {
+            dispatch(LogOut(callBack))
+        },
+    }
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(mineCell);
