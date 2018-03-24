@@ -42,7 +42,7 @@ module.exports = class MySound{
                     alert("加载音频文件失败");
                 }
             }
-        }, 100);
+        }, 1000);
     }
     //开始播放
     startPlay(path){
