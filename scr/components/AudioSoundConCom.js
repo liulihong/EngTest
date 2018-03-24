@@ -623,58 +623,58 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(AudioSoundConCom);
 
-const styles = StyleSheet.create({
-    audio: {
-        marginTop: 10,
-        width: utils.SCREENWIDTH - 30,
-        height: 100,
+const styles=StyleSheet.create({
+    audio:{
+        // marginTop:10,
+        width:utils.SCREENWIDTH-30,
+        height:100,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         flexWrap: 'wrap',
         alignItems: 'center',
-        // backgroundColor:'#eeeeee',
-        position: "absolute",
-        bottom: 10,
+        // backgroundColor:'#dddddd',
+        position:"absolute",
+        bottom:utils.PLATNAME==="IOS"?10:30,
     },
-    button: {
-        width: 75,
-        height: 75,
-        backgroundColor: "#cccccc",
-        borderRadius: 75 / 2,
-        borderWidth: 1,
-        borderColor: '#cccccc',
+    button:{
+        width:75,
+        height:75,
+        backgroundColor:"#cccccc",
+        borderRadius:75/2,
+        borderWidth:1,
+        borderColor:'#cccccc',
     },
-    conBtnView: {
-        position: "absolute",
-        bottom: 10,
-        right: 0,
-        width: 100,
-        height: '100%',
+    conBtnView:{
+        position:"absolute",
+        // bottom:utils.PLATNAME==="IOS"?10:30,
+        right:0,
+        width:100,
+        height:'100%',
     },
-    conBtn1: {
-        width: '100%',
-        height: 30,
-        backgroundColor: utils.COLORS.theme,
-        marginTop: 5,
-        borderRadius: 3,
+    conBtn1:{
+        width:'100%',
+        height:30,
+        backgroundColor:utils.COLORS.theme,
+        marginBottom:5,
+        borderRadius:3,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    conBtn2: {
-        width: '100%',
-        height: 30,
-        backgroundColor: '#ff6169',
-        marginTop: 5,
-        borderRadius: 3,
+    conBtn2:{
+        width:'100%',
+        height:30,
+        backgroundColor:'#ff6169',
+        // marginTop:5,
+        borderRadius:3,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    conBtnText: {
-        textAlign: 'center',
-        color: 'white',
-        fontSize: 15,
-        fontWeight: '600',
+    conBtnText:{
+        textAlign:'center',
+        color:'white',
+        fontSize:15,
+        fontWeight:'600',
     }
 });

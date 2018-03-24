@@ -15,12 +15,22 @@ export default class NavBar extends Component {
 
             <ImageBackground
                 source={require("../imgs/mineIcon/my_bg.png")}
-                style={styles.headerImg}
+                style={{
+                    flexDirection: 'row',
+                    // alignItems: 'center',
+                    justifyContent: 'center',
+                    // flexWrap:"wrap",
+                    width:utils.SCREENWIDTH,
+                    height:utils.PLATNAME==="IOS"?64:44,
+                    backgroundColor:'red',
+                    // position:"relative",
+                    // top:0,
+                }}
             >
 
                 {
-                    this.props.isBack?<TouchableOpacity
-                        style={styles.backView}
+                    this.props.isBack ? <TouchableOpacity
+                        style={ styles.backView }
                         onPress={() =>{this.backVC()}}
                     >
                         <Image
@@ -44,40 +54,41 @@ export default class NavBar extends Component {
 const styles=StyleSheet.create({
     headerImg: {
         flexDirection: 'row',
-        // alignItems: 'center',
-        // justifyContent: 'center',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
         width:utils.SCREENWIDTH,
-        height:utils.SCREENWIDTH/750*128,
+        height:utils.SCREENWIDTH/375*64,
         backgroundColor:'red',
         // position:"relative",
         // top:0,
     },
     backView:{
-        marginTop:20,
+        position:"absolute",
+        left:0,
+        bottom:0,
         width:60,
         height:44,
         flexDirection: 'row',
         alignItems: 'center',
-        // justifyContent: 'center',
-        // backgroundColor:"#cccccc",
     },
     backImg:{
         marginLeft:12,
     },
     titleView:{
-        marginTop:20,
+        position:"absolute",
+        bottom:0,
         // backgroundColor:"#dddddd",
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         width:utils.SCREENWIDTH-120,
-        alignSelf:"center",
-        marginRight:50,
+        height:44,
     },
     navTitle:{
         color:"#fff",
         fontSize:18,
-        fontWeight:"600"
+        fontWeight:"600",
+        textAlign:"center",
     },
     navBtn:{
         width:60,

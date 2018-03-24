@@ -34,24 +34,25 @@ const styles=StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        marginTop:36,
-        height:utils.SCREENHEIGHT-260,
+        marginTop:30,
+        height:utils.PLATNAME==="IOS" ? utils.SCREENHEIGHT-240 : utils.SCREENHEIGHT-220,
+        // backgroundColor:"red",
     },
     whiteView:{
         backgroundColor:"white",
         width:"100%",
-        height:160,
+        height:140,
         position:"absolute",
         bottom:0,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        alignItems: 'center',
+        // alignItems: 'center',
     },
     scoreText:{
         color:utils.COLORS.theme1,
         fontSize:16,
-        margin:15,
+        margin:7,
         padding:10,
     },
     button: {
@@ -74,9 +75,8 @@ const styles=StyleSheet.create({
         borderRadius: 6,
         backgroundColor: utils.COLORS.theme,
         justifyContent: 'center',
-        // marginTop: 25,
         margin:15,
-        // marginBottom:50,
+        marginTop: 45,
     }
 });
 
