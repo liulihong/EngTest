@@ -17,7 +17,7 @@ class HearSelPicCom extends Component{
 
     componentDidMount() {
         this.props.imgList.map((spath,i) => {
-            let path=utils.findPlayPath(spath,this.props.examPath);
+            let path=utils.findPicturePath(spath,this.props.examPath);
             Image.getSize(path,(width,height1)=>{
                 let newheight = 100 / width * height1 ; //按照屏幕宽度进行等比缩放
                 this.setState({
@@ -61,7 +61,7 @@ class HearSelPicCom extends Component{
                         this.props.imgList.map((spath,i) => {
                             let isSelect=this.state.selects && this.state.selects[element.UniqueID]!==undefined && (this.state.selects[element.UniqueID]["answer"]===(i+1));
                             let source=isSelect?require("../imgs/testIcon/zc_icon_click.png"):require("../imgs/testIcon/zc_icon_mr.png");
-                            let path=utils.findPlayPath(spath,this.props.examPath);
+                            let path=utils.findPicturePath(spath,this.props.examPath);
                             return <TouchableOpacity key={i} style={styles.selectItem} onPress={()=>this.selectBtn(element.UniqueID,element.ID,(i+1))}>
                                 <Image style={styles.img} source={source}/>
                                 <ImageBackground

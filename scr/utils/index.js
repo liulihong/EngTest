@@ -48,6 +48,10 @@ const findPlayPath=(path,examPath)=>{
     }
     return contentPath;
 }
+const findPicturePath = (path, examPath) => {
+    
+    return (instructions === 'IOS' ? '' : 'file://') + findPlayPath(path, examPath);
+}
 //获取错误信息
 const findErrorInfo = (err)=> {
 
@@ -109,5 +113,6 @@ module.exports = {
     DOWNLOADDOCUMENTPATH:downloadDest,
     isLastIndex,
     findPlayPath,
+    findPicturePath,
     findErrorInfo
 }

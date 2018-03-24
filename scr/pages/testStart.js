@@ -157,7 +157,6 @@ class TestStart extends Component{
                 RNFS.readFile(jsonPath).then((result)=>{
                     let answerRecord=JSON.parse(result);
                     this.props.saveAnswerRecord(answerRecord);//获取之前答题记录
-
                     this.props.getTestProgress(anserDic);
                     this.props.navigation.navigate('VideoTest');
                 })

@@ -18,7 +18,7 @@ class HearRecord extends Component{
     }
 
     componentDidMount() {
-        let path=utils.findPlayPath(this.props.contentData[0].Img,this.props.examPath);
+        let path=utils.findPicturePath(this.props.contentData[0].Img,this.props.examPath);
         Image.getSize(path,(width,height1)=>{
             let newheight = this.state.width / width * height1 ; //按照屏幕宽度进行等比缩放
             this.setState({height : newheight});
@@ -71,7 +71,7 @@ class HearRecord extends Component{
 
     render(){
 
-        let path=utils.findPlayPath(this.props.contentData[0].Img,this.props.examPath);
+        let path=utils.findPicturePath(this.props.contentData[0].Img,this.props.examPath);
 
         return (
             <View>
