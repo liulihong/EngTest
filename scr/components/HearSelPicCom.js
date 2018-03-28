@@ -65,7 +65,7 @@ class HearSelPicCom extends Component{
                             return <TouchableOpacity key={i} style={styles.selectItem} onPress={()=>this.selectBtn(element.UniqueID,element.ID,(i+1))}>
                                 <Image style={styles.img} source={source}/>
                                 <ImageBackground
-                                    style={{width:100, margin:6, height:this.state.imgSizes[spath] || 10 }}
+                                    style={{width:100, margin:6, height:this.state.imgSizes[spath] || 100 }}
                                     source={{uri:path}} />
                             </TouchableOpacity>
                         })

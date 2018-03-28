@@ -7,6 +7,10 @@ import {
     saveAnswerRecord
 } from "../store/actions";
 import MySound from "../utils/soundPlay";
+import { fetchPost } from '../request/fetch';
+import { submitExamTopic } from '../request/requestUrl';
+import copy from 'lodash';
+import RNFS from 'react-native-fs';
 
 let timeInteval;//播放时间计时器
 let timeInteval2;//读题时间计时器
@@ -45,6 +49,7 @@ class AudioSoundConCom extends Component {
         this.readContentEnd = this.readContentEnd.bind(this);
         this.saveAnsweRecord = this.saveAnsweRecord.bind(this);
         this.findProgress = this.findProgress.bind(this);
+        this.submitToServer = this.submitToServer.bind(this);
         this.state = {
             isPlaying: true,//默认播放  播放为false代表录音
             isPaused: false,
@@ -89,8 +94,103 @@ class AudioSoundConCom extends Component {
     //     });
     // }
 
+    //提交答案到服务器
+    submitToServer(nextProps, currProps) {
+
+        let isChange = nextProps.dataSource.topicInfo !== currProps.dataSource.topicInfo;
+        if (isChange === false) return;//当前信息没改变 不提交
+        let isTopObj = currProps.dataSource.topicInfo.currLevel === "topObj";
+        if (isTopObj === false) return;//当前播放不是小题 不提交
+        if (nextProps.dataSource.topObj === currProps.dataSource.topicObj) return;//跟上次同一个小题 不提交
+        if (nextProps.answers === undefined) return;//没有答题记录
+
+        let gropObj1 = currProps.dataSource.gropObj;//当前数组
+        let gropObj = copy.cloneDeep(gropObj1);
+        let answer1 = nextProps.answers[gropObj.Type];//当前类型题答案
+        let answer = copy.cloneDeep(answer1);
+        let topObj1 = currProps.dataSource.topObj;//页面数据信息
+        let topObj = copy.cloneDeep(topObj1);
+        
+        // alert(JSON.stringify(topObj.TopicInfoList));
+        if (answer !== undefined && topObj.TopicInfoList !== undefined) {//如果有答案记录
+            let paraArr = [];
+            
+            if (gropObj.Type === 1 || gropObj.Type === 10 || gropObj.Type === 3) {
+
+                let arr = topObj.TopicInfoList;
+                for (let i = 0; i < arr.length; i++) {
+                    let topicObj = topObj.TopicInfoList[i];//小题数据信息
+                    let topicObjAnswer = answer[topicObj.UniqueID];//小题答案
+                    if (topicObjAnswer !== undefined) {
+                        let paraObj = {
+                            TopicID: topicObj.UniqueID,
+                            TopicNO: topicObj.ID,
+                            UserAnswer: JSON.stringify(topicObjAnswer.answer),
+                            Total: topicObj.Score,
+                        }
+                        paraArr.push(paraObj);
+                    }
+                }
+                if (paraArr.length) {
+                    let LogID = currProps.answerRecord.LogID;
+                    let paramts = {
+                        ...LogID,
+                        Type: gropObj.Type,
+                        Items: paraArr,
+                    }
+
+                    fetchPost(submitExamTopic, paramts).then((result) => {
+                        // alert(JSON.stringify(result));
+                    }, (error) => {
+                        alert("11" + utils.findErrorInfo(error));
+                    });
+                }
+            }else{//提交音频
+                let topicObj = topObj.TopicInfoList[0];//小题数据信息
+                let topicObjAnswer = answer[topicObj.UniqueID];//小题答案
+                if (topicObjAnswer !== undefined) {
+                    // alert(topicObjAnswer.answer);
+                    RNFS.readFile(topicObjAnswer.answer,"base64")
+                    .then((result) => {
+                        // alert("转字符串成功" + result);
+                        let paraObj = {
+                            TopicID: topicObj.UniqueID,
+                            TopicNO: topicObj.ID,
+                            UserAnswer: result,
+                            Total: topicObj.Score,
+                        }
+                        paraArr.push(paraObj);
+                        
+                        // alert("ss"+result);//返回result是对的  但是是存的字符串
+                        if (paraArr.length) {
+                            let LogID = currProps.answerRecord.LogID;
+                            let paramts = {
+                                ...LogID,
+                                Type: gropObj.Type,
+                                Items: paraArr,
+                            }
+                            
+                            fetchPost(submitExamTopic, paramts).then((result) => {
+                                // alert("00" + JSON.stringify(result));
+                                // alert("成功");
+                            }, (error) => {
+                                // alert("11" + utils.findErrorInfo(error));
+                                alert("失败");
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
+                        alert("转字符串失败" + err);
+                    });
+                }
+            }
+        }
+    }
+
     //store数据刷新
     componentWillReceiveProps(nextProps) {
+        this.submitToServer(nextProps, this.props);//提交答案到服务器
         this.setState({
             tempData: nextProps.dataSource,//新数据源
         });
@@ -150,7 +250,6 @@ class AudioSoundConCom extends Component {
         Sound1.startPlay(path);
 
         this.reloadData();
-
     }
 
     //暂停
@@ -175,21 +274,21 @@ class AudioSoundConCom extends Component {
     }
 
     //刷新页面播放进度 播放完毕寻找下一步
-    reloadData() {  // 这个方法  什么时候执行
+    reloadData() {
         timeInteval = setInterval(() => {
             let isLoaded = Sound1.soundIsLoaded();
-            // let isPlaying=Sound1 && Sound1.isPlay()===true;
+            if (isLoaded) {
+                Sound1.soundGetCurrentTime((time, isPlaying) => {
+                    let time1 = time.toFixed(2)
+                    let time2 = Sound1.soundDuring().toFixed(2);
+                    let currTime = time1 + ' / ' + time2;
+                    this.props.reloadCurrTime(currTime);
 
-            Sound1.soundGetCurrentTime((time, isPlaying) => {
-                let time1 = time.toFixed(2)
-                let time2 = Sound1.soundDuring().toFixed(2);
-                let currTime = time1 + ' / ' + time2;
-                this.props.reloadCurrTime(currTime);
-
-                if (isPlaying === false) {
-                    this.findProgress(timeInteval);
-                }
-            });
+                    if (isPlaying === false) {
+                        this.findProgress(timeInteval);
+                    }
+                });
+            }
         }, 1000);
     }
 
@@ -526,6 +625,8 @@ class AudioSoundConCom extends Component {
         }
     }
 
+
+
     render() {
         return (
             <View style={styles.audio}>
@@ -574,6 +675,7 @@ const mapStateToProps = (state) => {
     let dataSource = state.detail;
     let examPath = dataSource.currentExamPath;
     let answerRecord = dataSource.answerRecord;
+    let answers = dataSource.answers;
     let soundPath = '';
     if (dataSource.topicInfo) {
         if (dataSource.topicInfo.audioPath !== null) {
@@ -582,7 +684,7 @@ const mapStateToProps = (state) => {
                 path = "common/t3_1_tip.mp3";
             }
             soundPath = utils.findPlayPath(path, examPath);
-        }else {
+        } else {
             soundPath = utils.findPlayPath(dataSource.topicInfo.contentPath, examPath);
         }
     }
@@ -593,6 +695,7 @@ const mapStateToProps = (state) => {
         dataSource,
         examPath,
         answerRecord,
+        answers,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -623,58 +726,59 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(AudioSoundConCom);
 
-const styles=StyleSheet.create({
-    audio:{
+
+const styles = StyleSheet.create({
+    audio: {
         // marginTop:10,
-        width:utils.SCREENWIDTH-30,
-        height:100,
+        width: utils.SCREENWIDTH - 30,
+        height: 100,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         flexWrap: 'wrap',
         alignItems: 'center',
         // backgroundColor:'#dddddd',
-        position:"absolute",
-        bottom:utils.PLATNAME==="IOS"?10:30,
+        position: "absolute",
+        bottom: utils.PLATNAME === "IOS" ? 10 : 30,
     },
-    button:{
-        width:75,
-        height:75,
-        backgroundColor:"#cccccc",
-        borderRadius:75/2,
-        borderWidth:1,
-        borderColor:'#cccccc',
+    button: {
+        width: 75,
+        height: 75,
+        backgroundColor: "#cccccc",
+        borderRadius: 75 / 2,
+        borderWidth: 1,
+        borderColor: '#cccccc',
     },
-    conBtnView:{
-        position:"absolute",
+    conBtnView: {
+        position: "absolute",
         // bottom:utils.PLATNAME==="IOS"?10:30,
-        right:0,
-        width:100,
-        height:'100%',
+        right: 0,
+        width: 100,
+        height: '100%',
     },
-    conBtn1:{
-        width:'100%',
-        height:30,
-        backgroundColor:utils.COLORS.theme,
-        marginBottom:5,
-        borderRadius:3,
+    conBtn1: {
+        width: '100%',
+        height: 30,
+        backgroundColor: utils.COLORS.theme,
+        marginBottom: 5,
+        borderRadius: 3,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    conBtn2:{
-        width:'100%',
-        height:30,
-        backgroundColor:'#ff6169',
+    conBtn2: {
+        width: '100%',
+        height: 30,
+        backgroundColor: '#ff6169',
         // marginTop:5,
-        borderRadius:3,
+        borderRadius: 3,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    conBtnText:{
-        textAlign:'center',
-        color:'white',
-        fontSize:15,
-        fontWeight:'600',
+    conBtnText: {
+        textAlign: 'center',
+        color: 'white',
+        fontSize: 15,
+        fontWeight: '600',
     }
 });

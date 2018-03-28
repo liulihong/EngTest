@@ -8,10 +8,10 @@ import { StackNavigator, TabBarBottom, TabNavigator} from "react-navigation";
 import Login from './loginPage';
 import utils from '../utils';
 import TestStart from "./testStart";
-import VideoTest from "./videoTest"
-import AnswerScreen from "./answerPage"
-import Regist from './RegistPage'
-
+import VideoTest from "./videoTest";
+import AnswerScreen from "./answerPage";
+import Regist from './RegistPage';
+import AnsweredDetail from './AnsweredDetail';
 
 
 // const color  = {
@@ -170,6 +170,13 @@ const Navigator = StackNavigator(
                 header: null,
             },
         },
+        AnsweredDetail: {
+            screen: AnsweredDetail,
+            navigationOptions: {
+                //设置隐藏标题。HeaderProps null
+                header: null,
+            },
+        },
 	}
 );
 
@@ -217,6 +224,13 @@ const LogRouter = StackNavigator(
 		},
         Regist: {
             screen: Regist,
+            navigationOptions: {
+                //设置隐藏标题。HeaderProps null
+                header: null,
+            },
+        },
+        AnsweredDetail: {
+            screen: AnsweredDetail,
             navigationOptions: {
                 //设置隐藏标题。HeaderProps null
                 header: null,

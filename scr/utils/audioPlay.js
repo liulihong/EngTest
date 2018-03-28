@@ -58,9 +58,9 @@ module.exports = {
         AudioRecorder.prepareRecordingAtPath(audioPath, {
             SampleRate: 16000,
             Channels: 1,
-            AudioQuality: "High", //录音质量
-            AudioEncoding: utils.PLATNAME==='IOS'?"lpcm":"amr_nb", //录音格式
-            AudioEncodingBitRate: 32000 //比特率
+            AudioQuality: "Low", //录音质量
+            AudioEncoding: "lpcm", //录音格式
+            // AudioEncodingBitRate: 32000 //比特率
         });
     },
 

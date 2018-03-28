@@ -22,7 +22,7 @@ module.exports = class MySound{
         });
     }
     //播放
-    soundPlay(){
+    soundPlay(path){
         let loadedTime=0;//加载次数
         let timeInteval = setInterval(() => {
             if(sound.isLoaded()===true){
@@ -37,17 +37,17 @@ module.exports = class MySound{
                 });
             }else {
                 loadedTime++;
-                if(loadedTime>20){
+                if(loadedTime>200){
                     clearInterval(timeInteval);
-                    alert("加载音频文件失败");
+                    alert("加载音频文件失败" + path);
                 }
             }
-        }, 1000);
+        }, 10);
     }
     //开始播放
     startPlay(path){
         this.soundInit(path);
-        this.soundPlay();
+        this.soundPlay(path);
     }
     soundIsLoaded(){
         return sound.isLoaded();

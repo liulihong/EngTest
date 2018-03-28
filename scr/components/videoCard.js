@@ -35,6 +35,7 @@ class VideoCard extends Component{
                 this.props.startDown();
 
             }else if(obj.status==="faild"){
+                alert(this.props.cardDic.SecTitle + "下载失败！");
                 this.props.downFaild();
                 this.setState({
                     clickCardID:""
@@ -53,7 +54,7 @@ class VideoCard extends Component{
             let url=utils.DOWNLOADDOCUMENTPATH+"/"+this.props.cardDic.ID;
             this.props.savePath(url);
 
-            this.props.navigation.navigate('TestStart');
+            this.props.navigation.navigate('TestStart',{ID:this.props.cardDic.ID});
         }else {
             alert("请下载试题包");
         }

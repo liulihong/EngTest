@@ -280,8 +280,6 @@ export const savePlayTime = (result) => {
 //答案记录
 // 类型 Type, ID id , 序号 num , 答案 answer
 export const saveCurrExamAnswers = ( Type, id , num , answer ) => {
-
-    // 一个题型下有  多个题吗？ 对 你这个肯定不对啊   一次只能提交一个题吧 恩
     return {
         result: {
             Type,
