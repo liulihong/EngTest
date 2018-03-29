@@ -1,19 +1,57 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import utils from '../utils';
+import MySound from "../utils/soundPlay";
+
+let Sound1 = new MySound;
+let timeInteval ;
 
 export default class AnsweredType1 extends Component {
     constructor() {
         super();
+        this.startPlay=this.startPlay.bind(this);
         this.state={
-            currentScore:0.00
+            currentScore:0.00,
+            palyPath:"",
         }
+    }
+
+    //组件卸载 播放停止
+    componentWillUnmount() {
+        clearInterval(timeInteval);
+        Sound1.soundStop();
+    }
+
+    //开始播放
+    startPlay(path) {
+        clearInterval(timeInteval);
+        Sound1.soundStop();
+        this.setState({
+            palyPath: path,
+        })
+        Sound1.startPlay(path);
+
+        timeInteval = setInterval(() => {
+            let isLoaded = Sound1.soundIsLoaded();
+            if (isLoaded) {
+                Sound1.soundGetCurrentTime((time, isPlaying) => {
+                    if (isPlaying === false) {
+                        clearInterval(timeInteval);
+                        this.setState({
+                            palyPath: "",
+                        })
+                    }
+                });
+            }
+        }, 1000);
     }
 
     render() {
         let groupObj = this.props.groupObj;
-        let answerObj = this.props.answerObj;
-        let totalScore = 0 + "分 / " + groupObj.TotalScore.toFixed(1) + "分";
+        let localAnswer = this.props.localAnswer;
+        let serverAnswer = this.props.serverAnswer;
+        let examPath = this.props.examPath;
+        let totalScore = ((serverAnswer.totalScore)===undefined ? 0 : serverAnswer.totalScore) + "分 / " + groupObj.TotalScore.toFixed(1) + "分";
         let topObj0 = groupObj.ExamTopics[0];
         return (
             <View style={styles.contain}>
@@ -25,44 +63,57 @@ export default class AnsweredType1 extends Component {
                 {
                     groupObj.ExamTopics.map((topObj, i) => {
                         {/* topObj */ }
+                        let path=utils.findPlayPath(topObj.AudioPath,examPath);
+                        let isPlay=(path===this.state.palyPath);
+                        let source=isPlay?require("../imgs/aswerIcon/dt_bf_icon.png"):require("../imgs/aswerIcon/dt_zt_icon.png");
                         return (
                             <View key={i} style={styles.topObj}>
                                 {/* 小标题 */}
-                                <TouchableOpacity  style={styles.audioInfo} onPress={() => { alert(topObj.AudioPath) }} >
-                                    
+                                <TouchableOpacity  style={styles.audioInfo} onPress={() => {
+                                    if(isPlay){
+                                        Sound1.soundStop();
+                                    }else{
+                                        this.startPlay(path);
+                                    }
+                                }} >
                                     <Text style={styles.minTitle}>
                                         <Image style={styles.audioBtn}
-                                            source={require("../imgs/aswerIcon/dt_zt_icon.png")}
+                                            source={source}
                                         />
                                         { " " + topObj.Desc }
                                     </Text>
                                 </TouchableOpacity>
                                 {/* 音频内容 */}
-                                <Text style={styles.articleTxt}>
-                                        {topObj.AudioText}
-                                        {/* <Image style={styles.audioBtn}
-                                            source={require("../imgs/aswerIcon/dt_zt_icon.png")}
-                                        /> */}
-                                </Text>
+                                <Text style={styles.articleTxt}>{topObj.AudioText}</Text>
                                 {
                                     topObj.TopicInfoList.map((minObj, j) => {
                                         {/* 每小题 */ }
                                         let oriAns=minObj.Correct;
                                         let newAns=0;
-                                        if(answerObj && answerObj[minObj.UniqueID]!==undefined)
-                                            newAns=answerObj[minObj.UniqueID].answer;
-                                        let isCorrect=oriAns===newAns;
-                                        // if(isCorrect){
-                                        //     let currScore=this.state.currentScore + minObj.Score ;
-                                        //     this.setState({
-                                        //         currentScore: currScore,
-                                        //     });
-                                        // }
+                                        if(localAnswer && localAnswer[minObj.UniqueID]!==undefined)
+                                            newAns=localAnswer[minObj.UniqueID].answer;
+ 
+                                        let isCorrect=false;
                                         let scoreStr="  (未作答)" ;
-                                        if(newAns!==0){
-                                            let tempScore=isCorrect ? minObj.Score.toFixed(1) : "0" ;
-                                            scoreStr="  (得分：" + tempScore + "分 / " + minObj.Score.toFixed(1) + "分)"
+                                        if(serverAnswer!==undefined && serverAnswer.LogList!==undefined && serverAnswer.LogList.length>0){
+                                            for(let i=0;i<serverAnswer.LogList.length;i++){
+                                                let answerInfo=serverAnswer.LogList[i];
+                                                if (answerInfo.ID === minObj.UniqueID) {
+                                                    if(answerInfo.Status===1){
+                                                        isCorrect = answerInfo.Total === answerInfo.Score;
+                                                        scoreStr = "  (得分：" + answerInfo.Score + "分 / " + answerInfo.Total + "分)"
+                                                    }else if(answerInfo.Status===2){
+                                                        scoreStr = "  (抱歉，计分失败了)";
+                                                    }else if(answerInfo.Status===0){
+                                                        scoreStr = "  (正在阅卷中...)";
+                                                    }else{
+                                                        scoreStr = "  (未知异常...)";
+                                                    }
+                                                    break;
+                                                }
+                                            }
                                         }
+
                                         return (
                                             <View key={j} style={styles.contentSty}>
                                                 {/* 小题 标题 */}
@@ -82,8 +133,7 @@ export default class AnsweredType1 extends Component {
                                                         if(oriAns==k+1){
                                                             source=require("../imgs/aswerIcon/dt_zq.png");
                                                             color = styles.correctScore;
-                                                        }
-                                                            
+                                                        }   
                                                         return (
                                                             <Text key={k} style={[styles.specialTxt,color]} >
                                                                 <Image style={styles.resultBtn}

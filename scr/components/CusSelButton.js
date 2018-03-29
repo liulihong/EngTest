@@ -17,7 +17,7 @@ export default class CusSelButton extends Component {
     render(){
         return (
             <TouchableOpacity style={styles.container} onPress={this.props.clickEvent}>
-                <Text style={styles.title}>{this.props.title}</Text>
+                <View style={{width:"68%",alignSelf:"center"}}><Text style={styles.title}>{this.props.title}</Text></View>
                 <Image style={styles.img} source={require('../imgs/cusIcon/login_icon_xl.png')} />
             </TouchableOpacity>
         );
@@ -29,16 +29,17 @@ const styles = StyleSheet.create({
         width:utils.SCREENWIDTH,
         height:50,
         flexDirection: 'row',
-        // justifyContent: 'center',
+        justifyContent: 'center',
         alignItems: 'center',
         marginTop: 2,
         position:'absolute',
+        backgroundColor:"rgba(0,0,0,0.0)",
     },
     title: {
         color:'#666666',
         fontSize:16,
         fontWeight:"500",
-        marginLeft:60,
+        // marginLeft:60,
     },
     img: {
         height: 10,

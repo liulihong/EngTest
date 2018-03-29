@@ -580,7 +580,10 @@ class AudioSoundConCom extends Component {
     //加载录音播放按钮
     getButton() {
         if (this.props.dataSource.topicInfo.currLevel === "finished") {
-            return <Text>{"如上为本次答题记录。。。"}</Text>
+            return <View>
+                <Text>{"如上为本次答题记录,当前正在阅卷中..."}</Text>
+                <Text>{"返回开始考试页，点击查看上次成绩，可以查看考试结果"}</Text>
+            </View>
         } else if (this.state.isPlaying && this.state.isPaused === false) {//点击按钮暂停播放
             return <TouchableOpacity style={styles.button} onPress={() => this.pause()}>
                 <Image

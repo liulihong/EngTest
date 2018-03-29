@@ -239,22 +239,25 @@ class RegistView extends Component{
                     <CusSelBtn title={this.state.adressObj.Title} clickEvent={()=>{this.setState({pickerType: 2,})}}  />
                 </View>
 
-                <View style={{flexDirection:'row',justifyContent:'flex-start'}}>
-                    <TouchableOpacity style={{padding:10}} onPress={()=>this.userProtocal(1)}>
-                        <Image source={proImg} />
-                    </TouchableOpacity>
-                    <Text style={{lineHeight:32,fontSize:14,color:"#777777"}}>{"我已经阅读并接受"}</Text>
-                    <TouchableOpacity style={{padding:10,paddingLeft:0}} onPress={()=>this.userProtocal(2)}>
-                        <Text style={{fontSize:14,color:utils.COLORS.theme}}>{"《用户协议》"}</Text>
-                    </TouchableOpacity>
-                </View>
-
                 <TouchableOpacity
                     style={styles.button}
                     onPress={this.registBtn}
                 >
                     <Text style={styles.buttonText}>注册</Text>
                 </TouchableOpacity>
+                <View style={{flexDirection:'row',justifyContent:'center',alignItems:"center"}}>
+                    <TouchableOpacity style={{padding:12}} onPress={()=>this.userProtocal(1)}>
+                        <Image source={proImg} />
+                    </TouchableOpacity>
+                    
+                    <TouchableOpacity style={{padding:12,paddingLeft:0}} onPress={()=>this.userProtocal(2)}>
+                        <Text style={{fontSize:14,color:"#777777"}}>{"我已经阅读并接受"}
+                            <Text style={{fontSize:14,color:utils.COLORS.theme}}>{"《用户协议》"}</Text>
+                        </Text>    
+                    </TouchableOpacity>
+                </View>
+
+                
 
                 <AdressPicker
                     adressDataArr={this.state.adressDataArr}

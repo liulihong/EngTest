@@ -6,7 +6,7 @@ import MySound from "../utils/soundPlay";
 let Sound1 = new MySound;
 let timeInteval;
 
-export default class AnsweredType2 extends Component {
+export default class AnsweredType4 extends Component {
     constructor() {
         super();
         this.startPlay = this.startPlay.bind(this);
@@ -67,6 +67,7 @@ export default class AnsweredType2 extends Component {
                         let path = utils.findPlayPath(topObj.AudioPath, examPath);
                         let isPlay = (path === this.state.palyPath);
                         let source = isPlay ? require("../imgs/aswerIcon/dt_bf_icon.png") : require("../imgs/aswerIcon/dt_zt_icon.png");
+                        let picPath = utils.findPicturePath(topObj.TopicInfoList[0].Img, examPath);
                         return (
                             <View key={i} style={styles.topObj}>
                                 {/* 小标题 */}
@@ -81,7 +82,7 @@ export default class AnsweredType2 extends Component {
                                         <Image style={styles.audioBtn}
                                             source={source}
                                         />
-                                        {" " + topObj.Desc}
+                                        {"  听力原文如下："}
                                     </Text>
                                 </TouchableOpacity>
                                 {/* 音频内容 */}
@@ -91,6 +92,22 @@ export default class AnsweredType2 extends Component {
                                             source={require("../imgs/aswerIcon/dt_zt_icon.png")}
                                         /> */}
                                 </Text>
+
+                                
+                                <Image source={{ uri: picPath }}
+                                    onLoadEnd={()=>{
+                                        Image.getSize(picPath, (width, height1) => {
+                                            let newheight = utils.SCREENWIDTH * 0.835 / width * height1; //按照屏幕宽度进行等比缩放
+                                            this.setState({ height: newheight });
+                                        })
+                                    }}
+                                    style={{
+                                        width: utils.SCREENWIDTH * 0.835,
+                                        height: this.state.height||10,
+                                        marginBottom: 20,
+                                        marginLeft:10,
+                                    }} />
+
                                 {
                                     topObj.TopicInfoList.map((minObj, j) => {
                                         {/* 每小题 */ }
@@ -100,37 +117,38 @@ export default class AnsweredType2 extends Component {
                                             newAns = localAnswer[minObj.UniqueID].answer;
 
                                         let isCorrect = false;
-                                        let scoreStr = "  (未作答)";
+                                        let scoreStr = "(未作答)";
                                         if (serverAnswer !== undefined && serverAnswer.LogList !== undefined && serverAnswer.LogList.length > 0) {
                                             for (let i = 0; i < serverAnswer.LogList.length; i++) {
                                                 let answerInfo = serverAnswer.LogList[i];
                                                 if (answerInfo.ID === minObj.UniqueID) {
-                                                    if(answerInfo.Status===1){
+                                                    if (answerInfo.Status === 1) {
                                                         isCorrect = answerInfo.Total === answerInfo.Score;
-                                                        scoreStr = "  (得分：" + answerInfo.Score + "分 / " + answerInfo.Total + "分)"
-                                                    }else if(answerInfo.Status===2){
-                                                        scoreStr = "  (抱歉，计分失败了)";
-                                                    }else if(answerInfo.Status===0){
-                                                        scoreStr = "  (正在阅卷中...)";
-                                                    }else{
-                                                        scoreStr = "  (未知异常...)";
+                                                        scoreStr = "(得分：" + answerInfo.Score + "分 / " + answerInfo.Total + "分)"
+                                                    } else if (answerInfo.Status === 2) {
+                                                        scoreStr = "(抱歉，计分失败了)";
+                                                    } else if (answerInfo.Status === 0) {
+                                                        scoreStr = "(正在阅卷中...)";
+                                                    } else {
+                                                        scoreStr = "(未知异常...)";
                                                     }
                                                     break;
                                                 }
                                             }
                                         }
-
+                                        
                                         let isPlay2 = (newAns === this.state.palyPath);
                                         let source = isPlay2 ? require("../imgs/aswerIcon/dt_bf_icon.png") : require("../imgs/aswerIcon/dt_rw_zt.png");
+
                                         return (
                                             <View key={j} style={styles.contentSty}>
                                                 {/* 小题 标题 */}
                                                 <Text style={styles.minTitle}>
-                                                    {minObj.Title}
+                                                    {/* {minObj.ID + "."} */}
                                                     <Text style={isCorrect ? styles.correctScore : styles.errorScore}>{scoreStr}</Text>
                                                 </Text>
                                                 {
-                                                    (scoreStr === "  (未作答)") ? <View /> : <TouchableOpacity onPress={() => { 
+                                                    (scoreStr === "(未作答)") ? <View /> : <TouchableOpacity onPress={() => { 
                                                         if (isPlay2) {
                                                             Sound1.soundStop();
                                                         } else {
@@ -145,15 +163,15 @@ export default class AnsweredType2 extends Component {
                                                         </Text>
                                                     </TouchableOpacity>
                                                 }
-                                                <Text style={[styles.specialTxt, styles.correctScore]} >
-                                                    {"参考答案："}
-                                                </Text>
+                                                <Text style={[styles.specialTxt, styles.correctScore]} >{"参考答案："}</Text>
+                                                <Text style={[styles.specialTxt, styles.correctScore]} >{minObj.ExampleContent}</Text>
+                                                <Text style={[styles.specialTxt, styles.correctScore]} >{"参考答案关键词："}</Text>
                                                 {
                                                     minObj.ExampleAnswer.map((selObj, k) => {
                                                         {/* 每个参考答案 */ }
                                                         return (
                                                             <Text key={k} style={[styles.specialTxt, styles.correctScore]} >
-                                                                {"." + selObj}
+                                                                {". " + selObj}
                                                             </Text>
                                                         )
                                                     })
@@ -240,6 +258,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: "flex-start",
+        textAlign:"justify"
     },
     contentSty: {//每个小题
         margin: 10,

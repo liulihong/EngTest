@@ -5,10 +5,12 @@ import NavBar from '../components/navBar';
 // import AnswerCom from '../components/answerCom';
 import AnswerType1 from "../components/answeredType1";
 import AnswerType2 from "../components/answeredType2";
+import AnswerType3 from "../components/answeredType3";
+import AnswerType4 from "../components/answeredType4";
 import { connect } from "react-redux";
 
 
-class AnsweredDetail extends Component {
+export default class AnsweredDetail extends Component {
     constructor() {
         super();
 
@@ -22,6 +24,7 @@ class AnsweredDetail extends Component {
         let title=this.props.navigation.state.params.title;
         let localAnswer=this.props.navigation.state.params.localAnswer[groupObj.Type];
         let serverAnswer=this.props.navigation.state.params.serverAnswer;
+        let examPath =this.props.navigation.state.params.examPath;
         return (
             <View style={styles.contain}>
                 <NavBar navtitle={title} isBack={true} navgation={this.props.navigation} />
@@ -29,10 +32,11 @@ class AnsweredDetail extends Component {
                     <ScrollView style={styles.scrStyle}>
                         {
                             groupObj.Type === 10 ? <Text>{"听后选图"}</Text> :
-                            groupObj.Type === 1 ? <AnswerType1 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} /> :
-                            groupObj.Type === 2 ? <AnswerType2 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} /> :
-                            groupObj.Type === 3 ? <Text>{"听后记录"}</Text> :
-                            groupObj.Type === 4 ? <Text>{"听后转述"}</Text> : <Text>{"短文朗读"}</Text>
+                            groupObj.Type === 1 ? <AnswerType1 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} /> :
+                            groupObj.Type === 2 ? <AnswerType2 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} /> :
+                            groupObj.Type === 3 ? <AnswerType3 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} /> :
+                            groupObj.Type === 4 ? <AnswerType4 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} /> : 
+                            groupObj.Type === 5 ? <Text>{"短文朗读"}</Text> : <Text>{"未定义类型"}</Text>
                         }
                         
                         {/* <AnswerCom answers={this.props.navigation.state.params.answers} /> */}
@@ -43,21 +47,21 @@ class AnsweredDetail extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    const examContent = state.detail.examContent;
+// const mapStateToProps = (state) => {
+//     const examContent = state.detail.examContent;
 
-    return {
-        examContent,
+//     return {
+//         examContent,
 
-    };
-};
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
+//     };
+// };
+// const mapDispatchToProps = (dispatch, ownProps) => {
+//     return {
 
-    }
-};
+//     }
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AnsweredDetail);
+// export default connect(mapStateToProps, mapDispatchToProps)(AnsweredDetail);
 
 const styles = StyleSheet.create({
     contain: {

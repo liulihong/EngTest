@@ -128,8 +128,9 @@ const styles=StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width:'46%',
-
-        backgroundColor:"#eeeeee",
+        borderWidth:1,
+        borderColor:utils.COLORS.theme1,
+        // backgroundColor:"#eeeeee",
         // padding:5,
     },
     img:{

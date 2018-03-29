@@ -18,12 +18,7 @@ class AnswerScreen extends Component {
 
         this.state={
             serverAnswer:{},
-            ansType1:[],
-            ansType2:[],
-            ansType3:[],
-            ansType4:[],
-            ansType5:[],
-            ansType10:[],
+            resetAnswer:{},
         }
 
         this.getExamAnserInfo();
@@ -32,17 +27,22 @@ class AnswerScreen extends Component {
     getExamAnserInfo() {
         let LogID = this.props.answerRecord.LogID;
         fetchPost(getExamLog, { ...LogID }).then((result) => {
-            this.setState({
-                serverAnswer:result,
-            });
+            let tempObj={};
             for(let i=0;i<result.LogList.length;i++){
                 ansObj=result.LogList[i];
-                if(ansObj.Type===1){
-
-                }  
+                if(tempObj[ansObj.Type]===undefined)
+                    tempObj[ansObj.Type]={
+                        totalScore:0,
+                        LogList:[],
+                    }
+                tempObj[ansObj.Type].totalScore+=ansObj.Score;
+                tempObj[ansObj.Type].LogList.push(ansObj);
             }
-            alert(JSON.stringify(result));
-            console.log(result);
+            this.setState({
+                serverAnswer:result,
+                resetAnswer:tempObj,
+            });
+            console.log(tempObj);
         }, (error) => {
             alert("11" + utils.findErrorInfo(error));
         })
@@ -73,11 +73,16 @@ class AnswerScreen extends Component {
                         const isSelect = true;
                         const num = i + 1;
                         const title = typeEnum[element.Type];
+                        const totalScore=(this.state.resetAnswer[element.Type]!==undefined) ? this.state.resetAnswer[element.Type].totalScore : 0;
+                        const sResetAnswer=(this.state.resetAnswer[element.Type]!==undefined) ? this.state.resetAnswer[element.Type] : {};
+                        // alert(JSON.stringify(sResetAnswer));
+                        let newTitle= "   " + title + " ( " + totalScore + " / " + element.TotalScore +" )";
+                        let examPath=this.props.currentExamPath;
                         return (
                             <TouchableOpacity key={element.Type} onPress={() => {
-                                this.props.navigation.navigate("AnsweredDetail", { localAnswer: this.props.answers, serverAnswer:this.state.serverAnswer , title , content: element });
+                                this.props.navigation.navigate("AnsweredDetail", { localAnswer: this.props.answers, serverAnswer:sResetAnswer , title , content: element ,examPath });
                             }} >
-                                <ProgressButton isSelect={isSelect} num={num} title={title} />
+                                <ProgressButton isSelect={isSelect} num={num} title={newTitle} />
                             </TouchableOpacity>
 
                         )
@@ -99,10 +104,12 @@ const mapStateToProps = (state) => {
     const answerRecord = state.detail.answerRecord;
     const answers = state.detail.answers;
     const examContent = state.detail.examContent;
+    const currentExamPath=state.detail.currentExamPath;
     return {
         answers,
         answerRecord,
         examContent,
+        currentExamPath,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {
