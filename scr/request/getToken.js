@@ -15,7 +15,6 @@ export default (store, callback) => {
                 "ProtocolVersion": 2,
                 "LastSessionID": token
             }).then(res => {
-
                 if(res.ErrorCode!==undefined){
                     alert(utils.findErrorInfo(res));
                 }

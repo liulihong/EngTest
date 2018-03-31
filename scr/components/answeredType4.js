@@ -52,7 +52,7 @@ export default class AnsweredType4 extends Component {
         let localAnswer = this.props.localAnswer;
         let serverAnswer = this.props.serverAnswer;
         let examPath = this.props.examPath;
-        let totalScore = ((serverAnswer.totalScore) === undefined ? 0 : serverAnswer.totalScore) + "分 / " + groupObj.TotalScore.toFixed(1) + "分";
+        let totalScore = ((serverAnswer.totalScore) === undefined ? 0 : serverAnswer.totalScore) + "分 / " + this.props.totalScore + "分";
         let topObj0 = groupObj.ExamTopics[0];
         return (
             <View style={styles.contain}>
@@ -138,7 +138,7 @@ export default class AnsweredType4 extends Component {
                                         }
                                         
                                         let isPlay2 = (newAns === this.state.palyPath);
-                                        let source = isPlay2 ? require("../imgs/aswerIcon/dt_bf_icon.png") : require("../imgs/aswerIcon/dt_rw_zt.png");
+                                        let source = isPlay2 ? require("../imgs/aswerIcon/dt_rw_zt.png") : require("../imgs/aswerIcon/dt_rw_zt2.png");
 
                                         return (
                                             <View key={j} style={styles.contentSty}>

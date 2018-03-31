@@ -280,7 +280,12 @@ class TestStart extends Component {
                     <ScrollView>
                         {
                             this.props.examContent && this.props.examContent.Groups.map((element, i) => {
-                                totalScore = (i == 0) ? element.TotalScore : (element.TotalScore + totalScore);
+                                element.ExamTopics.map((topObj,j) => {
+                                    topObj.TopicInfoList.map((sObj,k) => {
+                                        totalScore = (i === 0 && j===0 && k===0) ? sObj.Score : (sObj.Score + totalScore);
+                                    })
+                                })
+                                
                                 const isSelect = element.Type === selectType;
                                 const num = i + 1;
                                 const title = typeEnum[element.Type];

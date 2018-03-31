@@ -52,8 +52,9 @@ export default class AnsweredType2 extends Component {
         let localAnswer = this.props.localAnswer;
         let serverAnswer = this.props.serverAnswer;
         let examPath = this.props.examPath;
-        let totalScore = ((serverAnswer.totalScore) === undefined ? 0 : serverAnswer.totalScore) + "分 / " + groupObj.TotalScore.toFixed(1) + "分";
+        let totalScore = ((serverAnswer.totalScore) === undefined ? 0 : serverAnswer.totalScore) + "分 / " + this.props.totalScore + "分";
         let topObj0 = groupObj.ExamTopics[0];
+        let DescArr = [];
         return (
             <View style={styles.contain}>
                 {/* 大题总分展示 */}
@@ -63,36 +64,48 @@ export default class AnsweredType2 extends Component {
 
                 {
                     groupObj.ExamTopics.map((topObj, i) => {
+                        {/* 判断是否加载过题目和音频 */ }
+                        let isContain = DescArr.includes(topObj.Desc);
+                        if (isContain === false)
+                            DescArr.push(topObj.Desc);
+
+
                         {/* topObj */ }
                         let path = utils.findPlayPath(topObj.AudioPath, examPath);
                         let isPlay = (path === this.state.palyPath);
                         let source = isPlay ? require("../imgs/aswerIcon/dt_bf_icon.png") : require("../imgs/aswerIcon/dt_zt_icon.png");
                         return (
-                            <View key={i} style={styles.topObj}>
-                                {/* 小标题 */}
-                                <TouchableOpacity style={styles.audioInfo} onPress={() => {
-                                    if (isPlay) {
-                                        Sound1.soundStop();
-                                    } else {
-                                        this.startPlay(path);
-                                    }
-                                }} >
-                                    <Text style={styles.minTitle}>
-                                        <Image style={styles.audioBtn}
-                                            source={source}
-                                        />
-                                        {" " + topObj.Desc}
-                                    </Text>
-                                </TouchableOpacity>
-                                {/* 音频内容 */}
-                                <Text style={styles.articleTxt}>
-                                    {topObj.AudioText}
-                                    {/* <Image style={styles.audioBtn}
+                            <View key={i} style={[styles.topObj,(isContain===true?{marginBottom: 0}:{marginBottom: 0})]}>
+                                {
+                                    (isContain === false) ? <View style={i>0?{marginTop:30,}:{marginTop:10,}}>
+                                        {/* 小标题 */}
+                                        <TouchableOpacity style={styles.audioInfo} onPress={() => {
+                                            if (isPlay) {
+                                                Sound1.soundStop();
+                                            } else {
+                                                this.startPlay(path);
+                                            }
+                                        }} >
+                                            <Text style={styles.minTitle}>
+                                                <Image style={styles.audioBtn}
+                                                    source={source}
+                                                />
+                                                {" " + topObj.Desc}
+                                            </Text>
+                                        </TouchableOpacity>
+                                        {/* 音频内容 */}
+                                        <Text style={styles.articleTxt}>
+                                            {topObj.AudioText}
+                                            {/* <Image style={styles.audioBtn}
                                             source={require("../imgs/aswerIcon/dt_zt_icon.png")}
                                         /> */}
-                                </Text>
+                                        </Text>
+                                    </View> : <View />
+                                }
                                 {
                                     topObj.TopicInfoList.map((minObj, j) => {
+
+
                                         {/* 每小题 */ }
                                         let oriAns = minObj.Correct;
                                         let newAns = "";
@@ -100,20 +113,20 @@ export default class AnsweredType2 extends Component {
                                             newAns = localAnswer[minObj.UniqueID].answer;
 
                                         let isCorrect = false;
-                                        let scoreStr = "  (未作答)";
+                                        let scoreStr = "(未作答)";
                                         if (serverAnswer !== undefined && serverAnswer.LogList !== undefined && serverAnswer.LogList.length > 0) {
                                             for (let i = 0; i < serverAnswer.LogList.length; i++) {
                                                 let answerInfo = serverAnswer.LogList[i];
                                                 if (answerInfo.ID === minObj.UniqueID) {
-                                                    if(answerInfo.Status===1){
+                                                    if (answerInfo.Status === 1) {
                                                         isCorrect = answerInfo.Total === answerInfo.Score;
-                                                        scoreStr = "  (得分：" + answerInfo.Score + "分 / " + answerInfo.Total + "分)"
-                                                    }else if(answerInfo.Status===2){
-                                                        scoreStr = "  (抱歉，计分失败了)";
-                                                    }else if(answerInfo.Status===0){
-                                                        scoreStr = "  (正在阅卷中...)";
-                                                    }else{
-                                                        scoreStr = "  (未知异常...)";
+                                                        scoreStr = "(得分：" + answerInfo.Score + "分 / " + answerInfo.Total + "分)"
+                                                    } else if (answerInfo.Status === 2) {
+                                                        scoreStr = "(抱歉，计分失败了)";
+                                                    } else if (answerInfo.Status === 0) {
+                                                        scoreStr = "(正在阅卷中...)";
+                                                    } else {
+                                                        scoreStr = "(未知异常...)";
                                                     }
                                                     break;
                                                 }
@@ -121,16 +134,18 @@ export default class AnsweredType2 extends Component {
                                         }
 
                                         let isPlay2 = (newAns === this.state.palyPath);
-                                        let source = isPlay2 ? require("../imgs/aswerIcon/dt_bf_icon.png") : require("../imgs/aswerIcon/dt_rw_zt.png");
+                                        let source = isPlay2 ? require("../imgs/aswerIcon/dt_rw_zt.png") : require("../imgs/aswerIcon/dt_rw_zt2.png");
                                         return (
-                                            <View key={j} style={styles.contentSty}>
-                                                {/* 小题 标题 */}
-                                                <Text style={styles.minTitle}>
-                                                    {minObj.Title}
-                                                    <Text style={isCorrect ? styles.correctScore : styles.errorScore}>{scoreStr}</Text>
-                                                </Text>
+                                            <View key={j} style={[styles.contentSty,]}>
+                                                
                                                 {
-                                                    (scoreStr === "  (未作答)") ? <View /> : <TouchableOpacity onPress={() => { 
+                                                    /* 小题 标题 */
+                                                    (isContain === false) ? <Text style={styles.minTitle}>{minObj.Title}</Text> : <Text/>
+                                                }
+                                                {/* 得分情况 */}
+                                                <Text style={[styles.specialTxt,isCorrect?styles.correctScore:styles.errorScore,{marginBottom:5}]}>{minObj.ID + ".  " + scoreStr}</Text>
+                                                {
+                                                    (scoreStr === "(未作答)") ? <View /> : <TouchableOpacity onPress={() => {
                                                         if (isPlay2) {
                                                             Sound1.soundStop();
                                                         } else {
@@ -145,15 +160,13 @@ export default class AnsweredType2 extends Component {
                                                         </Text>
                                                     </TouchableOpacity>
                                                 }
-                                                <Text style={[styles.specialTxt, styles.correctScore]} >
-                                                    {"参考答案："}
-                                                </Text>
+                                                <Text style={[styles.specialTxt, styles.correctScore]} >{"参考答案："}</Text>
                                                 {
                                                     minObj.ExampleAnswer.map((selObj, k) => {
                                                         {/* 每个参考答案 */ }
                                                         return (
                                                             <Text key={k} style={[styles.specialTxt, styles.correctScore]} >
-                                                                {"." + selObj}
+                                                                {"" + selObj}
                                                             </Text>
                                                         )
                                                     })
@@ -173,6 +186,7 @@ export default class AnsweredType2 extends Component {
 
 const styles = StyleSheet.create({
     contain: {
+        marginBottom:20,
         //    backgroundColor:"#eeeeee",  
     },
     totalScore: {
@@ -212,6 +226,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         lineHeight: 26,
         textAlign: "justify",
+        marginBottom:10,
     },
     audioBtn: {//原音频播放按钮
         width: utils.PLATNAME === "IOS" ? 16 : 32,
@@ -243,7 +258,7 @@ const styles = StyleSheet.create({
     },
     contentSty: {//每个小题
         margin: 10,
-        marginBottom: 10,
+        marginBottom: 0,
         marginTop: 0,
     },
     correctScore: {//小题正确打分记录

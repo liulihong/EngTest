@@ -51,7 +51,9 @@ class HearSelPicCom extends Component{
         this.props.saveAnswer(10,id,num,answer);
     }
 
-    render(){ return (
+    render(){ 
+        let selTitleArr=["A","B","C","D","E","F","G","H","I","J"];
+        return (
         this.props.contentData.map(element => {
             return <View style={styles.contain} key={element.ID}>
 
@@ -63,7 +65,10 @@ class HearSelPicCom extends Component{
                             let source=isSelect?require("../imgs/testIcon/zc_icon_click.png"):require("../imgs/testIcon/zc_icon_mr.png");
                             let path=utils.findPicturePath(spath,this.props.examPath);
                             return <TouchableOpacity key={i} style={styles.selectItem} onPress={()=>this.selectBtn(element.UniqueID,element.ID,(i+1))}>
-                                <Image style={styles.img} source={source}/>
+                                <View>
+                                    <Text style={{textAlign:"center"}}>{selTitleArr[i]+"\n"}</Text>
+                                    <Image style={styles.img} source={source}/>
+                                </View>
                                 <ImageBackground
                                     style={{width:100, margin:6, height:this.state.imgSizes[spath] || 100 }}
                                     source={{uri:path}} />
@@ -108,13 +113,19 @@ const styles=StyleSheet.create({
     },
     titleView:{
         flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignSelf: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor:utils.COLORS.theme,
+        width:50,
+        height:50,
+        borderRadius: 25,
     },
     title:{
         color:utils.COLORS.theme1,
-        fontSize:16,
         textAlign:"left",
+        color:"white",
+        fontSize:18,
+        fontWeight:"600"
     },
     selectView:{
         flexDirection: 'row',
@@ -129,7 +140,7 @@ const styles=StyleSheet.create({
         alignItems: 'center',
         width:'46%',
         borderWidth:1,
-        borderColor:utils.COLORS.theme1,
+        borderColor:"#dddddd",
         // backgroundColor:"#eeeeee",
         // padding:5,
     },

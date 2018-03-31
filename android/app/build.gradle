@@ -115,10 +115,19 @@ android {
             include "armeabi-v7a", "x86"
         }
     }
+    signingConfigs {
+        release {
+            storeFile file('/Users/liulihong/Desktop/EngTest/android/app/my_store.jks')
+            storePassword 'eqd1234'
+            keyAlias 'my_alias'
+            keyPassword 'eqd1234'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
@@ -141,11 +150,12 @@ dependencies {
     compile project(':react-native-sound')
     compile project(':react-native-fs')
     compile project(':rn-splash-screen')
-    compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:23.0.1"
-    compile "com.facebook.react:react-native:+"  // From node_modules
-
-    compile project(':react-native-zip') //react-native-zip
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.facebook.react:react-native:+'
+    // From node_modules
+    compile project(':react-native-zip')
+    //react-native-zip
     compile project(':react-native-cordova')
 }
 

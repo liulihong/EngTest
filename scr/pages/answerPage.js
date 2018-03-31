@@ -16,9 +16,9 @@ class AnswerScreen extends Component {
         super(props);
         this.getExamAnserInfo = this.getExamAnserInfo.bind(this);
 
-        this.state={
-            serverAnswer:{},
-            resetAnswer:{},
+        this.state = {
+            serverAnswer: {},
+            resetAnswer: {},
         }
 
         this.getExamAnserInfo();
@@ -27,20 +27,20 @@ class AnswerScreen extends Component {
     getExamAnserInfo() {
         let LogID = this.props.answerRecord.LogID;
         fetchPost(getExamLog, { ...LogID }).then((result) => {
-            let tempObj={};
-            for(let i=0;i<result.LogList.length;i++){
-                ansObj=result.LogList[i];
-                if(tempObj[ansObj.Type]===undefined)
-                    tempObj[ansObj.Type]={
-                        totalScore:0,
-                        LogList:[],
+            let tempObj = {};
+            for (let i = 0; i < result.LogList.length; i++) {
+                ansObj = result.LogList[i];
+                if (tempObj[ansObj.Type] === undefined)
+                    tempObj[ansObj.Type] = {
+                        totalScore: 0,
+                        LogList: [],
                     }
-                tempObj[ansObj.Type].totalScore+=ansObj.Score;
+                tempObj[ansObj.Type].totalScore += ansObj.Score;
                 tempObj[ansObj.Type].LogList.push(ansObj);
             }
             this.setState({
-                serverAnswer:result,
-                resetAnswer:tempObj,
+                serverAnswer: result,
+                resetAnswer: tempObj,
             });
             console.log(tempObj);
         }, (error) => {
@@ -53,7 +53,7 @@ class AnswerScreen extends Component {
         if (this.props.answers === undefined) {
             return <Text>{"亲！ 您交了白卷。。。"}</Text>
         }
-        let scoreTxt="得分\n"+ ((this.state.serverAnswer!=={}) ? this.state.serverAnswer.Score : 0.00 ) +"分";
+        let scoreTxt = "得分\n" + ((this.state.serverAnswer !== {}) ? this.state.serverAnswer.Score : 0.00) + "分";
         return <ImageBackground
             source={require("../imgs/testIcon/cj_bg.png")}
             style={styles.contain}
@@ -73,14 +73,27 @@ class AnswerScreen extends Component {
                         const isSelect = true;
                         const num = i + 1;
                         const title = typeEnum[element.Type];
-                        const totalScore=(this.state.resetAnswer[element.Type]!==undefined) ? this.state.resetAnswer[element.Type].totalScore : 0;
-                        const sResetAnswer=(this.state.resetAnswer[element.Type]!==undefined) ? this.state.resetAnswer[element.Type] : {};
+                        const totalScore = (this.state.resetAnswer[element.Type] !== undefined) ? this.state.resetAnswer[element.Type].totalScore : 0;
+                        const sResetAnswer = (this.state.resetAnswer[element.Type] !== undefined) ? this.state.resetAnswer[element.Type] : {};
+
+                        let tempScore = 0;//计算大题题目总分
+                        element.ExamTopics.map((topObj) => {
+                            topObj.TopicInfoList.map((sObj) => {
+                                tempScore += sObj.Score;
+                            })
+                        })
                         // alert(JSON.stringify(sResetAnswer));
-                        let newTitle= "   " + title + " ( " + totalScore + " / " + element.TotalScore +" )";
-                        let examPath=this.props.currentExamPath;
+                        let newTitle = "   " + title + " ( " + totalScore + " / " + tempScore + " )";
+                        let examPath = this.props.currentExamPath;
                         return (
                             <TouchableOpacity key={element.Type} onPress={() => {
-                                this.props.navigation.navigate("AnsweredDetail", { localAnswer: this.props.answers, serverAnswer:sResetAnswer , title , content: element ,examPath });
+                                let tempScore = 0;//计算大题题目总分
+                                element.ExamTopics.map((topObj) => {
+                                    topObj.TopicInfoList.map((sObj) => {
+                                        tempScore += sObj.Score;
+                                    })
+                                })
+                                this.props.navigation.navigate("AnsweredDetail", { localAnswer: this.props.answers, serverAnswer: sResetAnswer, title, content: element, examPath, totalScore: tempScore });
                             }} >
                                 <ProgressButton isSelect={isSelect} num={num} title={newTitle} />
                             </TouchableOpacity>
@@ -104,7 +117,7 @@ const mapStateToProps = (state) => {
     const answerRecord = state.detail.answerRecord;
     const answers = state.detail.answers;
     const examContent = state.detail.examContent;
-    const currentExamPath=state.detail.currentExamPath;
+    const currentExamPath = state.detail.currentExamPath;
     return {
         answers,
         answerRecord,
@@ -148,19 +161,19 @@ const styles = StyleSheet.create({
     totalScore: {
         width: 130,
         height: 130,
-        paddingTop:30,
+        paddingTop: 30,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'flex-start',
         alignSelf: "center",
-        marginTop:20,
-        marginBottom:30,
+        marginTop: 20,
+        marginBottom: 30,
     },
     scoreTxt: {
-        color:"#ffffff",
-        fontSize:18,
-        fontWeight:"600",
-        textAlign:"center",
+        color: "#ffffff",
+        fontSize: 18,
+        fontWeight: "600",
+        textAlign: "center",
     },
 
 });
