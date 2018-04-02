@@ -17,6 +17,7 @@ import {
     SAVEANSWERS,
     SAVEANSDIC,
     GETANSWERBLOW,
+    NETINFO,
 } from "./actionTypes";
 
 
@@ -38,6 +39,11 @@ export const userInfo = (state = {}, action) => {
             return {
                 ...state,
                 ...action.result
+            }
+        case NETINFO:
+            return {
+                ...state,
+                netInfo:action.result
             }
         default:
             return state

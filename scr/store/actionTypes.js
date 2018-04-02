@@ -22,3 +22,5 @@ export const SAVEPLAYTIME = 'savePlayTime';//保存播放时间
 export const SAVEANSWERS = 'saveAnswers';
 export const SAVEANSDIC = 'saveAnswerDic';//保存答案记录
 export const GETANSWERBLOW = 'getAnswerBlow';//获取之前答案记录
+
+export const NETINFO = 'netInfo';//获取网络信息

@@ -13,7 +13,7 @@ class MineScreen extends Component{
     }
 
     getArr(){
-        const arr1=["修改资料","消息中心","安全中心","未加入班级","版本检查","意见建议","退出登录"];
+        const arr1=["修改资料","消息中心","安全中心","加入班级","版本检查","意见建议","退出登录"];
         const arr2=[require("../imgs/mineIcon/my_icon_bj.png"),require("../imgs/mineIcon/my_icon_xxzx.png"),require("../imgs/mineIcon/my_icon_aqzx.png"),require("../imgs/mineIcon/my_icon_wjrbj.png"),require("../imgs/mineIcon/my_icon_bbjc.png"),require("../imgs/mineIcon/my_icon_yjjy.png"),require("../imgs/mineIcon/my_icon_tc.png")];
 
         let cellArr=[];

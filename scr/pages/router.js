@@ -12,6 +12,8 @@ import VideoTest from "./videoTest";
 import AnswerScreen from "./answerPage";
 import Regist from './RegistPage';
 import AnsweredDetail from './AnsweredDetail';
+import WebViewScreen from "./protocalPage";
+import JoinClass from "./JoinClass";
 
 
 // const color  = {
@@ -177,6 +179,18 @@ const Navigator = StackNavigator(
                 header: null,
             },
         },
+        WebViewScreen: {
+            screen: WebViewScreen,
+            navigationOptions: {
+                header: null,
+            }
+        },
+        JoinClass: {
+            screen: JoinClass,
+            navigationOptions: {
+                header: null,
+            }
+        }
 	}
 );
 
@@ -235,6 +249,12 @@ const LogRouter = StackNavigator(
                 //设置隐藏标题。HeaderProps null
                 header: null,
             },
+        },
+        WebViewScreen: {
+            screen: WebViewScreen,
+            navigationOptions: {
+                header: null,
+            }
         },
     },
 );

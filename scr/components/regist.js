@@ -145,7 +145,8 @@ class RegistView extends Component{
                 isAgree:!this.state.isAgree,
             });
         }else if(type===2){
-            alert("用户协议编写中");
+            // alert("用户协议编写中");
+            this.props.navigation.navigate("WebViewScreen");
         }
     }
 
@@ -245,6 +246,7 @@ class RegistView extends Component{
                 >
                     <Text style={styles.buttonText}>注册</Text>
                 </TouchableOpacity>
+                
                 <View style={{flexDirection:'row',justifyContent:'center',alignItems:"center"}}>
                     <TouchableOpacity style={{padding:12}} onPress={()=>this.userProtocal(1)}>
                         <Image source={proImg} />

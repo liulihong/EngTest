@@ -23,12 +23,14 @@ class mineCell extends Component {
     btnClick(){
         if(this.props.title==="退出登录"){
             this.props.logOut(()=>{
-                // AsyncStorage.setItem('token', '');
-                // getToken(store, (obj)=>{
-                //     alert(JSON.stringify(obj));
-                // });
                 this.props.navigation.navigate('Login');
             });
+        }else if(this.props.title==="版本检查"){
+            alert("当前为最新版");
+        }else if(this.props.title==="加入班级"){
+            this.props.navigation.navigate('JoinClass',{UserID:this.props.store.userInfo.logResult.ID});
+        }else{
+            alert("功能暂未开通");
         }
     }
 
