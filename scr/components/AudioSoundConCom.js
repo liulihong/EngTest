@@ -12,7 +12,7 @@ import { submitExamTopic, endExam } from '../request/requestUrl';
 import copy from 'lodash';
 import RNFS from 'react-native-fs';
 
-let isSubmited=false;//已交卷
+let isSubmited=false;//已交卷为否
 let timeInteval;//播放时间计时器
 let timeInteval2;//读题时间计时器
 let timeInteval3;//答题时间计时器
@@ -58,6 +58,7 @@ class AudioSoundConCom extends Component {
             currPath: '',
             tempData: {},
         }
+        isSubmited=false;
     }
 
     //组件加载完成

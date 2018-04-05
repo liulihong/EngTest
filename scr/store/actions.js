@@ -17,7 +17,7 @@ import {
     GETANSWERBLOW,
 } from './actionTypes';
 import { fetchGet, fetchPost } from "../request/fetch";
-import { getCode,regist,login,getPaperList,getCommon,logOut} from "../request/requestUrl";
+import { getCode,regist,login,getPaperList,getCommon,logOut,Modify} from "../request/requestUrl";
 import RNFS from "react-native-fs";
 import utils from '../utils';
 
@@ -37,6 +37,21 @@ export const Login = (obj,callBack) => {
             return res;
         }),
         types: [LOADING,LOGIN,ERROR]
+    }
+}
+export const motifyMyInfo = (paramts,callBack) => {
+    return {
+        promise : fetchPost(Modify,paramts).then((result) => {
+            
+            if(result.ErrorCode!==undefined){
+                alert(utils.findErrorInfo(result));
+            }else {
+                alert(JSON.stringify(result));
+                callBack();
+            }
+            return result;
+        }),
+        types: ["",LOGIN,ERROR]
     }
 }
 export const LogOut = ( callBack ) => {
@@ -64,7 +79,13 @@ export const Regist = (obj,callBack) => {
 export const getMovieList = () => {
     return {
         promise : fetchPost(getPaperList,{}).then(res =>{
-            return res;
+            // debugger
+            if(res.ErrorCode!==undefined){
+                alert(utils.findErrorInfo(res));
+            }else {
+                return res;
+            }
+            return {};
         }),
         types: [LOADING,PAPERLIST, ERROR]
     }
@@ -73,7 +94,12 @@ export const getMovieList = () => {
 export const GetCommon = () => {
     return {
         promise : fetchPost(getCommon,{}).then(res=>{
-            return res;
+            if(res.ErrorCode!==undefined){
+                alert(utils.findErrorInfo(res));
+            }else {
+                return res;
+            }
+            return {};
         }),
         types: ['',GETCOMMON,'']
     }

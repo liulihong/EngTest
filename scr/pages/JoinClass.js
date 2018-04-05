@@ -9,6 +9,8 @@ import CusSelBtn from "../components/CusSelButton";
 import {adressPicker as AdressPicker} from "../components/PickerCom"
 import { REHYDRATE } from 'redux-persist';
 
+let statusDic={0:"审核中",1:"审核通过",2:"审核失败",3:"已取消"};
+
 export default class LoginScreen extends Component{
 
     constructor(props){
@@ -178,6 +180,7 @@ export default class LoginScreen extends Component{
                     <Text style={styles.txt}>{"老师名称："+this.state.mineClassInfo.Name}</Text>
                     <Text style={styles.txt}>{"老师手机号："+this.state.mineClassInfo.Phone}</Text>
                     <Text style={styles.txt}>{"老师ID："+this.state.mineClassInfo.TeacherID}</Text>
+                    <Text style={styles.txt}>{"审核状态："+statusDic[this.state.mineClassInfo.Status]}</Text>
                 </View>
                 <TouchableOpacity
                     style={styles.button}

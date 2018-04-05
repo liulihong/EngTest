@@ -26,6 +26,8 @@ module.exports = {
     QuitClass: hostUrl + '/api/Account/QuitClass',//退出班级
 
     protocal: 'http://tsk.17work.com.cn/agreement.html',//用户协议
+    Report: hostUrl + '/api/Account/Report',//意见反馈
+    Modify: hostUrl + '/api/Account/Modify',//个人信息
 
     CheckVersion: hostUrl + "/api/Version/CheckVersion",//检查版本
 }

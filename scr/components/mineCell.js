@@ -33,9 +33,14 @@ class mineCell extends Component {
         } else if (this.props.title === "版本检查") {
             this.CheckVersion();
         } else if (this.props.title === "我的班级") {
-            this.props.navigation.navigate('JoinClass', { UserID: this.props.store.userInfo.logResult.ID });
+            if(this.props.store.userInfo.logResult.Name===null)
+                alert("请先编辑姓名！");
+            else
+                this.props.navigation.navigate('JoinClass', { UserID: this.props.store.userInfo.logResult.ID });
         } else if (this.props.title === "意见建议") {
-            // Report
+            this.props.navigation.navigate('Report',{ UserID: this.props.store.userInfo.logResult.ID });
+        } else if (this.props.title === "修改资料") {
+            this.props.navigation.navigate('MineInfo',{ Name: this.props.store.userInfo.logResult.Name });
         }else {
             alert("功能暂未开通");
         }

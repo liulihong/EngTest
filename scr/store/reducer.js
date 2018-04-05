@@ -27,7 +27,8 @@ export const userInfo = (state = {}, action) => {
         case COOKIE: 
             return {
                 ...state,
-                cookie: action.result
+                cookie: action.result,
+                logResult:action.result.CurrentUser,
             }
         case LOGIN:
             return {

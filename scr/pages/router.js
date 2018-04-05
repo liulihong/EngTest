@@ -14,6 +14,8 @@ import Regist from './RegistPage';
 import AnsweredDetail from './AnsweredDetail';
 import WebViewScreen from "./protocalPage";
 import JoinClass from "./JoinClass";
+import Report from "./report";
+import MineInfo from "./mofifyMineInfo";
 
 
 // const color  = {
@@ -192,6 +194,18 @@ const Navigator = StackNavigator(
             navigationOptions: {
                 header: null,
             }
+        },
+        Report: {
+            screen: Report,
+            navigationOptions: {
+                header: null,
+            }
+        },
+        MineInfo: {
+            screen: MineInfo,
+            navigationOptions: {
+                header: null,
+            }
         }
 	}
 );
@@ -258,5 +272,17 @@ const LogRouter = StackNavigator(
                 header: null,
             }
         },
+        Report: {
+            screen: Report,
+            navigationOptions: {
+                header: null,
+            }
+        },
+        MineInfo: {
+            screen: MineInfo,
+            navigationOptions: {
+                header: null,
+            }
+        }
     },
 );

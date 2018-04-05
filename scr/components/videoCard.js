@@ -51,8 +51,10 @@ class VideoCard extends Component {
         this.setState({
             clickCardID: docName
         });
-        let url = hostUrl + "/" + path;
-        download(url, docName, (obj) => {
+        // let url = hostUrl + "/" + path;
+   
+        download(path, docName, (obj) => {
+            debugger
             if (obj.status === "start") {
                 this.props.startDown();
 
