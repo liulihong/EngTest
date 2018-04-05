@@ -27,6 +27,7 @@ class AnswerScreen extends Component {
     getExamAnserInfo() {
         let LogID = this.props.answerRecord.LogID;
         fetchPost(getExamLog, { LogID }).then((result) => {
+            // alert("result: "+JSON.stringify(result));
             let tempObj = {};
             for (let i = 0; i < result.LogList.length; i++) {
                 ansObj = result.LogList[i];
@@ -53,7 +54,10 @@ class AnswerScreen extends Component {
         if (this.props.answers === undefined) {
             return <Text>{"亲！ 您交了白卷。。。"}</Text>
         }
-        let scoreTxt = "得分\n" + ((this.state.serverAnswer !== {}) ? this.state.serverAnswer.Score : 0.00) + "分";
+        let scoreTxt = "正在\n计分中";
+        if(this.state.serverAnswer!==undefined && this.state.serverAnswer.Status===2){
+            scoreTxt = "得分\n" + ((this.state.serverAnswer !== {}) ? this.state.serverAnswer.Score : 0.00) + "分";
+        }
         return <ImageBackground
             source={require("../imgs/testIcon/cj_bg.png")}
             style={styles.contain}

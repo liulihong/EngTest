@@ -1,5 +1,5 @@
 import React, { Compnents, Component } from 'react';
-import { ScrollView, StyleSheet, View, Button, Text, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, View, Button, Text, TouchableOpacity, DeviceEventEmitter } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import VideoCard from '../components/videoCard';
 import utils from '../utils';
@@ -8,6 +8,8 @@ import { GetHomework } from "../request/requestUrl";
 import { fetchPost } from "../request/fetch";
 import { hostUrl } from "../request/requestUrl";
 import { connect } from "react-redux";
+
+
 
 class TaskScreen extends Component {
 
@@ -20,8 +22,15 @@ class TaskScreen extends Component {
             isShowFinsh: false,
             dataArr: [],
         }
-        this.GetPaperList(false);
+        // this.GetPaperList(this.state.isShowFinsh);
+    }
 
+    //组件加载完成
+    componentWillMount() {
+        DeviceEventEmitter.addListener('reloadHomework', () => {
+            //获取试题列表
+            this.GetPaperList(this.state.isShowFinsh);
+        });
     }
 
 
@@ -31,9 +40,10 @@ class TaskScreen extends Component {
                 isShowFinsh: isShowFinsh,
             });
         }
-        let Status = (isShowFinsh===true) ? 2 : 0;
+        let Status = (isShowFinsh === true) ? 2 : 0;
         fetchPost(GetHomework, { Status: Status }).then((res) => {
             // alert("1111" + JSON.stringify(res));
+
             if (res.PaperList !== undefined) {
                 dataArr = res.PaperList;
                 this.setState({
@@ -74,7 +84,7 @@ class TaskScreen extends Component {
                                     this.state.dataArr.map(element => {
                                         const url = hostUrl + "/" + element.DownPath;
                                         const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.path === url });
-                                        return <VideoCard cardDic={element} key={element.ID} ishome={true} isDown={isDown} navigation={this.props.navigation} />
+                                        return <VideoCard cardDic={element} key={element.ID} ishome={true} isFinish={this.state.isShowFinsh} isDown={isDown} navigation={this.props.navigation} />
                                     })
                                 }
                             </View>
@@ -133,11 +143,11 @@ const styles = StyleSheet.create({
         height: 30,
         left: utils.SCREENWIDTH / 2,
         top: 10,
-        backgroundColor: "#aaaaaa",
+        backgroundColor: "#bbbbbb",
     },
     line2: {
         width: utils.SCREENWIDTH,
         height: 1,
-        backgroundColor: "#aaaaaa",
+        backgroundColor: "#bbbbbb",
     }
 });

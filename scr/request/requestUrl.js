@@ -1,6 +1,6 @@
 // const hostUrl = 'http://139.196.111.38:8084';
-const hostUrl = 'http://192.168.12.150:28071';//小英电脑
-// const hostUrl = 'http://tsk.eqd.17work.cn';//192.168.12.8
+// const hostUrl = 'http://192.168.12.150:28071';//小英电脑
+const hostUrl = 'http://tsk.eqd.17work.cn';//192.168.12.8
 // const hostUrl = 'http://tsk.demo.17work.cn';//外网测试账号
 
 module.exports = {
@@ -22,6 +22,8 @@ module.exports = {
     GetHomework: hostUrl + '/api/HomeWork/GetHomework',//获取作业
     ValidateTeacher: hostUrl + '/api/Account/ValidateTeacher',//验证教师
     JoinClass: hostUrl + '/api/Account/JoinClass',//加入班级
+    GetClass: hostUrl + '/api/Account/GetClass',//得到当前班级信息
+    QuitClass: hostUrl + '/api/Account/QuitClass',//退出班级
 
     protocal: 'http://tsk.17work.com.cn/agreement.html',//用户协议
 

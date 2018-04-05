@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, DeviceEventEmitter } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, DeviceEventEmitter, Alert } from 'react-native';
 import utils from '../utils';
 import { connect } from "react-redux";
 import {
@@ -8,10 +8,11 @@ import {
 } from "../store/actions";
 import MySound from "../utils/soundPlay";
 import { fetchPost } from '../request/fetch';
-import { submitExamTopic,endExam } from '../request/requestUrl';
+import { submitExamTopic, endExam } from '../request/requestUrl';
 import copy from 'lodash';
 import RNFS from 'react-native-fs';
 
+let isSubmited=false;//已交卷
 let timeInteval;//播放时间计时器
 let timeInteval2;//读题时间计时器
 let timeInteval3;//答题时间计时器
@@ -96,27 +97,34 @@ class AudioSoundConCom extends Component {
     // }
 
     //提交答案到服务器
-    submitToServer(nextProps, currProps) {
+    submitToServer(nextProps, currProps, isFinish) {
+
+        let job=1;
 
         let isChange = nextProps.dataSource.topicInfo !== currProps.dataSource.topicInfo;
-        if (isChange === false) return;//当前信息没改变 不提交
+        if (isChange === false) job=0;//当前信息没改变 不提交
         let isTopObj = currProps.dataSource.topicInfo.currLevel === "topObj";
-        if (isTopObj === false) return;//当前播放不是小题 不提交
-        if (nextProps.dataSource.topObj === currProps.dataSource.topicObj) return;//跟上次同一个小题 不提交
-        if (nextProps.answers === undefined) return;//没有答题记录
+        if (isTopObj === false) job=0;//当前播放不是小题 不提交
+        if (nextProps.dataSource.topObj === currProps.dataSource.topicObj) job=0;//跟上次同一个小题 不提交
+        if (nextProps.answers === undefined) job=0;//没有答题记录
 
-        let isFinish = nextProps.dataSource.topicInfo.currLevel === "finished";
+        if(job===0){
+            this.submitExamFinish(isFinish);
+            return;
+        }
+
+        // let isFinish = nextProps.dataSource.topicInfo.currLevel === "finished";
         let gropObj1 = currProps.dataSource.gropObj;//当前数组
         let gropObj = copy.cloneDeep(gropObj1);
         let answer1 = nextProps.answers[gropObj.Type];//当前类型题答案
         let answer = copy.cloneDeep(answer1);
         let topObj1 = currProps.dataSource.topObj;//页面数据信息
         let topObj = copy.cloneDeep(topObj1);
-        
+
         // alert(JSON.stringify(topObj.TopicInfoList));
         if (answer !== undefined && topObj.TopicInfoList !== undefined) {//如果有答案记录
             let paraArr = [];
-            
+
             if (gropObj.Type === 1 || gropObj.Type === 10 || gropObj.Type === 3) {
 
                 let arr = topObj.TopicInfoList;
@@ -143,76 +151,86 @@ class AudioSoundConCom extends Component {
 
                     fetchPost(submitExamTopic, paramts).then((result) => {
                         // alert("非音频提交成功" + JSON.stringify(result));
-                        this.submitExamFinish();
+                        this.submitExamFinish(isFinish);
                     }, (error) => {
                         // alert("非音频提交失败" + utils.findErrorInfo(error));
                     });
+                } else {
+                    this.submitExamFinish(isFinish);
                 }
-            }else{//提交音频
+            } else {//提交音频
                 let topicObj = topObj.TopicInfoList[0];//小题数据信息
                 let topicObjAnswer = answer[topicObj.UniqueID];//小题答案
                 if (topicObjAnswer !== undefined) {
-                    RNFS.readFile(topicObjAnswer.answer,"base64")
-                    .then((result) => {
-                        // alert("转字符串成功" + result);
-                        let paraObj = {
-                            TopicID: topicObj.UniqueID,
-                            TopicNO: topicObj.ID,
-                            UserAnswer: result,
-                            Total: topicObj.Score,
-                        }
-                        paraArr.push(paraObj);
-                        
-                        if (paraArr.length) {
-                            let LogID = currProps.answerRecord.LogID;
-                            let paramts = {
-                                LogID,
-                                Type: gropObj.Type,
-                                Items: paraArr,
+                    RNFS.readFile(topicObjAnswer.answer, "base64")
+                        .then((result) => {
+                            // alert("转字符串成功" + result);
+                            let paraObj = {
+                                TopicID: topicObj.UniqueID,
+                                TopicNO: topicObj.ID,
+                                UserAnswer: result,
+                                Total: topicObj.Score,
                             }
-                            
-                            fetchPost(submitExamTopic, paramts).then((result) => {
-                                this.submitExamFinish();
-                                // alert("音频提交成功" + JSON.stringify(result));
-                            }, (error) => {
-                                // alert("音频提交失败" + utils.findErrorInfo(error));
-                                // alert("失败");
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err.message);
-                        // alert("转字符串失败" + err);
-                    });
+                            paraArr.push(paraObj);
+
+                            if (paraArr.length) {
+                                let LogID = currProps.answerRecord.LogID;
+                                let paramts = {
+                                    LogID,
+                                    Type: gropObj.Type,
+                                    Items: paraArr,
+                                }
+
+                                fetchPost(submitExamTopic, paramts).then((result) => {
+                                    this.submitExamFinish(isFinish);
+                                    // alert("音频提交成功" + JSON.stringify(result));
+                                }, (error) => {
+                                    // alert("音频提交失败" + utils.findErrorInfo(error));
+                                    // alert("失败");
+                                });
+                            } else {
+                                this.submitExamFinish(isFinish);
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err.message);
+                            // alert("转字符串失败" + err);
+                        });
                 }
             }
+        }else{
+            this.submitExamFinish(isFinish);
         }
     }
 
     //服务器交卷
-    submitExamFinish(){
-        if(this.props.dataSource.topicInfo.currLevel === "finished"){
+    submitExamFinish(isFinish) {
+        if (isFinish && isSubmited===false ) {
+            isSubmited=true;
             let LogID = this.props.answerRecord.LogID;
-            let TaskLogID = this.props.answerRecord.TaskLogID;
-            fetchPost(endExam,{LogID,TaskLogID}).then((res)=>{
-                alert("考试完成，静待考试结果吧");
-            },(error)=>{
-                alert("交卷错误:  "+JSON.stringify(error));
-            })
+                let TaskLogID = this.props.answerRecord.TaskLogID;
+                // alert("LogID" + JSON.stringify(LogID) + "\nTaskLogID" + JSON.stringify(TaskLogID));
+                fetchPost(endExam, { LogID, TaskLogID }).then((res) => { 
+                    this.props.navigation.goBack();
+                    alert("考试完成，静待考试结果吧");
+                }, (error) => {
+                    alert("交卷错误:  " + JSON.stringify(error));
+                })
         }
     }
 
     //store数据刷新
     componentWillReceiveProps(nextProps) {
-        this.submitToServer(nextProps, this.props);//提交答案到服务器
         this.setState({
             tempData: nextProps.dataSource,//新数据源
         });
         if (nextProps.dataSource.topicInfo.currLevel === "finished") {
+            this.submitToServer(nextProps, this.props, true);//提交答案到服务器
             this.clearInteval();
             this.stopPlayAndRecord();
             this.saveAnsweRecord(nextProps.dataSource);
         } else if (nextProps.dataSource.topicInfo !== this.props.dataSource.topicInfo) {
+            this.submitToServer(nextProps, this.props, false);//提交答案到服务器
             this.saveAnsweRecord(nextProps.dataSource);
             if (nextProps.dataSource.topicInfo.currLevel === "topObj" && nextProps.dataSource.topicInfo.audioPath === null) {
                 if (nextProps.dataSource.topicInfo.ctype === undefined) {//当前为设置提示语 没有标题 去读内容
@@ -588,7 +606,9 @@ class AudioSoundConCom extends Component {
         this.stopPlayAndRecord();
 
         let tempData = this.props.dataSource;
-        this.props.getNextGroup(tempData.topicInfo, tempData.examContent, tempData.gropObj);
+        //找下一步
+        this.props.getNextStep(tempData.topicInfo, tempData.examContent, tempData.gropObj, tempData.topObj);
+        // this.props.getNextGroup(tempData.topicInfo, tempData.examContent, tempData.gropObj);
     }
 
     //加载录音播放按钮
@@ -715,6 +735,7 @@ const mapStateToProps = (state) => {
         answerRecord,
         answers,
         taskId,
+        Alert,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -732,7 +753,16 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch(setReportingTip(currTopic, examDetail, currGropObj, currTopObj, type));
         },
         commitExam: () => {
-            dispatch(commintCurrExam());
+            Alert.alert('提示', '确定交卷？',
+                [
+                    { text: "取消", onPress: () => { } },
+                    {
+                        text: "确定", onPress: () => {
+                            dispatch(commintCurrExam());
+                        }
+                    },
+                ]
+            );
         },
         saveAnswer: (Type, id, num, answer) => {
             dispatch(saveCurrExamAnswers(Type, id, num, answer));

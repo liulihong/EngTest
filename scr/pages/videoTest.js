@@ -121,7 +121,7 @@ class VideoTest extends Component{
                     </ScrollView>
                 </View>
 
-                <AudioSoundConCom/>
+                <AudioSoundConCom navigation={this.props.navigation}/>
 
             </View>
         );

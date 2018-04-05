@@ -1,6 +1,6 @@
 import React,{ Compnents, Component } from 'react';
 import { View ,Text, StyleSheet,TouchableOpacity } from 'react-native';
-import { ValidateTeacher , JoinClass } from '../request/requestUrl';
+import { ValidateTeacher , JoinClass ,GetClass ,QuitClass } from '../request/requestUrl';
 import { fetchPost } from '../request/fetch';
 import NavBar from '../components/navBar';
 import utils from "../utils";
@@ -16,6 +16,8 @@ export default class LoginScreen extends Component{
         this.getClassID=this.getClassID.bind(this);
         this.getClassData=this.getClassData.bind(this);
         this.applyJoin=this.applyJoin.bind(this);
+        this.getMineClasses=this.getMineClasses.bind(this);
+        this.exitClasses=this.exitClasses.bind(this);
 
         this.state={
             classObj:{},
@@ -23,9 +25,47 @@ export default class LoginScreen extends Component{
             classTitle:"请选择班级",
             classDataArr:[],
             pickerType: 3,//默认不显示PickerView
+
+            isJoined:false,//已经加入为否
+            mineClassInfo:{},//我的班级信息
         }
+
+        this.getMineClasses();
     }
 
+
+    //得到我的班级信息
+    getMineClasses(){
+        fetchPost(GetClass,{}).then((result)=>{
+            if(result===null){
+                // alert("没有加入任何班级");
+                this.setState({
+                    isJoined:false,
+                    mineClassInfo:{},
+                });
+            }else{
+                this.setState({
+                    isJoined:true,
+                    mineClassInfo:result,
+                });
+                // alert(JSON.stringify(result))
+            }
+            
+        })
+    }
+
+    //退出当前班级
+    exitClasses(){
+        fetchPost(QuitClass,{}).then(()=>{
+            alert("已退出班级")
+            this.setState({
+                isJoined:false,
+                mineClassInfo:{},
+            });
+        })
+    }
+
+    //获取班级数据
     getClassData(){
         if(this.state.userNameText===''){
             alert("请输入老师ID或手机号");
@@ -53,6 +93,7 @@ export default class LoginScreen extends Component{
         })
     }
 
+    //加入班级
     applyJoin(){
         if(this.state.classObj.ID!==undefined && this.state.classObj.ID!==null){
             // alert("申请加入");
@@ -78,7 +119,7 @@ export default class LoginScreen extends Component{
         
     }
 
-    //得到地址ID
+    //得到班级ID
     getClassID(type,tempObj){
         if(type===1){
             this.setState({
@@ -94,7 +135,7 @@ export default class LoginScreen extends Component{
     render() {
         const { navigate } = this.props.navigation;
         return (
-            <View style={styles.contain}>
+            this.state.isJoined===false ? <View style={styles.contain}>
                 <NavBar navtitle="加入班级"  isBack={true} navgation={this.props.navigation} />
                 
                 <CusTextIput
@@ -130,6 +171,20 @@ export default class LoginScreen extends Component{
                     setAdressID={(type,tempObj)=>this.getClassID(type,tempObj)}
                 />
 
+            </View> : <View style={styles.contain}>
+                <NavBar navtitle="我的班级"  isBack={true} navgation={this.props.navigation} />
+                <View style={styles.classInfo}>
+                    <Text style={styles.txt}>{"班级名称："+this.state.mineClassInfo.ClassName}</Text>
+                    <Text style={styles.txt}>{"老师名称："+this.state.mineClassInfo.Name}</Text>
+                    <Text style={styles.txt}>{"老师手机号："+this.state.mineClassInfo.Phone}</Text>
+                    <Text style={styles.txt}>{"老师ID："+this.state.mineClassInfo.TeacherID}</Text>
+                </View>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={this.exitClasses}
+                >
+                    <Text style={styles.buttonText}>{"退出班级"}</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -161,5 +216,14 @@ const styles=StyleSheet.create({
         textAlign: 'center',
         color: 'white',
         fontSize: 18
+    },
+    classInfo:{
+        // padding:10,
+        marginTop:30,
+    },
+    txt:{
+        lineHeight:26,
+        fontSize:16,
+        color:utils.COLORS.theme1,
     },
 });

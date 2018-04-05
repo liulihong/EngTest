@@ -49,6 +49,7 @@ export const Tab = TabNavigator(
 				tabBarIcon: ({focused, tintColor}) => (
 					//自定义组件展示图标
 					<TabBarItem
+                        slectIndex={1}
 						tintColor={tintColor}
 						focused={focused}
                         selectedImage={require("../imgs/tabIcon/icon_lx_click.png")}
@@ -70,6 +71,7 @@ export const Tab = TabNavigator(
                 tabBarIcon: ({focused, tintColor}) => (
                     //自定义组件展示图标
                     <TabBarItem
+                        slectIndex={2}
                         tintColor={tintColor}
                         focused={focused}
                         selectedImage={require("../imgs/tabIcon/icon_zy_click.png")}
@@ -91,6 +93,7 @@ export const Tab = TabNavigator(
 				tabBarIcon: ({focused, tintColor}) => (
 					//自定义组件展示图标
 					<TabBarItem
+                        slectIndex={3}
 						tintColor={tintColor}
 						focused={focused}
                         selectedImage={require("../imgs/tabIcon/icon_my_click.png")}

@@ -1,5 +1,5 @@
 import React, { Compnents, Component } from 'react';
-import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text } from 'react-native';
+import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, DeviceEventEmitter } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import VideoCard from '../components/videoCard';
 import utils from '../utils'
@@ -9,7 +9,6 @@ import { downFaild, GetCommon, getMovieList, saveDownUrl, startDown } from "../s
 import download from "../utils/download";
 import { hostUrl } from "../request/requestUrl";
 
-
 class HomeScreen extends Component {
 
     constructor(props) {
@@ -17,13 +16,29 @@ class HomeScreen extends Component {
         this.prepareDown = this.prepareDown.bind(this);
         this.downLoad = this.downLoad.bind(this);
         //获取试题列表
-        this.props.GetPaperList();
+        // this.props.GetPaperList();
         //获取下载共用音频URL
         this.props.getCommon();
         //开始下载
         this.state = {
             isLoading: false,
         }
+
+        // DeviceEventEmitter.addListener('reloadVideoList', () => {
+        //     //获取试题列表
+        //     this.props.GetPaperList();
+        //     alert("获取试题列表 "+this.state.isLoading);
+        // });
+    }
+
+    //组件加载完成
+    componentDidMount() {
+        DeviceEventEmitter.addListener('reloadVideoList', () => {
+            //获取试题列表
+            setTimeout(() => {
+                this.props.GetPaperList();
+            }, 1000)
+        });
     }
 
     prepareDown(nextProps) {
@@ -36,17 +51,17 @@ class HomeScreen extends Component {
         }
         let loading = nextProps.videoData.downLoading === true;
 
-        let getCommenUrl=nextProps.videoData.getCommenUrl;
+        let getCommenUrl = nextProps.videoData.getCommenUrl;
 
         //判断是否下载过
         if (!isDown && !loading && !this.state.isLoading) {
             //检查网络
-            if (this.props.netInfo!==undefined && this.props.netInfo.isConnected === false) {
+            if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
                 alert("请检查网络！");
                 return;
             }
             //流量提醒
-            if (this.props.netInfo!==undefined && this.props.netInfo.connectionInfo.type !== "wifi") {
+            if (this.props.netInfo !== undefined && this.props.netInfo.connectionInfo.type !== "wifi") {
                 Alert.alert('温馨提示', '当前为非wifi环境确定要下载？',
                     [
                         { text: "取消", onPress: () => { } },
@@ -80,7 +95,7 @@ class HomeScreen extends Component {
             }
         }).download();
     }
-    
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.videoData.getCommenUrl) {//共用音频下载
             this.prepareDown(nextProps);

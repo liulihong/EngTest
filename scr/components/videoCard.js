@@ -79,7 +79,7 @@ class VideoCard extends Component {
             this.props.savePath(url,taskId);
 
             let ishome=this.props.ishome;
-            this.props.navigation.navigate('TestStart', { ID: this.props.cardDic.ID, ishome });
+            this.props.navigation.navigate('TestStart', { ID: this.props.cardDic.ID, ishome , isFinish:this.props.isFinish });
         } else {
             alert("请下载试题包");
         }
