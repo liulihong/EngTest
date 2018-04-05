@@ -26,7 +26,7 @@ class AnswerScreen extends Component {
 
     getExamAnserInfo() {
         let LogID = this.props.answerRecord.LogID;
-        fetchPost(getExamLog, { ...LogID }).then((result) => {
+        fetchPost(getExamLog, { LogID }).then((result) => {
             let tempObj = {};
             for (let i = 0; i < result.LogList.length; i++) {
                 ansObj = result.LogList[i];

@@ -11,10 +11,8 @@ export const setCookie = (id) => {
     sesstionId = 'sid='+ id;
 }
 const response = (responseObj) => {
-    // alert(responseObj)
     const obj = responseObj.clone();
     const str = JSON.stringify(obj.headers);
-    // obj.json().then(res => alert(res), res => alert(res))
     if (str.includes('/json;')) return obj.json();
     else if (str.includes('/text;')) return obj.text();
     else return new Promise((resolve, reject) => {

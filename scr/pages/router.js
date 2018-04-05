@@ -29,8 +29,7 @@ export default class MainRoute extends Component {
 		super()
 	}
 	render() {
-		return this.props.isLogin?<Navigator/>:<LogRouter/>
-		// return <LogRouter/>
+		return (this.props.isLogin===true)?<Navigator/>:<LogRouter/>;
 	}
 }
 

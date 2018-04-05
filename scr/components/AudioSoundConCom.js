@@ -8,7 +8,7 @@ import {
 } from "../store/actions";
 import MySound from "../utils/soundPlay";
 import { fetchPost } from '../request/fetch';
-import { submitExamTopic } from '../request/requestUrl';
+import { submitExamTopic,endExam } from '../request/requestUrl';
 import copy from 'lodash';
 import RNFS from 'react-native-fs';
 
@@ -50,6 +50,7 @@ class AudioSoundConCom extends Component {
         this.saveAnsweRecord = this.saveAnsweRecord.bind(this);
         this.findProgress = this.findProgress.bind(this);
         this.submitToServer = this.submitToServer.bind(this);
+        this.submitExamFinish = this.submitExamFinish.bind(this);
         this.state = {
             isPlaying: true,//默认播放  播放为false代表录音
             isPaused: false,
@@ -104,6 +105,7 @@ class AudioSoundConCom extends Component {
         if (nextProps.dataSource.topObj === currProps.dataSource.topicObj) return;//跟上次同一个小题 不提交
         if (nextProps.answers === undefined) return;//没有答题记录
 
+        let isFinish = nextProps.dataSource.topicInfo.currLevel === "finished";
         let gropObj1 = currProps.dataSource.gropObj;//当前数组
         let gropObj = copy.cloneDeep(gropObj1);
         let answer1 = nextProps.answers[gropObj.Type];//当前类型题答案
@@ -134,22 +136,22 @@ class AudioSoundConCom extends Component {
                 if (paraArr.length) {
                     let LogID = currProps.answerRecord.LogID;
                     let paramts = {
-                        ...LogID,
+                        LogID,
                         Type: gropObj.Type,
                         Items: paraArr,
                     }
 
                     fetchPost(submitExamTopic, paramts).then((result) => {
-                        // alert(JSON.stringify(result));
+                        // alert("非音频提交成功" + JSON.stringify(result));
+                        this.submitExamFinish();
                     }, (error) => {
-                        alert("11" + utils.findErrorInfo(error));
+                        // alert("非音频提交失败" + utils.findErrorInfo(error));
                     });
                 }
             }else{//提交音频
                 let topicObj = topObj.TopicInfoList[0];//小题数据信息
                 let topicObjAnswer = answer[topicObj.UniqueID];//小题答案
                 if (topicObjAnswer !== undefined) {
-                    // alert(topicObjAnswer.answer);
                     RNFS.readFile(topicObjAnswer.answer,"base64")
                     .then((result) => {
                         // alert("转字符串成功" + result);
@@ -161,30 +163,42 @@ class AudioSoundConCom extends Component {
                         }
                         paraArr.push(paraObj);
                         
-                        // alert("ss"+result);//返回result是对的  但是是存的字符串
                         if (paraArr.length) {
                             let LogID = currProps.answerRecord.LogID;
                             let paramts = {
-                                ...LogID,
+                                LogID,
                                 Type: gropObj.Type,
                                 Items: paraArr,
                             }
                             
                             fetchPost(submitExamTopic, paramts).then((result) => {
-                                // alert("00" + JSON.stringify(result));
-                                // alert("成功");
+                                this.submitExamFinish();
+                                // alert("音频提交成功" + JSON.stringify(result));
                             }, (error) => {
-                                // alert("11" + utils.findErrorInfo(error));
-                                alert("失败");
+                                // alert("音频提交失败" + utils.findErrorInfo(error));
+                                // alert("失败");
                             });
                         }
                     })
                     .catch((err) => {
                         console.log(err.message);
-                        alert("转字符串失败" + err);
+                        // alert("转字符串失败" + err);
                     });
                 }
             }
+        }
+    }
+
+    //服务器交卷
+    submitExamFinish(){
+        if(this.props.dataSource.topicInfo.currLevel === "finished"){
+            let LogID = this.props.answerRecord.LogID;
+            let TaskLogID = this.props.answerRecord.TaskLogID;
+            fetchPost(endExam,{LogID,TaskLogID}).then((res)=>{
+                alert("考试完成，静待考试结果吧");
+            },(error)=>{
+                alert("交卷错误:  "+JSON.stringify(error));
+            })
         }
     }
 
@@ -676,6 +690,7 @@ class AudioSoundConCom extends Component {
 const mapStateToProps = (state) => {
     // 那个里面有所有数据   就是 长度
     let dataSource = state.detail;
+    const taskId = dataSource.taskId;
     let examPath = dataSource.currentExamPath;
     let answerRecord = dataSource.answerRecord;
     let answers = dataSource.answers;
@@ -699,6 +714,7 @@ const mapStateToProps = (state) => {
         examPath,
         answerRecord,
         answers,
+        taskId,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {

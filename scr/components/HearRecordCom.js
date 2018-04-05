@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput } from 'reac
 import utils from '../utils';
 import { connect } from "react-redux";
 import { saveCurrExamAnswers } from "../store/actions";
+import copy from 'lodash';
 
 //听后选择
 class HearRecord extends Component {
@@ -57,7 +58,7 @@ class HearRecord extends Component {
                             placeholder={newNum + ''}
                             secureTextEntry={false}
                             onChangeText={(text) => {
-                                let tempArr = [...this.state.answer];
+                                let tempArr = copy.cloneDeep(this.state.answer);
                                 tempArr.splice(i, 1, text)
                                 this.setState({
                                     answer: tempArr

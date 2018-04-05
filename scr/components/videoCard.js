@@ -26,13 +26,13 @@ class VideoCard extends Component {
         if (this.state.clickCardID === docName) return ;//如果已经点击过下载就返回
 
         //检查网络
-        if (this.props.netInfo.isConnected === false) {
+        if (this.props.netInfo!==undefined && this.props.netInfo.isConnected === false) {
             alert("请检查网络！");
             return ;
         }
         //流量提醒
-        if (this.props.netInfo.connectionInfo.type !== "wifi") {
-            Alert.alert('温馨提示', '当前网络为：' + this.props.netInfo.connectionInfo.type,
+        if (this.props.netInfo!==undefined && this.props.netInfo.connectionInfo.type !== "wifi") {
+            Alert.alert('温馨提示', '当前网络为非wifi环境确定下载？',
                 [
                     { text: "取消", onPress: () => {  } },
                     { text: "确定", onPress: () => { this.downLoad() } },
@@ -74,10 +74,12 @@ class VideoCard extends Component {
     cardClick() {
 
         if (this.props.isDown) {
+            let taskId=this.props.cardDic.TaskID;
             let url = utils.DOWNLOADDOCUMENTPATH + "/" + this.props.cardDic.ID;
-            this.props.savePath(url);
+            this.props.savePath(url,taskId);
 
-            this.props.navigation.navigate('TestStart', { ID: this.props.cardDic.ID });
+            let ishome=this.props.ishome;
+            this.props.navigation.navigate('TestStart', { ID: this.props.cardDic.ID, ishome });
         } else {
             alert("请下载试题包");
         }
@@ -189,8 +191,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         downFaild: () => {
             dispatch(downFaild({}))
         },
-        savePath: (obj) => {
-            dispatch(saveExamPath(obj));
+        savePath: (url,taskId) => {
+            dispatch(saveExamPath(url,taskId));
         }
     }
 };

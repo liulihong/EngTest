@@ -7,19 +7,20 @@ import SplashScreen from "rn-splash-screen";
 
 
 export default (store, callback) => {
+    let version=(utils.PLATNAME==="IOS") ? utils.version_ios : utils.version_android;
     const func = (token) => {
         store.dispatch({
             promise: fetchPost(getCookie, {
                 "ClientName": utils.PLATNAME,
-                "VersionCode": 1,
+                "VersionCode": version,
                 "ProtocolVersion": 2,
-                "LastSessionID": token
+                "LastSessionID": token,
             }).then(res => {
                 if(res.ErrorCode!==undefined){
                     alert(utils.findErrorInfo(res));
                 }
 
-                callback({hasToken:res.SessionID,isLogin:res.CurrentUser});
+                callback({hasToken:res.SessionID,isLogin:(res.CurrentUser!==null)});
 
                 if (!res.CurrentUser){
                     store.dispatch({type: LOGIN, result: {}})

@@ -141,16 +141,19 @@ export const detail = (state = {answers: {}}, action) => {
     switch (action.type) {
         case CURRENTEXAMPATH:
             return {
-                currentExamPath:action.result,
+                currentExamPath:action.result.url,
+                taskId:action.result.taskId,
             }
         case GETEXAMDETAIL:
             return {
                 currentExamPath:state.currentExamPath,
+                taskId:state.taskId,
                 examContent:action.result,
             }
         case GETTOPICINFO:
             return {
                 currentExamPath:state.currentExamPath,
+                taskId:state.taskId,
                 examContent:state.examContent,
                 topicInfo:action.result,
             }

@@ -89,8 +89,9 @@ export const downFaild = (result) => {
     return {result,type:DOWNFAILD};
 }
 
-export const saveExamPath = (result) => {
-    return {result,type:CURRENTEXAMPATH};
+export const saveExamPath = (url,taskId) => {
+    
+    return {result:{url,taskId},type:CURRENTEXAMPATH};
 }
 export const getExamContent = (result) => {
     return {result,type:GETEXAMDETAIL}

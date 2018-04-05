@@ -35,33 +35,36 @@ class HomeScreen extends Component {
             isDown = nextProps.videoData.getCommenUrl === this.props.videoData.getCommenUrl;
         }
         let loading = nextProps.videoData.downLoading === true;
+
+        let getCommenUrl=nextProps.videoData.getCommenUrl;
+
         //判断是否下载过
         if (!isDown && !loading && !this.state.isLoading) {
             //检查网络
-            if (this.props.netInfo.isConnected === false) {
+            if (this.props.netInfo!==undefined && this.props.netInfo.isConnected === false) {
                 alert("请检查网络！");
                 return;
             }
             //流量提醒
-            if (this.props.netInfo.connectionInfo.type !== "wifi") {
-                Alert.alert('温馨提示', '当前网络为：' + this.props.netInfo.connectionInfo.type,
+            if (this.props.netInfo!==undefined && this.props.netInfo.connectionInfo.type !== "wifi") {
+                Alert.alert('温馨提示', '当前为非wifi环境确定要下载？',
                     [
                         { text: "取消", onPress: () => { } },
-                        { text: "确定", onPress: () => { this.downLoad() } },
+                        { text: "确定", onPress: () => { this.downLoad(getCommenUrl) } },
                     ]
                 );
                 return;
             }
-            this.downLoad();
+            this.downLoad(getCommenUrl);
         }
     }
 
-    downLoad() {
+    downLoad(getCommenUrl) {
         this.setState({
             isLoading: true,
         });
         //得到的URL去下载共用音频
-        download(nextProps.videoData.getCommenUrl, "common", (obj) => {
+        download(getCommenUrl, "common", (obj) => {
             if (obj.status === "start") {
                 this.props.startDown();
             } else if (obj.status === "faild") {
@@ -95,7 +98,7 @@ class HomeScreen extends Component {
                             this.props.videoData.paperList && this.props.videoData.paperList.map(element => {
                                 const url = hostUrl + "/" + element.DownPath;
                                 const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.path === url });
-                                return <VideoCard cardDic={element} key={element.ID} isDown={isDown} navigation={this.props.navigation} />
+                                return <VideoCard cardDic={element} key={element.ID} isDown={isDown} ishome={false} navigation={this.props.navigation} />
                             })
                         }
                     </View>
@@ -124,7 +127,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
     },
     grayView: {
-        backgroundColor: "rgba(255,255,255,0.7)",
+        backgroundColor: "rgba(0,0,0,0.5)",
         position: "absolute",
         width: utils.SCREENWIDTH,
         height: utils.SCREENHEIGHT,
@@ -133,7 +136,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     grayText: {
-        color: utils.COLORS.theme,
+        color: "#ffffff",
         fontSize: 20,
         fontWeight: "500",
     }
@@ -141,9 +144,11 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => {
+    const netInfo = state.userInfo.netInfo;
     const videoData = state.videoList;
     return {
         videoData,
+        netInfo,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {

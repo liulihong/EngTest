@@ -24,7 +24,7 @@ export default class App extends Component {
         getToken(store, this.setToken);
         this.state = {
             hasToken: false,
-            isLogin: false,
+            isLogin: true,
         };
     }
     setToken(obj) {

@@ -8,6 +8,7 @@ import {
     Image,
     ScrollView,
     DeviceEventEmitter,//引入监听事件
+    Alert,
 } from 'react-native';
 import utils from '../utils'
 import ProgressButton from "../components/progressButton"
@@ -96,6 +97,7 @@ class TestStart extends Component {
         this.continueTest = this.continueTest.bind(this);
         this.showBlowInfo = this.showBlowInfo.bind(this);
         this.newStartExamLog = this.newStartExamLog.bind(this);
+        this.prepareContinue=this.prepareContinue.bind(this);
 
     }
 
@@ -128,9 +130,9 @@ class TestStart extends Component {
 
     //开始考试
     startTest() {
-        this.newStartExamLog((LogID)=>{
+        this.newStartExamLog((LogInfo) => {
             RNFS.mkdir(this.props.path + "/answer1").then(() => {
-                let anserDic = { "version": 1, "lastPath": null, "examPath": this.props.path, "currPath": this.props.path + "/answer1", "finish": false ,LogID };
+                let anserDic = { "version": 1, "lastPath": null, "examPath": this.props.path, "currPath": this.props.path + "/answer1", "finish": false, ...LogInfo };
                 this.props.getTopicInfo(this.props.examContent);
                 this.props.saveAnswerInfo(anserDic);
                 this.props.navigation.navigate('VideoTest');
@@ -140,7 +142,7 @@ class TestStart extends Component {
 
     //重新考试
     againTest() {
-        this.newStartExamLog((LogID) => {
+        this.newStartExamLog((LogInfo) => {
             let anserDic = this.props.answerRecord;
             let version = anserDic.version + 1;
             let lastPath = anserDic.currPath;
@@ -149,29 +151,61 @@ class TestStart extends Component {
             let finish = false;
             RNFS.mkdir(currPath).then(() => {
                 this.props.getTopicInfo(this.props.examContent);
-                this.props.saveAnswerInfo({ version, lastPath, examPath, currPath, finish ,LogID});
+                this.props.saveAnswerInfo({ version, lastPath, examPath, currPath, finish, ...LogInfo });
                 this.props.navigation.navigate('VideoTest');
                 RNFS.unlink(anserDic.lastPath);
             })
         });
     }
 
+    //开始考试记录
     newStartExamLog(callBack) {
         let params = {
             "PaperID": this.props.navigation.state.params.ID,
             "UserID": this.props.UserID,
             "Total": totalScore,
+            "TaskID": this.props.taskId,
         }
         fetchPost(startExam, params).then((result) => {
+            //result  LogID,TaskLogID
+            let ishome = this.props.navigation.state.params.ishome;
+            let taskId = this.props.taskId;
+
+            let examInfo = { ...result, taskId, ishome }
             callBack(result);
         }, (error) => {
             alert(error);
         })
     }
 
+
+    prepareContinue() {
+        let anserDic = this.props.answerRecord;
+
+        let ishome = this.props.navigation.state.params.ishome;
+        if (this.props.answerRecord.ishome !== ishome) {//存储的类型和当前进入的类型比较
+            if (ishome) {//当前是作业 上次记录是模拟
+                Alert.alert('提示', '当前是作业,继续上次模拟？',
+                    [
+                        { text: "开始作业", onPress: () => { this.againTest() } },
+                        { text: "继续模拟", onPress: () => { this.continueTest() } },
+                    ]
+                );
+            } else {
+                Alert.alert('提示', '当前是模拟,继续上次作业？',
+                    [
+                        { text: "开始模拟", onPress: () => { this.againTest() } },
+                        { text: "继续作业", onPress: () => { this.continueTest() } },
+                    ]
+                );
+            }
+        }
+    }
+
     //继续考试
     continueTest() {
         let anserDic = this.props.answerRecord;
+
         let jsonPath = anserDic.currPath + "/answer.json";
         RNFS.exists(jsonPath).then((isExit) => {
             if (isExit === true) {
@@ -246,7 +280,7 @@ class TestStart extends Component {
 
                 <TouchableOpacity
                     style={styles.button2}
-                    onPress={this.continueTest}
+                    onPress={this.prepareContinue}
                 >
                     <Text style={styles.buttonText}>继续考试</Text>
                 </TouchableOpacity>
@@ -280,12 +314,12 @@ class TestStart extends Component {
                     <ScrollView>
                         {
                             this.props.examContent && this.props.examContent.Groups.map((element, i) => {
-                                element.ExamTopics.map((topObj,j) => {
-                                    topObj.TopicInfoList.map((sObj,k) => {
-                                        totalScore = (i === 0 && j===0 && k===0) ? sObj.Score : (sObj.Score + totalScore);
+                                element.ExamTopics.map((topObj, j) => {
+                                    topObj.TopicInfoList.map((sObj, k) => {
+                                        totalScore = (i === 0 && j === 0 && k === 0) ? sObj.Score : (sObj.Score + totalScore);
                                     })
                                 })
-                                
+
                                 const isSelect = element.Type === selectType;
                                 const num = i + 1;
                                 const title = typeEnum[element.Type];
@@ -311,6 +345,7 @@ class TestStart extends Component {
 const mapStateToProps = (state) => {
     const UserID = state.userInfo.logResult.ID;
     const path = state.detail.currentExamPath;
+    const taskId = state.detail.taskId;
     const examContent = state.detail.examContent;
     let answerRecord = state.detail.answerRecord;
     return {
@@ -318,6 +353,7 @@ const mapStateToProps = (state) => {
         examContent,
         answerRecord,
         UserID,
+        taskId,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {
