@@ -15,29 +15,22 @@ class HomeScreen extends Component {
         super(props);
         this.prepareDown = this.prepareDown.bind(this);
         this.downLoad = this.downLoad.bind(this);
-        //获取试题列表
-        // this.props.GetPaperList();
-        //获取下载共用音频URL
-        this.props.getCommon();
+
         //开始下载
         this.state = {
             isLoading: false,
         }
-
-        // DeviceEventEmitter.addListener('reloadVideoList', () => {
-        //     //获取试题列表
-        //     this.props.GetPaperList();
-        //     alert("获取试题列表 "+this.state.isLoading);
-        // });
     }
 
     //组件加载完成
     componentDidMount() {
         DeviceEventEmitter.addListener('reloadVideoList', () => {
-            //获取试题列表
             setTimeout(() => {
-                this.props.GetPaperList();
-            }, 1000)
+                if (this.props.logResult && this.props.logResult !== undefined){
+                    this.props.GetPaperList();//获取试题列表
+                    this.props.getCommon();//获取下载共用音频URL
+                }
+            }, 100)
         });
     }
 
@@ -78,16 +71,19 @@ class HomeScreen extends Component {
         this.setState({
             isLoading: true,
         });
+        DeviceEventEmitter.emit('startDownloadSound');
         //得到的URL去下载共用音频
         download(getCommenUrl, "common", (obj) => {
             if (obj.status === "start") {
                 this.props.startDown();
             } else if (obj.status === "faild") {
+                DeviceEventEmitter.emit('endDownloadSound');
                 this.props.downFaild();
                 this.setState({
                     isLoading: false,
                 });
             } else if (obj.status === "success") {
+                DeviceEventEmitter.emit('endDownloadSound');
                 this.props.saveUrl(obj);
                 this.setState({
                     isLoading: false,
@@ -110,7 +106,7 @@ class HomeScreen extends Component {
                 <ScrollView>
                     <View style={styles.contain}>
                         {
-                            this.props.videoData.paperList && this.props.videoData.paperList.map((element,i) => {
+                            this.props.videoData.paperList && this.props.videoData.paperList.map((element, i) => {
                                 const url = element.DownPath;
                                 const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.path === url });
                                 return <VideoCard cardDic={element} key={i} isDown={isDown} ishome={false} navigation={this.props.navigation} />
@@ -118,12 +114,6 @@ class HomeScreen extends Component {
                         }
                     </View>
                 </ScrollView>
-
-                {
-                    this.state.isLoading ? <View style={styles.grayView}>
-                        <Text style={styles.grayText}>{"努力加载中 • • •"}</Text>
-                    </View> : <View />
-                }
 
             </View>
         );
@@ -141,29 +131,31 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
     },
-    grayView: {
-        backgroundColor: "rgba(0,0,0,0.5)",
-        position: "absolute",
-        width: utils.SCREENWIDTH,
-        height: utils.SCREENHEIGHT,
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    grayText: {
-        color: "#ffffff",
-        fontSize: 20,
-        fontWeight: "500",
-    }
+    // grayView: {
+    //     backgroundColor: "rgba(0,0,0,0.5)",
+    //     position: "absolute",
+    //     width: utils.SCREENWIDTH,
+    //     height: utils.SCREENHEIGHT,
+    //     flexDirection: "row",
+    //     justifyContent: "center",
+    //     alignItems: "center",
+    // },
+    // grayText: {
+    //     color: "#ffffff",
+    //     fontSize: 20,
+    //     fontWeight: "500",
+    // }
 });
 
 
 const mapStateToProps = (state) => {
+    const logResult = state.userInfo.logResult
     const netInfo = state.userInfo.netInfo;
     const videoData = state.videoList;
     return {
         videoData,
         netInfo,
+        logResult
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {

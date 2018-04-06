@@ -28,8 +28,10 @@ class TaskScreen extends Component {
     //组件加载完成
     componentWillMount() {
         DeviceEventEmitter.addListener('reloadHomework', () => {
-            //获取试题列表
-            this.GetPaperList(this.state.isShowFinsh);
+            if (this.props.logResult && this.props.logResult !== undefined) {
+                //获取试题列表
+                this.GetPaperList(this.state.isShowFinsh);
+            }
         });
     }
 
@@ -81,7 +83,7 @@ class TaskScreen extends Component {
                         <ScrollView>
                             <View style={styles.contain}>
                                 {
-                                    this.state.dataArr.map((element,i) => {
+                                    this.state.dataArr.map((element, i) => {
                                         const url = element.DownPath;
                                         const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.path === url });
                                         return <VideoCard cardDic={element} key={i} ishome={true} isFinish={this.state.isShowFinsh} isDown={isDown} navigation={this.props.navigation} />
@@ -96,9 +98,11 @@ class TaskScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
+    const logResult=state.userInfo.logResult;
     const videoData = state.videoList;
     return {
         videoData,
+        logResult,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {

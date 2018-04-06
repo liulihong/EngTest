@@ -95,7 +95,8 @@ export const GetCommon = () => {
     return {
         promise : fetchPost(getCommon,{}).then(res=>{
             if(res.ErrorCode!==undefined){
-                alert(utils.findErrorInfo(res));
+                if(this.props.logResult && this.props.logResult!==undefined)
+                    alert(utils.findErrorInfo(res));
             }else {
                 return res;
             }

@@ -1,7 +1,8 @@
 // const hostUrl = 'http://139.196.111.38:8084';
 // const hostUrl = 'http://192.168.12.150:28071';//小英电脑
-const hostUrl = 'http://tsk.eqd.17work.cn';//192.168.12.8
+// const hostUrl = 'http://tsk.eqd.17work.cn';//192.168.12.8
 // const hostUrl = 'http://tsk.demo.17work.cn';//外网测试账号
+const hostUrl = 'http://tsk.17work.com.cn';//外网测试账号
 
 module.exports = {
     hostUrl: hostUrl,

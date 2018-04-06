@@ -66,8 +66,8 @@ const findErrorInfo = (err)=> {
         return "数据不存在";
     if(err.ErrorCode===1003)
         return "会话不存在";
-    if(err.ErrorCode===1004)
-        return "用户尚未点登录";
+    if(err.ErrorCode===1004)//用户尚未点登录
+        return "您已被踢，请退出重新登录";
     if(err.ErrorCode===1005)
         return "频繁发送手机短信";
     if(err.ErrorCode===1006)

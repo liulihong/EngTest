@@ -42,7 +42,7 @@ class MineScreen extends Component{
                                 style={{width:37,height:55}}
                             />
                         </View>
-                        <Text style={styles.userPhone}>{this.props.logResult!==undefined && this.props.logResult.LoginName}</Text>
+                        <Text style={styles.userPhone}>{(this.props.logResult&&this.props.logResult!==undefined) ? this.props.logResult.LoginName : ""}</Text>
                     </ImageBackground>
 
                     <View style={{marginTop:15}}>
