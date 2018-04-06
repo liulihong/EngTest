@@ -107,9 +107,9 @@ export class adressPicker extends Component{
                 </Picker>
             </View>
         }else if(this.props.type===3){//隐藏pickerView
-            alert("picker隐藏");
+            Alert.alert("","picker隐藏");
         }else {//picker未知
-            alert("picker未知");
+            Alert.alert("","picker未知");
         }
     }
 

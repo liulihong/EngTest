@@ -61,18 +61,18 @@ class RegistView extends Component{
     //获取验证码
     getVerCode(){
         if(this.state.userNameText===""){
-            alert("请输入手机号");
+            Alert.alert("","请输入手机号");
             return;
         }
         fetchPost(getCode,{"Key":this.state.userNameText,"VerifyFor":0}).then((res)=>{
             // alert(JSON.stringify(res));
             if(res.success===true){
-                alert("验证码已发出，请注意查收");
+                Alert.alert("","验证码已发出，请注意查收");
             }else {
-                alert(utils.findErrorInfo(res));
+                Alert.alert("",utils.findErrorInfo(res));
             }
         },(error)=>{
-            alert(error);
+            Alert.alert("",error);
         })
     }
 
@@ -81,36 +81,36 @@ class RegistView extends Component{
 
         //检查用户协议
         if(this.state.isAgree===false){
-            alert("请同意用户协议");
+            Alert.alert("","请同意用户协议");
             return;
         }
         //检查必填项
         if(this.state.userNameText===""){
-            alert("用户名不能为空");
+            Alert.alert("","用户名不能为空");
             return;
         }
         if(this.state.verCodeText===""){
-            alert("请输入验证码");
+            Alert.alert("","请输入验证码");
             return;
         }
         if(this.state.passwordText===""){
-            alert("请输入密码");
+            Alert.alert("","请输入密码");
             return;
         }
         if(this.state.passText2===""){
-            alert("请再次输入密码");
+            Alert.alert("","请再次输入密码");
             return;
         }
         if(this.state.passwordText!==this.state.passText2){
-            alert("密码输入不一致");
+            Alert.alert("","密码输入不一致");
             return;
         }
         if(this.state.classObj.ID===""){
-            alert("请选择年级");
+            Alert.alert("","请选择年级");
             return;
         }
         if(this.state.adressObj.ID===""){
-            alert("请选择城市");
+            Alert.alert("","请选择城市");
             return;
         }
 

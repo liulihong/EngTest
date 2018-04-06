@@ -1,5 +1,5 @@
 import React, { Compnents, Component } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image,Alert } from 'react-native';
 import NavBar from '../components/navBar';
 import utils from "../utils";
 import { Modify, getArea } from '../request/requestUrl';
@@ -63,7 +63,7 @@ class MineInfo extends Component {
                 }
             }
         }, (error) => {
-            alert(error);
+            Alert.alert("",error);
         })
     }
 
@@ -74,14 +74,14 @@ class MineInfo extends Component {
                 classObj: tempObj,
             });
             this.props.motifyInfo({Grade:this.state.classObj.ID},()=>{
-                alert("恭喜，修改成功！");
+                Alert.alert("","恭喜，修改成功！");
             })
         }else if(type===2){
             this.setState({
                 adressObj:tempObj,
             });
             this.props.motifyInfo({City:this.state.adressObj.ID},()=>{
-                alert("恭喜，修改成功！");
+                Alert.alert("","恭喜，修改成功！");
             })
         }
         this.setState({
@@ -102,7 +102,7 @@ class MineInfo extends Component {
             this.setState({pickerType: 1,})
         } else if (tag === 5) {//班级
             if (this.props.logResult.Name === null)
-                alert("请先编辑姓名！");
+                Alert.alert("","请先编辑姓名！");
             else
                 this.props.navigation.navigate('JoinClass', { UserID: this.props.logResult.ID });
         }

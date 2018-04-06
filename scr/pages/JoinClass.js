@@ -1,5 +1,5 @@
 import React,{ Compnents, Component } from 'react';
-import { View ,Text, StyleSheet,TouchableOpacity } from 'react-native';
+import { View ,Text, StyleSheet,TouchableOpacity,Alert } from 'react-native';
 import { ValidateTeacher , JoinClass ,GetClass ,QuitClass } from '../request/requestUrl';
 import { fetchPost } from '../request/fetch';
 import NavBar from '../components/navBar';
@@ -59,7 +59,7 @@ export default class LoginScreen extends Component{
     //退出当前班级
     exitClasses(){
         fetchPost(QuitClass,{}).then(()=>{
-            alert("已退出班级")
+            Alert.alert("","已退出班级")
             this.setState({
                 isJoined:false,
                 mineClassInfo:{},
@@ -70,15 +70,15 @@ export default class LoginScreen extends Component{
     //获取班级数据
     getClassData(){
         if(this.state.userNameText===''){
-            alert("请输入老师ID或手机号");
+            Alert.alert("","请输入老师ID或手机号");
             return;
         }
         fetchPost(ValidateTeacher,{Key:this.state.userNameText}).then((res)=>{
             if(res.ErrorCode!==undefined){
-                alert(utils.findErrorInfo(res));
+                Alert.alert("",utils.findErrorInfo(res));
             }else{
                 if(res.Items===undefined || res.Items===null || res.Items.length<=0){
-                    alert("该老师没有班级信息哦\n请检查老师ID或手机号是否正确");
+                    Alert.alert("","该老师没有班级信息哦\n请检查老师ID或手机号是否正确");
                     return;
                 }
                 let classDataArr=[];
@@ -105,18 +105,18 @@ export default class LoginScreen extends Component{
             };
             fetchPost(JoinClass,paramts).then((res)=>{
                 if(res.ErrorCode!==undefined){
-                    alert(utils.findErrorInfo(res));
+                    Alert.alert("",utils.findErrorInfo(res));
                 }else{
                     if(res.Status!==undefined){
                         let Status=(res.Status===0)?"待审核":(res.Status===1)?"审核通过":"审核失败";
-                        alert( "申请结果：" + Status );
+                        Alert.alert("", "申请结果：" + Status );
                     }else{
-                        alert(JSON.stringify(res));
+                        Alert.alert("",JSON.stringify(res));
                     }
                 }
             });
         }else{
-            alert("请先选择班级");
+            Alert.alert("","请先选择班级");
         }
         
     }

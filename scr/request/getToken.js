@@ -2,7 +2,7 @@ import { COOKIE, ERROR,LOGIN } from '../store/actionTypes';
 import { fetchPost, setCookie } from "../request/fetch";
 import { getCookie } from "../request/requestUrl";
 import utils from  '../utils';
-import { AsyncStorage } from "react-native";
+import { AsyncStorage,Alert } from "react-native";
 import SplashScreen from "rn-splash-screen";
 
 
@@ -17,7 +17,7 @@ export default (store, callback) => {
                 "LastSessionID": token,
             }).then(res => {
                 if(res.ErrorCode!==undefined){
-                    alert(utils.findErrorInfo(res));
+                    Alert.alert("",utils.findErrorInfo(res));
                 }
 
                 callback({hasToken:res.SessionID,isLogin:(res.CurrentUser!==null)});

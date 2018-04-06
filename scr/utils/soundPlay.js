@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import utils from './index';
-import Sound from "react-native-sound"
+import Sound from "react-native-sound";
+import { Alert } from "react-native";
 
 let sound=null;
 
@@ -39,7 +40,7 @@ module.exports = class MySound{
                 loadedTime++;
                 if(loadedTime>200){
                     clearInterval(timeInteval);
-                    alert("加载音频文件失败" + path);
+                    Alert.alert("","加载音频文件失败" + path);
                 }
             }
         }, 10);

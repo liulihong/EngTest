@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { NetInfoProvider } from 'react-native-netinfo';
 import { PersistGate } from "redux-persist/es/integration/react";
-import { Image, Text } from "react-native";
+import { Image, Text ,Alert } from "react-native";
 import configureStore from './store';
 import Router from './pages/router'
 import getToken from './request/getToken'
@@ -40,7 +40,7 @@ export default class App extends Component {
                     <NetInfoProvider
                         onChange={({ isConnected, connectionInfo }) => {
                             if(!isConnected){
-                                alert("网络不可用\n请检查网络");
+                                Alert.alert('','网络不可用，请检查网络');
                             }
                             store.dispatch({type: NETINFO , result: {isConnected,connectionInfo}})
                         }}

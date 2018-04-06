@@ -1,5 +1,5 @@
 import React, { Compnents, Component } from 'react';
-import { View, Text, StyleSheet, TextInput,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput,TouchableOpacity,Alert } from 'react-native';
 import NavBar from '../components/navBar';
 import utils from "../utils";
 import { Report as report } from '../request/requestUrl';
@@ -18,7 +18,7 @@ export default class Report extends Component {
 
     submitReport(){
         if(this.state.text===""){
-            alert("您还没有输入哦！");
+            Alert.alert("","您还没有输入哦！");
             return;
         }
         let paramts={
@@ -27,10 +27,10 @@ export default class Report extends Component {
         };
         fetchPost(report,paramts).then((result)=>{
             if(result.success===true){
-                alert("意见已提交,你还可以继续提交哦!");
+                Alert.alert("","意见已提交,你还可以继续提交哦!");
                 this.setState({text:"",});
             }else{
-                alert(utils.findErrorInfo(result));
+                Alert.alert("",utils.findErrorInfo(result));
             }
             
         })

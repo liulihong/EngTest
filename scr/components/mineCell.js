@@ -34,7 +34,7 @@ class mineCell extends Component {
             this.CheckVersion();
         } else if (this.props.title === "我的班级") {
             if(this.props.store.userInfo.logResult.Name===null)
-                alert("请先编辑姓名！");
+                Alert.alert("","请先编辑姓名！");
             else
                 this.props.navigation.navigate('JoinClass', { UserID: this.props.store.userInfo.logResult.ID });
         } else if (this.props.title === "意见建议") {
@@ -42,7 +42,7 @@ class mineCell extends Component {
         } else if (this.props.title === "修改资料") {
             this.props.navigation.navigate('MineInfo',{ Name: this.props.store.userInfo.logResult.Name });
         }else {
-            alert("功能暂未开通");
+            Alert.alert("","功能暂未开通");
         }
     }
 
@@ -72,7 +72,7 @@ class mineCell extends Component {
                     ]
                 );
             } else {
-                alert("当前为最新版本");
+                Alert.alert("","当前为最新版本");
             }
         })
     }

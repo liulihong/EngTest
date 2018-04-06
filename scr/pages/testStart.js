@@ -97,7 +97,7 @@ class TestStart extends Component {
         this.continueTest = this.continueTest.bind(this);
         this.showBlowInfo = this.showBlowInfo.bind(this);
         this.newStartExamLog = this.newStartExamLog.bind(this);
-        this.prepareContinue=this.prepareContinue.bind(this);
+        this.prepareContinue = this.prepareContinue.bind(this);
 
     }
 
@@ -160,10 +160,10 @@ class TestStart extends Component {
 
     //开始考试记录
     newStartExamLog(callBack) {
-        if(this.props.navigation.state.params.isFinish===true)
-                alert("作业已完成，现在为模拟练习");
+        if (this.props.navigation.state.params.isFinish === true)
+            Alert.alert("", "作业已完成，现在为模拟练习");
 
-        let taskId=(this.props.navigation.state.params.isFinish===true)?"":this.props.taskId;
+        let taskId = (this.props.navigation.state.params.isFinish === true) ? "" : this.props.taskId;
         let params = {
             "PaperID": this.props.navigation.state.params.ID,
             "UserID": this.props.UserID,
@@ -173,13 +173,13 @@ class TestStart extends Component {
         fetchPost(startExam, params).then((result) => {
             // alert("开始考试记录:"+JSON.stringify(result));
             //result  LogID,TaskLogID
-            let ishome = this.props.navigation.state.params.ishome==true && this.props.navigation.state.params.isFinish===false;
+            let ishome = this.props.navigation.state.params.ishome == true && this.props.navigation.state.params.isFinish === false;
             let taskId = this.props.taskId;
 
             let examInfo = { ...result, taskId, ishome }
             callBack(examInfo);
         }, (error) => {
-            alert(error);
+            Alert.alert("", error);
         })
     }
 
@@ -189,7 +189,7 @@ class TestStart extends Component {
 
         let ishome = this.props.navigation.state.params.ishome;
 
-        if (this.props.answerRecord.ishome !== ishome && (this.props.navigation.state.params.isFinish!==true) ) {//存储的类型和当前进入的类型比较 并且不是已完成
+        if (this.props.answerRecord.ishome !== ishome && (this.props.navigation.state.params.isFinish !== true)) {//存储的类型和当前进入的类型比较 并且不是已完成
             if (ishome) {//当前是作业 上次记录是模拟
                 Alert.alert('提示', '当前是作业,继续上次模拟？',
                     [
@@ -205,10 +205,10 @@ class TestStart extends Component {
                     ]
                 );
             }
-        }else{
-            if(this.props.navigation.state.params.isFinish===true)
-                alert("作业已完成，现在为模拟练习");
-            
+        } else {
+            if (this.props.navigation.state.params.isFinish === true)
+                Alert.alert("", "作业已完成，现在为模拟练习");
+
             this.continueTest();
         }
     }
@@ -247,7 +247,7 @@ class TestStart extends Component {
                     this.props.navigation.navigate('AnswerScreen');
                 })
             } else {
-                alert("亲，您上次交了白卷哦！")
+                Alert.alert("","亲，您上次交了白卷哦！")
             }
         })
     }

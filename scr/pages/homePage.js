@@ -1,5 +1,5 @@
 import React, { Compnents, Component } from 'react';
-import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, DeviceEventEmitter } from 'react-native';
+import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, DeviceEventEmitter,Alert } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import VideoCard from '../components/videoCard';
 import utils from '../utils'
@@ -50,7 +50,7 @@ class HomeScreen extends Component {
         if (!isDown && !loading && !this.state.isLoading) {
             //检查网络
             if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
-                alert("请检查网络！");
+                Alert.alert("","请检查网络！");
                 return;
             }
             //流量提醒

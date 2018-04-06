@@ -1,5 +1,5 @@
 import React, { Compnents, Component } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity,Alert } from 'react-native';
 import NavBar from '../components/navBar';
 import utils from "../utils";
 import { Modify } from '../request/requestUrl';
@@ -48,7 +48,7 @@ class MineTxtInfo extends Component {
 
     submitInfo() {
         if (this.state.text === "") {
-            alert(this.state.placeholder);
+            Alert.alert("",this.state.placeholder);
             return;
         }
         let paramts={};
@@ -60,7 +60,7 @@ class MineTxtInfo extends Component {
             paramts={ School: this.state.text };
         }
         this.props.motifyInfo(paramts,()=>{
-            alert("恭喜，修改成功！");
+            Alert.alert("","恭喜，修改成功！");
         })
     }
 

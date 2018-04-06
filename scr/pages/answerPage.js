@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, ImageBackground } from 'react-native';
+import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, ImageBackground ,Alert } from 'react-native';
 import { downFaild, GetCommon, getMovieList, saveDownUrl, startDown } from "../store/actions";
 import { connect } from "react-redux";
 import AnswerCom from '../components/answerCom';
@@ -59,7 +59,7 @@ class AnswerScreen extends Component {
             });
             console.log(tempObj);
         }, (error) => {
-            alert("11" + utils.findErrorInfo(error));
+            Alert.alert("",utils.findErrorInfo(error));
         })
     }
 

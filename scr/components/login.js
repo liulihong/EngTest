@@ -31,6 +31,16 @@ class LoginView extends Component{
 
 
     loginBtn(){
+
+        if(this.state.userNameText===""){
+            Alert.alert("","请输入用户名或邮箱");
+            return;
+        }
+        if(this.state.PwdText===""){
+            Alert.alert("","请输入密码");
+            return;
+        }
+
         this.props.login({
             LoginName:this.state.userNameText,
             LoginPwd:this.state.PwdText
@@ -53,7 +63,7 @@ class LoginView extends Component{
         if(type===1){//注册账号
             this.props.navigation.navigate('Regist');
         }else if(type===2){//忘记密码
-            alert("忘记密码功能暂未开通");
+            Alert.alert("","忘记密码功能暂未开通");
         }
     }
 

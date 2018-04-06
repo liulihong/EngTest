@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import utils from './index';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
-import { Platform,PermissionsAndroid } from "react-native";
+import { Platform,PermissionsAndroid,Alert } from "react-native";
 
 var RNFS = require('react-native-fs');
 
@@ -67,13 +67,13 @@ module.exports = {
     async startRecord(newAudioPath) {
         // 如果正在录音
         if (recording) {
-            alert('正在录音中!');
+            // alert('正在录音中!');
             return;
         }
         //如果没有获取权限
         if (!hasPermission) {
             // this.getPermission(newAudioPath);
-            alert('没有获取录音权限!');
+            Alert.alert("",'没有获取录音权限!');
             return;
         }
 
@@ -113,7 +113,7 @@ module.exports = {
 
     async pauseRecord() {
         if (!recording) {
-            alert('没有录音, 无需停止!');
+            Alert.alert("",'没有录音, 无需停止!');
             return;
         }
         stoppedRecording=true;

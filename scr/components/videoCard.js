@@ -27,7 +27,7 @@ class VideoCard extends Component {
 
         //检查网络
         if (this.props.netInfo!==undefined && this.props.netInfo.isConnected === false) {
-            alert("请检查网络！");
+            Alert.alert("","请检查网络！");
             return ;
         }
         //流量提醒
@@ -58,7 +58,7 @@ class VideoCard extends Component {
                 this.props.startDown();
 
             } else if (obj.status === "faild") {
-                alert(this.props.cardDic.SecTitle + "下载失败！");
+                Alert.alert("",this.props.cardDic.SecTitle + "下载失败！");
                 this.props.downFaild();
                 this.setState({
                     clickCardID: ""
@@ -82,7 +82,7 @@ class VideoCard extends Component {
             let ishome=this.props.ishome;
             this.props.navigation.navigate('TestStart', { ID: this.props.cardDic.ID, ishome , isFinish:this.props.isFinish });
         } else {
-            alert("请下载试题包");
+            Alert.alert("","请下载试题包");
         }
     }
 
