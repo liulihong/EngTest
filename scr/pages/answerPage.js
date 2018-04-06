@@ -28,11 +28,11 @@ class AnswerScreen extends Component {
     }
 
     componentDidMount(){
-        if(this.state.serverAnswer==={}||this.state.serverAnswer.Status!==2){
-            getScoreTnterval=setInterval(()=>{
-                this.getExamAnserInfo();
-            },1000*60)
-        }
+        // if(this.state.serverAnswer==={}||this.state.serverAnswer.Status!==2){
+        //     getScoreTnterval=setInterval(()=>{
+        //         this.getExamAnserInfo();
+        //     },1000*60)
+        // }
     }
     componentWillUnmount(){
         clearInterval(getScoreTnterval);
@@ -50,13 +50,14 @@ class AnswerScreen extends Component {
                         totalScore: 0,
                         LogList: [],
                     }
-                tempObj[ansObj.Type].totalScore += ansObj.Score;
+                tempObj[ansObj.Type].totalScore = ansObj.Score + tempObj[ansObj.Type].totalScore;
                 tempObj[ansObj.Type].LogList.push(ansObj);
             }
             this.setState({
                 serverAnswer: result,
                 resetAnswer: tempObj,
             });
+            // debugger
             console.log(tempObj);
         }, (error) => {
             Alert.alert("",utils.findErrorInfo(error));
@@ -91,7 +92,7 @@ class AnswerScreen extends Component {
                         const isSelect = true;
                         const num = i + 1;
                         const title = typeEnum[element.Type];
-                        const totalScore = (this.state.resetAnswer[element.Type] !== undefined) ? this.state.resetAnswer[element.Type].totalScore : 0;
+                        const totalScore = (this.state.resetAnswer[element.Type] !== undefined) ? this.state.resetAnswer[element.Type].totalScore : 0.00;
                         const sResetAnswer = (this.state.resetAnswer[element.Type] !== undefined) ? this.state.resetAnswer[element.Type] : {};
 
                         let tempScore = 0;//计算大题题目总分
@@ -101,7 +102,7 @@ class AnswerScreen extends Component {
                             })
                         })
                         // alert(JSON.stringify(sResetAnswer));
-                        let newTitle = "   " + title + " ( " + totalScore + " / " + tempScore + " )";
+                        let newTitle = "   " + title + " ( " + totalScore.toFixed(2) + " / " + tempScore.toFixed(2) + " )";
                         let examPath = this.props.currentExamPath;
                         return (
                             <TouchableOpacity key={element.Type} onPress={() => {

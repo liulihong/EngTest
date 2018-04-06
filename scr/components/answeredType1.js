@@ -52,7 +52,7 @@ export default class AnsweredType1 extends Component {
         let serverAnswer = this.props.serverAnswer;
         let examPath = this.props.examPath;
         let oriScore = this.props.totalScore;
-        let totalScore = ((serverAnswer.totalScore)===undefined ? 0 : serverAnswer.totalScore) + "分 / " + oriScore + "分";
+        let totalScore = ((serverAnswer.totalScore)===undefined ? "0.00" : serverAnswer.totalScore.toFixed(2)) + "分 / " + oriScore.toFixed(2) + "分";
         let topObj0 = groupObj.ExamTopics[0];
         return (
             <View style={styles.contain}>

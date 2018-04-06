@@ -52,7 +52,7 @@ export default class AnsweredType2 extends Component {
         let localAnswer = this.props.localAnswer;
         let serverAnswer = this.props.serverAnswer;
         let examPath = this.props.examPath;
-        let totalScore = ((serverAnswer.totalScore) === undefined ? 0 : serverAnswer.totalScore) + "分 / " + this.props.totalScore + "分";
+        let totalScore = ((serverAnswer.totalScore) === undefined ? "0.00" : serverAnswer.totalScore.toFixed(2)) + "分 / " + this.props.totalScore.toFixed(2) + "分";
         let topObj0 = groupObj.ExamTopics[0];
         let DescArr = [];
         return (
@@ -114,6 +114,7 @@ export default class AnsweredType2 extends Component {
 
                                         let isCorrect = false;
                                         let scoreStr = "(未作答)";
+                                        // alert(JSON.stringify(serverAnswer.LogList));
                                         if (serverAnswer !== undefined && serverAnswer.LogList !== undefined && serverAnswer.LogList.length > 0) {
                                             for (let i = 0; i < serverAnswer.LogList.length; i++) {
                                                 let answerInfo = serverAnswer.LogList[i];
