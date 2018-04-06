@@ -16,6 +16,7 @@ import WebViewScreen from "./protocalPage";
 import JoinClass from "./JoinClass";
 import Report from "./report";
 import MineInfo from "./mofifyMineInfo";
+import MineTxtInfo from "./motifyTxtInfo";
 
 
 // const color  = {
@@ -206,6 +207,12 @@ const Navigator = StackNavigator(
             navigationOptions: {
                 header: null,
             }
+        },
+        MineTxtInfo: {
+            screen: MineTxtInfo,
+            navigationOptions: {
+                header: null,
+            }
         }
 	}
 );
@@ -280,6 +287,12 @@ const LogRouter = StackNavigator(
         },
         MineInfo: {
             screen: MineInfo,
+            navigationOptions: {
+                header: null,
+            }
+        },
+        MineTxtInfo: {
+            screen: MineTxtInfo,
             navigationOptions: {
                 header: null,
             }

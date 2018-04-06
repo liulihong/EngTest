@@ -12,7 +12,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import <RCTSplashScreen.h>
-#import "IQKeyboardManager.h"
+#import "KeyboardManager.h"
 
 @implementation AppDelegate
 

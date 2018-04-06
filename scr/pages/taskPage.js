@@ -43,11 +43,11 @@ class TaskScreen extends Component {
         let Status = (isShowFinsh === true) ? 2 : 0;
         fetchPost(GetHomework, { Status: Status }).then((res) => {
             // alert("1111" + JSON.stringify(res));
-
+            // debugger
             if (res.PaperList !== undefined) {
                 dataArr = res.PaperList;
                 this.setState({
-                    dataArr: dataArr,
+                    dataArr,
                 });
             }
         }, (error) => {
@@ -81,10 +81,10 @@ class TaskScreen extends Component {
                         <ScrollView>
                             <View style={styles.contain}>
                                 {
-                                    this.state.dataArr.map(element => {
+                                    this.state.dataArr.map((element,i) => {
                                         const url = element.DownPath;
                                         const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.path === url });
-                                        return <VideoCard cardDic={element} key={element.ID} ishome={true} isFinish={this.state.isShowFinsh} isDown={isDown} navigation={this.props.navigation} />
+                                        return <VideoCard cardDic={element} key={i} ishome={true} isFinish={this.state.isShowFinsh} isDown={isDown} navigation={this.props.navigation} />
                                     })
                                 }
                             </View>

@@ -54,7 +54,6 @@ class VideoCard extends Component {
         // let url = hostUrl + "/" + path;
    
         download(path, docName, (obj) => {
-            debugger
             if (obj.status === "start") {
                 this.props.startDown();
 

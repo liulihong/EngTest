@@ -46,7 +46,7 @@ export const motifyMyInfo = (paramts,callBack) => {
             if(result.ErrorCode!==undefined){
                 alert(utils.findErrorInfo(result));
             }else {
-                alert(JSON.stringify(result));
+                // alert(JSON.stringify(result));
                 callBack();
             }
             return result;
