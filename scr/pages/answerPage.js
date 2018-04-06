@@ -10,6 +10,9 @@ import ProgressButton from "../components/progressButton";
 import utils from '../utils';
 
 const typeEnum = { 1: '听后选择', 2: '听后回答', 3: '听后记录', 4: '转述信息', 5: '短文朗读', 10: '听后选图' };
+
+let getScoreTnterval;
+
 class AnswerScreen extends Component {
 
     constructor(props) {
@@ -22,6 +25,17 @@ class AnswerScreen extends Component {
         }
 
         this.getExamAnserInfo();
+    }
+
+    componentDidMount(){
+        if(this.state.serverAnswer==={}||this.state.serverAnswer.Status!==2){
+            getScoreTnterval=setInterval(()=>{
+                this.getExamAnserInfo();
+            },1000*60)
+        }
+    }
+    componentWillUnmount(){
+        clearInterval(getScoreTnterval);
     }
 
     getExamAnserInfo() {

@@ -39,11 +39,14 @@ export class adressPicker extends Component{
         }
     }
 
-    btnClick(){
+    btnClick(isSure){
         setTimeout(()=>{
-            this.props.setAdressID(this.props.type,this.state.tempAdressObj2);
+            if(isSure){
+                this.props.setAdressID(this.props.type,this.state.tempAdressObj2);
+            }else{
+                this.props.setAdressID(3,{});
+            }
         },100)
-
     }
 
     getPickerContent(){
@@ -119,11 +122,11 @@ export class adressPicker extends Component{
                     <View style={styles.content}>
 
                         <View style={styles.titleView}>
-                            <TouchableOpacity style={styles.titleBtn} onPress={()=>this.btnClick()}>
+                            <TouchableOpacity style={styles.titleBtn} onPress={()=>this.btnClick(false)}>
                                 <Text style={styles.btnTxt}>{"取消"}</Text>
                             </TouchableOpacity>
                             <Text style={styles.titleTxt} >{title}</Text>
-                            <TouchableOpacity style={styles.titleBtn} onPress={()=>this.btnClick()}>
+                            <TouchableOpacity style={styles.titleBtn} onPress={()=>this.btnClick(true)}>
                                 <Text style={styles.btnTxt}>{"确定"}</Text>
                             </TouchableOpacity>
                         </View>

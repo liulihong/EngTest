@@ -87,10 +87,13 @@ class VideoTest extends Component{
     //如果不是读标题  内容展示区
     getContent(){
         if(this.props.topInfo.currLevel==="finished"){
-            if(this.props.answers===undefined){
-                return <Text>{"亲！ 您交了白卷。。。"}</Text>
-            }
-            return <AnswerCom answers={this.props.answers} />
+            this.props.navigation.goBack();
+            // this.props.navigation.navigate('AnswerScreen');
+            // if(this.props.answers===undefined){
+            //     return <Text>{"亲！ 您交了白卷。。。"}</Text>
+            // }
+            // return <Text>{"您已交卷了哦!"}</Text>
+            // return <AnswerCom answers={this.props.answers} />
         }else if(this.props.isHaveContent){
             return (
                 <View  style={{padding:5}}>

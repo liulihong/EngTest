@@ -212,8 +212,8 @@ class AudioSoundConCom extends Component {
                 let TaskLogID = this.props.answerRecord.TaskLogID;
                 // alert("LogID" + JSON.stringify(LogID) + "\nTaskLogID" + JSON.stringify(TaskLogID));
                 fetchPost(endExam, { LogID, TaskLogID }).then((res) => { 
-                    this.props.navigation.goBack();
-                    alert("考试完成，静待考试结果吧");
+                    // this.props.navigation.goBack();
+                    // alert("考试完成，静待考试结果吧");
                 }, (error) => {
                     alert("交卷错误:  " + JSON.stringify(error));
                 })
@@ -312,8 +312,8 @@ class AudioSoundConCom extends Component {
             let isLoaded = Sound1.soundIsLoaded();
             if (isLoaded) {
                 Sound1.soundGetCurrentTime((time, isPlaying) => {
-                    let time1 = time.toFixed(2)
-                    let time2 = Sound1.soundDuring().toFixed(2);
+                    let time1 = time.toFixed(0)
+                    let time2 = Sound1.soundDuring().toFixed(0);
                     let currTime = time1 + ' / ' + time2;
                     this.props.reloadCurrTime(currTime);
 

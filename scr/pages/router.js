@@ -27,24 +27,38 @@ import MineTxtInfo from "./motifyTxtInfo";
 //     background1: '#dcdcdc',
 // };
 
+let loadtimeInterval;
+let times=0;
+
 export default class MainRoute extends Component {
     constructor() {
         super()
         this.state = {
             isloading: false,
+            loadtxt: "努力加载中 • • •",
         }
     }
 
     componentDidMount() {
         DeviceEventEmitter.addListener('startDownloadSound', () => {
+            clearInterval(loadtimeInterval);
             this.setState({
                 isloading: true,
             });
+            times=0;
+            let arr=["努力加载中 •","努力加载中 • •","努力加载中 • • •"];
+            loadtimeInterval=setInterval(()=>{
+                this.setState({
+                    loadtxt: arr[times%3],
+                });
+                times++;
+            },500)
         })
         DeviceEventEmitter.addListener('endDownloadSound', () => {
             this.setState({
                 isloading: false,
             });
+            clearInterval(timeInterval);
         })
     }
 
@@ -66,7 +80,7 @@ export default class MainRoute extends Component {
                         color: "#ffffff",
                         fontSize: 20,
                         fontWeight: "500",
-                    }}>{"努力加载中 • • •"}</Text>
+                    }}>{this.state.loadtxt}</Text>
                 </View> : <View key={2}/>
 
             ]

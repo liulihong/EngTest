@@ -165,17 +165,7 @@ export default class AnsweredType4 extends Component {
                                                 }
                                                 <Text style={[styles.specialTxt, styles.correctScore]} >{"参考答案："}</Text>
                                                 <Text style={[styles.specialTxt, styles.correctScore]} >{minObj.ExampleContent}</Text>
-                                                <Text style={[styles.specialTxt, styles.correctScore]} >{"参考答案关键词："}</Text>
-                                                {
-                                                    minObj.ExampleAnswer.map((selObj, k) => {
-                                                        {/* 每个参考答案 */ }
-                                                        return (
-                                                            <Text key={k} style={[styles.specialTxt, styles.correctScore]} >
-                                                                {". " + selObj}
-                                                            </Text>
-                                                        )
-                                                    })
-                                                }
+                                                
                                             </View>
                                         )
                                     })
