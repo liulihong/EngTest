@@ -11,6 +11,7 @@ export const setCookie = (id) => {
     sesstionId = 'sid='+ id;
 }
 const response = (responseObj) => {
+    // alert(JSON.stringify(responseObj));
     const obj = responseObj.clone();
     const str = JSON.stringify(obj.headers);
     if (str.includes('/json;')) return obj.json();

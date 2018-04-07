@@ -63,7 +63,8 @@ class LoginView extends Component{
         if(type===1){//注册账号
             this.props.navigation.navigate('Regist');
         }else if(type===2){//忘记密码
-            Alert.alert("","忘记密码功能暂未开通");
+            // Alert.alert("","忘记密码功能暂未开通");
+            this.props.navigation.navigate('PwdScreen');
         }
     }
 

@@ -60,7 +60,7 @@ export const LogOut = (callBack) => {
     return {
         promise: fetchPost(logOut, {}).then(() => {
             callBack();
-            return {};
+            return null;
         }),
         types: ['', LOGIN, '']
     }

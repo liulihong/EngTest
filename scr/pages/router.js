@@ -17,7 +17,7 @@ import JoinClass from "./JoinClass";
 import Report from "./report";
 import MineInfo from "./mofifyMineInfo";
 import MineTxtInfo from "./motifyTxtInfo";
-
+import PwdScreen from "./forgetPwdPage";
 
 // const color  = {
 //     theme: '#12b7f5',
@@ -266,7 +266,13 @@ const Navigator = StackNavigator(
             navigationOptions: {
                 header: null,
             }
-        }
+        },
+        PwdScreen: {
+            screen: PwdScreen,
+            navigationOptions: {
+                header: null,
+            }
+        },
     }
 );
 
@@ -349,6 +355,12 @@ const LogRouter = StackNavigator(
             navigationOptions: {
                 header: null,
             }
-        }
+        },
+        PwdScreen: {
+            screen: PwdScreen,
+            navigationOptions: {
+                header: null,
+            }
+        },
     },
 );
