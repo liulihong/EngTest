@@ -15,6 +15,7 @@ import {
     SAVEANSWERS,
     SAVEANSDIC,
     GETANSWERBLOW,
+    DOWNLOADINFO,
 } from './actionTypes';
 import { Alert } from "react-native";
 import { fetchGet, fetchPost } from "../request/fetch";
@@ -65,18 +66,8 @@ export const LogOut = (callBack) => {
         types: ['', LOGIN, '']
     }
 }
-// export const GetCode = (obj,callBack) => {
-//     return {
-//         promise : fetchPost(getCode,obj).then(() =>{
-//             callBack();
-//             return {};
-//         }),
-//         // types: ['',LOGIN,'']
-//     }
-// }
-export const Regist = (obj, callBack) => {
 
-}
+
 
 export const getMovieList = () => {
     return {
@@ -108,15 +99,19 @@ export const GetCommon = () => {
     }
 }
 
-export const startDown = (result) => {
-    return { result, type: STARTDOWN };
+
+export const saveDownInfo = (result) => {
+    return { result, type: DOWNLOADINFO };
 }
 export const saveDownUrl = (result) => {
     return { result, type: SAVEDOWNURL };
 }
-export const downFaild = (result) => {
-    return { result, type: DOWNFAILD };
-}
+// export const startDown = (result) => {
+//     return { result, type: STARTDOWN };
+// }
+// export const downFaild = (result) => {
+//     return { result, type: DOWNFAILD };
+// }
 
 export const saveExamPath = (url, taskId) => {
 

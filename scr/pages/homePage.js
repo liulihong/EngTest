@@ -1,11 +1,11 @@
 import React, { Compnents, Component } from 'react';
-import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, DeviceEventEmitter,Alert } from 'react-native';
+import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, DeviceEventEmitter, Alert } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import VideoCard from '../components/videoCard';
 import utils from '../utils'
 import NavBar from '../components/navBar';
 import { connect } from "react-redux";
-import { downFaild, GetCommon, getMovieList, saveDownUrl, startDown } from "../store/actions";
+import { GetCommon, getMovieList, saveDownUrl, saveDownInfo } from "../store/actions";
 import download from "../utils/download";
 import { hostUrl } from "../request/requestUrl";
 
@@ -26,7 +26,7 @@ class HomeScreen extends Component {
     componentDidMount() {
         DeviceEventEmitter.addListener('reloadVideoList', () => {
             setTimeout(() => {
-                if (this.props.logResult && this.props.logResult !== undefined){
+                if (this.props.logResult && this.props.logResult !== undefined) {
                     this.props.GetPaperList();//获取试题列表
                     this.props.getCommon();//获取下载共用音频URL
                 }
@@ -38,19 +38,20 @@ class HomeScreen extends Component {
         let isDown = false;
         if (nextProps.videoData.downedUrls && nextProps.videoData.downedUrls.length > 0) {
             isDown = nextProps.videoData.downedUrls.some((v) => { return v.path === nextProps.videoData.getCommenUrl });
+            if (isDown) {//如果已经下载过的话  当前下载地址和下一个下载地址是否一样 不一样的话应该重新下载
+                isDown = nextProps.videoData.getCommenUrl === this.props.videoData.getCommenUrl;
+            }
         }
-        if (isDown) {//如果已经下载过的话  当前下载地址和下一个下载地址是否一样 不一样的话应该重新下载
-            isDown = nextProps.videoData.getCommenUrl === this.props.videoData.getCommenUrl;
-        }
-        let loading = nextProps.videoData.downLoading === true;
-
+        
+        // let loading = nextProps.videoData.downLoadInfo!==null && nextProps.videoData.downLoadInfo!==undefined && nextProps.videoData.downLoadInfo.status === "downloading";
         let getCommenUrl = nextProps.videoData.getCommenUrl;
 
+
         //判断是否下载过
-        if (!isDown && !loading && !this.state.isLoading) {
+        if (!isDown && this.state.isLoading===false) {
             //检查网络
             if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
-                Alert.alert("","请检查网络！");
+                Alert.alert("", "请检查网络！");
                 return;
             }
             //流量提醒
@@ -74,21 +75,21 @@ class HomeScreen extends Component {
         DeviceEventEmitter.emit('startDownloadSound');
         //得到的URL去下载共用音频
         download(getCommenUrl, "common", (obj) => {
-            if (obj.status === "start") {
-                this.props.startDown();
-            } else if (obj.status === "faild") {
-                DeviceEventEmitter.emit('endDownloadSound');
-                this.props.downFaild();
-                this.setState({
-                    isLoading: false,
-                });
-            } else if (obj.status === "success") {
+
+            if (obj.status === "success") {
                 DeviceEventEmitter.emit('endDownloadSound');
                 this.props.saveUrl(obj);
                 this.setState({
                     isLoading: false,
                 });
+            } else if (obj.status === "faild") {
+                DeviceEventEmitter.emit('endDownloadSound');
+                this.setState({
+                    isLoading: false,
+                });
             }
+            this.props.saveDownInfo(obj);
+
         }).download();
     }
 
@@ -169,12 +170,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveUrl: (obj) => {
             dispatch(saveDownUrl(obj))
         },
-        startDown: () => {
-            dispatch(startDown({}))
-        },
-        downFaild: () => {
-            dispatch(downFaild({}))
-        },
+        saveDownInfo: (obj) => {
+            dispatch(saveDownInfo(obj));
+        }
+        // startDown: () => {
+        //     dispatch(startDown({}))
+        // },
+        // downFaild: () => {
+        //     dispatch(downFaild({}))
+        // },
     }
 };
 

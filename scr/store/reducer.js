@@ -18,22 +18,23 @@ import {
     SAVEANSDIC,
     GETANSWERBLOW,
     NETINFO,
+    DOWNLOADINFO,
 } from "./actionTypes";
 
 
 export const userInfo = (state = {}, action) => {
     switch (action.type) {
 
-        case COOKIE: 
+        case COOKIE:
             return {
                 ...state,
                 cookie: action.result,
-                logResult:action.result.CurrentUser,
+                logResult: action.result.CurrentUser,
             }
         case LOGIN:
             return {
                 ...state,
-                logResult:action.result
+                logResult: action.result
                 // ...action.result
             }
         case RESETPWD:
@@ -44,7 +45,7 @@ export const userInfo = (state = {}, action) => {
         case NETINFO:
             return {
                 ...state,
-                netInfo:action.result
+                netInfo: action.result
             }
         default:
             return state
@@ -53,11 +54,11 @@ export const userInfo = (state = {}, action) => {
 
 
 export const error = (state = {}, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case ERROR:
             return {
                 ...state,
-                errorObj:action.result
+                errorObj: action.result
             }
 
         default:
@@ -89,7 +90,7 @@ export const error = (state = {}, action) => {
 // }
 
 //这里每次都赋值空数组了
-export const videoList = (state = {downedUrls: []}, action) => {
+export const videoList = (state = { downedUrls: [] }, action) => {
     switch (action.type) {
         case PAPERLIST:
             return {
@@ -105,58 +106,64 @@ export const videoList = (state = {downedUrls: []}, action) => {
         case ERROR:
             return {
                 ...state,
-                errorObj:action.result,
+                errorObj: action.result,
                 loading: false
             }
         case GETCOMMON:
             return {
                 ...state,
-                getCommenUrl:action.result.Uri,
+                getCommenUrl: action.result.Uri,
             }
-        case STARTDOWN:
-            return {
-                ...state,
-                downLoading:true,
-            }
+        // case STARTDOWN:
+        //     return {
+        //         ...state,
+        //         downLoading: true,
+        //     }
         case SAVEDOWNURL:
-            let downUrls=state.downedUrls ? state.downedUrls : [];
+            let downUrls = state.downedUrls ? state.downedUrls : [];
             return {
                 ...state,
-                downLoading:false,
-                downedUrls:[
+                // downLoading: false,
+                downedUrls: [
                     ...downUrls,
                     action.result
                 ],
+                downLoadInfo: null,
             }
-        case DOWNFAILD:
+        // case DOWNFAILD:
+        //     return {
+        //         ...state,
+        //         downLoading: false,
+        //     }
+        case DOWNLOADINFO:
             return {
                 ...state,
-                downLoading:false,
+                downLoadInfo: action.result,
             }
         default:
             return state
     }
 }
 
-export const detail = (state = {answers: {}}, action) => {
+export const detail = (state = { answers: {} }, action) => {
     switch (action.type) {
         case CURRENTEXAMPATH:
             return {
-                currentExamPath:action.result.url,
-                taskId:action.result.taskId,
+                currentExamPath: action.result.url,
+                taskId: action.result.taskId,
             }
         case GETEXAMDETAIL:
             return {
-                currentExamPath:state.currentExamPath,
-                taskId:state.taskId,
-                examContent:action.result,
+                currentExamPath: state.currentExamPath,
+                taskId: state.taskId,
+                examContent: action.result,
             }
         case GETTOPICINFO:
             return {
-                currentExamPath:state.currentExamPath,
-                taskId:state.taskId,
-                examContent:state.examContent,
-                topicInfo:action.result,
+                currentExamPath: state.currentExamPath,
+                taskId: state.taskId,
+                examContent: state.examContent,
+                topicInfo: action.result,
             }
         case GETNEXTSTEPTOPIC:
             return {
@@ -166,13 +173,13 @@ export const detail = (state = {answers: {}}, action) => {
         case SAVEPLAYTIME:
             return {
                 ...state,
-                currPlayTime:action.result,
+                currPlayTime: action.result,
             }
         case SAVEANSWERS:
-            let typeObj=state.answers ? state.answers[action.result.Type] : {}
+            let typeObj = state.answers ? state.answers[action.result.Type] : {}
             return {
                 ...state,
-                answers:{
+                answers: {
                     ...state.answers,
                     [action.result.Type]: {
                         ...typeObj,
@@ -191,7 +198,7 @@ export const detail = (state = {answers: {}}, action) => {
         case SAVEANSDIC:
             return {
                 ...state,
-                answerRecord:action.result,
+                answerRecord: action.result,
             }
         default:
             return state

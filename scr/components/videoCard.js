@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet, ImageBackground, TouchableOpacity, Aler
 import utils from '../utils';
 import download from '../utils/download';
 import { hostUrl } from '../request/requestUrl';
-import { downFaild, startDown, saveDownUrl, saveExamPath } from "../store/actions";
+import { saveDownInfo , saveDownUrl, saveExamPath } from "../store/actions";
 import { connect } from "react-redux";
 
 class VideoCard extends Component {
@@ -45,6 +45,11 @@ class VideoCard extends Component {
 
     downLoad() {
 
+        if(this.props.downLoadInfo && this.props.downLoadInfo!==undefined && this.props.downLoadInfo.status==="downloading"){
+            Alert.alert("","下载中请稍后");
+            return;
+        }
+        
         const { DownPath: path, ID: docName } = this.props.cardDic;
  
         //加入下载列表
@@ -54,21 +59,39 @@ class VideoCard extends Component {
         // let url = hostUrl + "/" + path;
    
         download(path, docName, (obj) => {
-            if (obj.status === "start") {
-                this.props.startDown();
 
+            this.props.saveDownInfo(obj);
+            if (obj.status === "success") {
+                this.props.saveUrl(obj);
+                this.setState({
+                    clickCardID: "",
+                });
             } else if (obj.status === "faild") {
                 Alert.alert("",this.props.cardDic.SecTitle + "下载失败！");
-                this.props.downFaild();
-                this.setState({
-                    clickCardID: ""
-                });
-            } else if (obj.status === "success") {
-                this.props.saveUrl(obj);
+                // this.props.downFaild();
+                // this.props.saveDownInfo(obj);
                 this.setState({
                     clickCardID: ""
                 });
             }
+            
+
+
+            // if (obj.status === "start") {
+            //     this.props.startDown();
+
+            // } else if (obj.status === "faild") {
+            //     Alert.alert("",this.props.cardDic.SecTitle + "下载失败！");
+            //     this.props.downFaild();
+            //     this.setState({
+            //         clickCardID: ""
+            //     });
+            // } else if (obj.status === "success") {
+            //     this.props.saveUrl(obj);
+            //     this.setState({
+            //         clickCardID: ""
+            //     });
+            // }
         }).download();
     }
 
@@ -106,7 +129,7 @@ class VideoCard extends Component {
                             onPress={() => this.prepareDown()}
                         >
                             {
-                                (this.state.clickCardID === this.props.cardDic.ID) ? <Text style={styles1.loading}>Downloading...</Text> : <ImageBackground style={styles1.xzImg} source={require("../imgs/testIcon/ks_xz_icon.png")} />
+                                (this.state.clickCardID === this.props.cardDic.ID) ? <Text style={styles1.loading}>{this.props.downLoadInfo&&this.props.downLoadInfo.progress}</Text> : <ImageBackground style={styles1.xzImg} source={require("../imgs/testIcon/ks_xz_icon.png")} />
                             }
                         </TouchableOpacity> : <View style={styles1.button} />
                     }
@@ -175,9 +198,9 @@ const styles1 = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     const netInfo = state.userInfo.netInfo;
-    const downLoading = state.videoList.downLoading;
+    const downLoadInfo = state.videoList.downLoadInfo;
     return {
-        downLoading,
+        downLoadInfo,
         netInfo,
     };
 };
@@ -186,11 +209,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveUrl: (obj) => {
             dispatch(saveDownUrl(obj))
         },
-        startDown: () => {
-            dispatch(startDown({}))
-        },
-        downFaild: () => {
-            dispatch(downFaild({}))
+        // startDown: () => {
+        //     dispatch(startDown({}))
+        // },
+        // downFaild: () => {
+        //     dispatch(downFaild({}))
+        // },
+        saveDownInfo: (obj) => {
+            dispatch(saveDownInfo(obj));
         },
         savePath: (url,taskId) => {
             dispatch(saveExamPath(url,taskId));

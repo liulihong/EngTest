@@ -18,6 +18,7 @@ import Report from "./report";
 import MineInfo from "./mofifyMineInfo";
 import MineTxtInfo from "./motifyTxtInfo";
 import PwdScreen from "./forgetPwdPage";
+import { connect } from "react-redux";
 
 // const color  = {
 //     theme: '#12b7f5',
@@ -28,14 +29,14 @@ import PwdScreen from "./forgetPwdPage";
 // };
 
 let loadtimeInterval;
-let times=0;
 
-export default class MainRoute extends Component {
+
+class MainRoute extends Component {
     constructor() {
         super()
         this.state = {
             isloading: false,
-            loadtxt: "努力加载中 • • •",
+            loadtxt: "正在加载共用音频",
         }
     }
 
@@ -45,20 +46,21 @@ export default class MainRoute extends Component {
             this.setState({
                 isloading: true,
             });
-            times=0;
-            let arr=["努力加载中 •","努力加载中 • •","努力加载中 • • •"];
+            
+            // let arr=["努力加载中 •","努力加载中 • •","努力加载中 • • •"];
             loadtimeInterval=setInterval(()=>{
+                
                 this.setState({
-                    loadtxt: arr[times%3],
+                    loadtxt: "正在下载共用音频 " + this.props.downLoadInfo.progress,
                 });
-                times++;
+                
             },500)
         })
         DeviceEventEmitter.addListener('endDownloadSound', () => {
             this.setState({
                 isloading: false,
             });
-            clearInterval(timeInterval);
+            clearInterval(loadtimeInterval);
         })
     }
 
@@ -78,7 +80,7 @@ export default class MainRoute extends Component {
                 }}>
                     <Text style={{
                         color: "#ffffff",
-                        fontSize: 20,
+                        fontSize: 18,
                         fontWeight: "500",
                     }}>{this.state.loadtxt}</Text>
                 </View> : <View key={2}/>
@@ -87,6 +89,20 @@ export default class MainRoute extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    const downLoadInfo = state.videoList.downLoadInfo;
+    return {
+        downLoadInfo,
+    };
+};
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainRoute);
 
 
 //多个选项卡

@@ -16,10 +16,11 @@ module.exports = (path, docName ,callback ) => {// 参数写一下
             const progress = data => {
                 const percentage = ((100 * data.bytesWritten) / data.contentLength) || 0;
                 const text = `Progress ${percentage}%`;
+                callback({"path":path,"docName":docName,"status":"downloading","progress":percentage.toFixed(0)+" %"});
                 console.log(text);
             };
             const begin = res => {
-                callback({"status":"start"});
+                callback({"path":path,"docName":docName,"status":"start","progress":"0%"});
                 console.log('Download has begun' );
             };
             const progressDivider = 1;
@@ -41,10 +42,12 @@ module.exports = (path, docName ,callback ) => {// 参数写一下
 
                 // 调用解压函数
                 this.unzipNewCourse(docName);
-                callback({"path":path,"docName":docName,"status":"success"});
+
+                callback({"path":path,"docName":docName,"status":"success","progress":"100%"});
 
             }).catch(err => {
-                callback({"status":"faild"});
+
+                callback({"path":path,"docName":docName,"status":"faild","progress":"0%"});
                 console.log(err)
                 jobId = -1;
             });
