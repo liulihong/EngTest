@@ -51,7 +51,7 @@ class MainRoute extends Component {
             loadtimeInterval=setInterval(()=>{
                 
                 this.setState({
-                    loadtxt: "正在下载共用音频 " + this.props.downLoadInfo.progress,
+                    loadtxt: "正在下载共用音频 " + this.props.downLoadInfo?this.props.downLoadInfo.progress:"0%",
                 });
                 
             },500)

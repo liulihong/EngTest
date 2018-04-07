@@ -96,7 +96,8 @@ export const videoList = (state = { downedUrls: [] }, action) => {
             return {
                 ...state,
                 paperList: action.result.PaperList,
-                loading: false
+                loading: false,
+                downLoadInfo: null,
             }
         case LOADING:
             return {

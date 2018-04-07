@@ -108,7 +108,7 @@ class PwdScreen extends Component{
         return (
             <View style={styles.container}>
 
-            <NavBar navtitle="注册" isBack={true} navgation={this.props.navigation}/>
+            <NavBar navtitle="重置密码" isBack={true} navgation={this.props.navigation}/>
 
                 <CusTextIput
                     name='用户：'

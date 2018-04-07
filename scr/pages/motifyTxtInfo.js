@@ -71,10 +71,11 @@ class MineTxtInfo extends Component {
                 <NavBar navtitle={this.state.navTitle} isBack={true} navgation={this.props.navigation} />
                 <View style={styles.txtView}>
                     <TextInput
+                        underlineColorAndroid = {'transparent'}
                         style={styles.txtInput}
                         multiline={false}
                         placeholder={this.state.placeholder}
-                        placeholderTextColor={utils.COLORS.theme1}
+                        // placeholderTextColor={utils.COLORS.theme1}
                         onChangeText={(text) => this.setState({ text })}
                         value={this.state.text}
                     />

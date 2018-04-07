@@ -45,7 +45,6 @@ class TaskScreen extends Component {
         let Status = (isShowFinsh === true) ? 2 : 0;
         fetchPost(GetHomework, { Status: Status }).then((res) => {
             // alert("1111" + JSON.stringify(res));
-            // debugger
             if (res.PaperList !== undefined) {
                 dataArr = res.PaperList;
                 this.setState({
@@ -77,7 +76,7 @@ class TaskScreen extends Component {
                 <View style={styles.line2} />
 
                 {
-                    (this.state.dataArr === undefined || this.state.dataArr.length <= 0) ? <Text
+                    (this.state.dataArr && this.state.dataArr === undefined || this.state.dataArr.length <= 0) ? <Text
                         style={{ width: utils.SCREENWIDTH, lineHeight: 50, textAlign: "center" }}
                     >{"没有相关作业哦"}</Text> :
                         <ScrollView>

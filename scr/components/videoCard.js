@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { View, Text, Button, StyleSheet, ImageBackground, TouchableOpacity, Alert } from 'react-native';
 import utils from '../utils';
 import download from '../utils/download';
-import { hostUrl } from '../request/requestUrl';
-import { saveDownInfo , saveDownUrl, saveExamPath } from "../store/actions";
+import { hostUrl, examPackage } from '../request/requestUrl';
+import { saveDownInfo, saveDownUrl, saveExamPath } from "../store/actions";
 import { connect } from "react-redux";
+import { fetchPost } from "../request/fetch";
 
 class VideoCard extends Component {
 
@@ -13,99 +14,88 @@ class VideoCard extends Component {
     constructor(props) {
         super(props);
         this.downLoad = this.downLoad.bind(this);
-        this.prepareDown=this.prepareDown.bind(this);
+        this.prepareDown = this.prepareDown.bind(this);
         this.cardClick = this.cardClick.bind(this);
         this.state = {
             clickCardID: "",
         }
     }
 
-    prepareDown(){
+    prepareDown() {
         const { DownPath: path, ID: docName } = this.props.cardDic;
 
-        if (this.state.clickCardID === docName) return ;//如果已经点击过下载就返回
+        if (this.state.clickCardID === docName) return;//如果已经点击过下载就返回
+
+        //如果正在下载其他的试题包
+        if (this.props.downLoadInfo && this.props.downLoadInfo !== undefined && this.props.downLoadInfo.status === "downloading") {
+            Alert.alert("", "下载中请稍后");
+            return;
+        }
 
         //检查网络
-        if (this.props.netInfo!==undefined && this.props.netInfo.isConnected === false) {
-            Alert.alert("","请检查网络！");
-            return ;
+        if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
+            Alert.alert("", "请检查网络！");
+            return;
         }
         //流量提醒
-        if (this.props.netInfo!==undefined && this.props.netInfo.connectionInfo.type !== "wifi") {
+        if (this.props.netInfo !== undefined && this.props.netInfo.connectionInfo.type !== "wifi") {
             Alert.alert('温馨提示', '当前网络为非wifi环境确定下载？',
                 [
-                    { text: "取消", onPress: () => {  } },
+                    { text: "取消", onPress: () => { } },
                     { text: "确定", onPress: () => { this.downLoad() } },
                 ]
             );
-            return ;
+            return;
         }
         this.downLoad();
     }
 
     downLoad() {
 
-        if(this.props.downLoadInfo && this.props.downLoadInfo!==undefined && this.props.downLoadInfo.status==="downloading"){
-            Alert.alert("","下载中请稍后");
-            return;
-        }
-        
-        const { DownPath: path, ID: docName } = this.props.cardDic;
- 
-        //加入下载列表
-        this.setState({
-            clickCardID: docName
-        });
-        // let url = hostUrl + "/" + path;
-   
-        download(path, docName, (obj) => {
+        //获取试卷下载地址
+        fetchPost(examPackage, { EnumDownType: 0, ID: this.props.cardDic.ID }).then((result) => {
+            let path=result.Url;
+            let docName=this.props.cardDic.ID;
 
-            this.props.saveDownInfo(obj);
-            if (obj.status === "success") {
-                this.props.saveUrl(obj);
-                this.setState({
-                    clickCardID: "",
-                });
-            } else if (obj.status === "faild") {
-                Alert.alert("",this.props.cardDic.SecTitle + "下载失败！");
-                // this.props.downFaild();
-                // this.props.saveDownInfo(obj);
-                this.setState({
-                    clickCardID: ""
-                });
-            }
-            
+            //加入下载列表
+            this.setState({
+                clickCardID: this.props.cardDic.ID
+            });
+
+            download(path, docName, (obj) => {
+
+                this.props.saveDownInfo(obj);
+                if (obj.status === "success") {
+                    this.props.saveUrl(obj);
+                    this.setState({
+                        clickCardID: "",
+                    });
+                } else if (obj.status === "faild") {
+                    Alert.alert("", this.props.cardDic.SecTitle + "下载失败！");
+                    // this.props.downFaild();
+                    // this.props.saveDownInfo(obj);
+                    this.setState({
+                        clickCardID: ""
+                    });
+                }
+
+            }).download();
+        })
 
 
-            // if (obj.status === "start") {
-            //     this.props.startDown();
-
-            // } else if (obj.status === "faild") {
-            //     Alert.alert("",this.props.cardDic.SecTitle + "下载失败！");
-            //     this.props.downFaild();
-            //     this.setState({
-            //         clickCardID: ""
-            //     });
-            // } else if (obj.status === "success") {
-            //     this.props.saveUrl(obj);
-            //     this.setState({
-            //         clickCardID: ""
-            //     });
-            // }
-        }).download();
     }
 
     cardClick() {
 
         if (this.props.isDown) {
-            let taskId=this.props.cardDic.TaskID;
+            let taskId = this.props.cardDic.TaskID;
             let url = utils.DOWNLOADDOCUMENTPATH + "/" + this.props.cardDic.ID;
-            this.props.savePath(url,taskId);
+            this.props.savePath(url, taskId);
 
-            let ishome=this.props.ishome;
-            this.props.navigation.navigate('TestStart', { ID: this.props.cardDic.ID, ishome , isFinish:this.props.isFinish });
+            let ishome = this.props.ishome;
+            this.props.navigation.navigate('TestStart', { ID: this.props.cardDic.ID, ishome, isFinish: this.props.isFinish });
         } else {
-            Alert.alert("","请下载试题包");
+            Alert.alert("", "请下载试题包");
         }
     }
 
@@ -129,7 +119,7 @@ class VideoCard extends Component {
                             onPress={() => this.prepareDown()}
                         >
                             {
-                                (this.state.clickCardID === this.props.cardDic.ID) ? <Text style={styles1.loading}>{this.props.downLoadInfo&&this.props.downLoadInfo.progress}</Text> : <ImageBackground style={styles1.xzImg} source={require("../imgs/testIcon/ks_xz_icon.png")} />
+                                (this.state.clickCardID === this.props.cardDic.ID) ? <Text style={styles1.loading}>{this.props.downLoadInfo && this.props.downLoadInfo !== undefined && this.props.downLoadInfo.progress}</Text> : <ImageBackground style={styles1.xzImg} source={require("../imgs/testIcon/ks_xz_icon.png")} />
                             }
                         </TouchableOpacity> : <View style={styles1.button} />
                     }
@@ -218,8 +208,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveDownInfo: (obj) => {
             dispatch(saveDownInfo(obj));
         },
-        savePath: (url,taskId) => {
-            dispatch(saveExamPath(url,taskId));
+        savePath: (url, taskId) => {
+            dispatch(saveExamPath(url, taskId));
         }
     }
 };

@@ -23,7 +23,7 @@ export default (store, callback) => {
                 callback({hasToken:res.SessionID,isLogin:(res.CurrentUser!==null)});
 
                 if (!res.CurrentUser){
-                    store.dispatch({type: LOGIN, result: {}})
+                    store.dispatch({type: LOGIN, result: null})
                 }
 
                 AsyncStorage.setItem('token', res.SessionID);

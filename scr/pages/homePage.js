@@ -107,9 +107,9 @@ class HomeScreen extends Component {
                 <ScrollView>
                     <View style={styles.contain}>
                         {
-                            this.props.videoData.paperList && this.props.videoData.paperList.map((element, i) => {
-                                const url = element.DownPath;
-                                const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.path === url });
+                            this.props.videoData.paperList && this.props.videoData.paperList!==undefined && this.props.videoData.paperList.map((element, i) => {
+                                // const url = element.DownPath;
+                                const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.docName === element.ID });
                                 return <VideoCard cardDic={element} key={i} isDown={isDown} ishome={false} navigation={this.props.navigation} />
                             })
                         }

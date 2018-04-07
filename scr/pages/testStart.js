@@ -277,7 +277,7 @@ class TestStart extends Component {
                     style={styles.button}
                     onPress={this.againTest}
                 >
-                    <Text style={styles.buttonText}>重新考试</Text>
+                    <Text style={styles.buttonText}>{"重新考试"}</Text>
                 </TouchableOpacity>
             </View>
         } else {//考试考一半  显示  继续考试 重新考试
@@ -286,14 +286,14 @@ class TestStart extends Component {
                     style={styles.button2}
                     onPress={this.againTest}
                 >
-                    <Text style={styles.buttonText}>重新考试</Text>
+                    <Text style={styles.buttonText}>{"重新考试"}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     style={styles.button2}
                     onPress={this.prepareContinue}
                 >
-                    <Text style={styles.buttonText}>继续考试</Text>
+                    <Text style={styles.buttonText}>{"继续考试"}</Text>
                 </TouchableOpacity>
             </View>
         }
@@ -318,8 +318,6 @@ class TestStart extends Component {
             >
 
                 <NavBar navtitle={this.props.examContent ? this.props.examContent.SecTitle : ''} isBack={true} navgation={this.props.navigation} />
-
-
 
                 <View style={styles.progress}>
                     <ScrollView>
@@ -349,9 +347,6 @@ class TestStart extends Component {
         );
     }
 }
-
-
-
 
 const mapStateToProps = (state) => {
     const UserID = state.userInfo.logResult.ID;
