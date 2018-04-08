@@ -315,7 +315,7 @@ class AudioSoundConCom extends Component {
                     let time1 = time.toFixed(0)
                     let time2 = Sound1.soundDuring().toFixed(0);
                     let currTime = time1 + ' / ' + time2;
-                    this.props.reloadCurrTime(currTime);
+                    this.props.reloadCurrTime("播放进度："+currTime);
 
                     if (isPlaying === false) {
                         this.findProgress(timeInteval);

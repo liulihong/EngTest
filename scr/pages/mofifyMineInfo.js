@@ -94,11 +94,11 @@ class MineInfo extends Component {
         } else if (tag === 1) {//学籍号
             this.props.navigation.navigate("MineTxtInfo", { type: "学籍号" });
         } else if (tag === 2) {//地区
-            this.setState({pickerType: 2,})
+            // this.setState({pickerType: 2,})
         } else if (tag === 3) {//学校
             this.props.navigation.navigate("MineTxtInfo", { type: "学校" });
         } else if (tag === 4) {//年级
-            this.setState({pickerType: 1,})
+            // this.setState({pickerType: 1,})
         } else if (tag === 5) {//班级
             if (this.props.logResult.Name === null)
                 Alert.alert("","请先编辑姓名！");
