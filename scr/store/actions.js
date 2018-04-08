@@ -36,8 +36,9 @@ export const Login = (obj, callBack) => {
                 Alert.alert("", utils.findErrorInfo(res));
             } else {
                 callBack();
+                return res;
             }
-            return res;
+            return null;
         }),
         types: [LOADING, LOGIN, ERROR]
     }

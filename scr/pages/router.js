@@ -49,12 +49,11 @@ class MainRoute extends Component {
             
             // let arr=["努力加载中 •","努力加载中 • •","努力加载中 • • •"];
             loadtimeInterval=setInterval(()=>{
-                
                 this.setState({
-                    loadtxt: "正在下载共用音频 " + this.props.downLoadInfo?this.props.downLoadInfo.progress:"0%",
+                    loadtxt: "正在下载共用音频 " + (this.props.downLoadInfo?this.props.downLoadInfo.progress:"0%"),
                 });
-                
-            },500)
+                // alert(this.state.loadtxt);
+            },100)
         })
         DeviceEventEmitter.addListener('endDownloadSound', () => {
             this.setState({

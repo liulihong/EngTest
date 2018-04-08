@@ -1,10 +1,10 @@
 // const hostUrl = 'http://139.196.111.38:8084';
-const hostUrl = 'http://192.168.12.150:28071';//小英电脑
+// const hostUrl = 'http://192.168.12.150:28071';//小英电脑
 // const hostUrl = 'http://tsk.eqd.17work.cn';//192.168.12.8
 // const hostUrl = 'http://tsk.demo.17work.cn';//外网测试账号
 // const hostUrl = 'http://tsk.17work.com.cn';//外网测试账号
 // const hostUrl = 'https://tsk.dev.17work.com.cn';//测试
-// const hostUrl = 'http://39.107.247.196:17800';//测试
+const hostUrl = 'http://39.107.247.196:17800';//测试
 
 module.exports = {
     hostUrl: hostUrl,
@@ -32,7 +32,7 @@ module.exports = {
     GetClass: hostUrl + '/api/Account/GetClass',//得到当前班级信息
     QuitClass: hostUrl + '/api/Account/QuitClass',//退出班级
 
-    protocal: 'http://tsk.17work.com.cn/agreement.html',//用户协议
+    protocal: hostUrl + '/agreement.html',//用户协议
     Report: hostUrl + '/api/Account/Report',//意见反馈
     Modify: hostUrl + '/api/Account/Modify',//个人信息
 

@@ -45,7 +45,7 @@ export default class Report extends Component {
                     <TextInput
                         style={styles.txtInput}
                         multiline={true}
-                        numberOfLines={10}
+                        // numberOfLines={10}
                         placeholder={"赶紧提出意见吧，我们会更加完美的"}
                         placeholderTextColor={utils.COLORS.theme1}
                         onChangeText={(text) => this.setState({ text })}

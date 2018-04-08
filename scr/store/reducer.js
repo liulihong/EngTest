@@ -93,6 +93,7 @@ export const error = (state = {}, action) => {
 export const videoList = (state = { downedUrls: [] }, action) => {
     switch (action.type) {
         case PAPERLIST:
+            // debugger
             return {
                 ...state,
                 paperList: action.result.PaperList,

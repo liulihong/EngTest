@@ -4,7 +4,6 @@ import NavBar from '../components/navBar';
 import utils from "../utils";
 import { Modify, getArea } from '../request/requestUrl';
 import { fetchPost } from '../request/fetch';
-import { LOGIN } from '../store/actionTypes';
 import { connect } from 'react-redux';
 import { motifyMyInfo } from '../store/actions';
 import { adressPicker as AdressPicker } from "../components/PickerCom"
@@ -111,12 +110,12 @@ class MineInfo extends Component {
     render() {
         const { navigate } = this.props.navigation;
         let titleArr = ["姓名", "学籍号", "地区", "学校", "年级", "班级"];
-        let valueArr = [(this.props.logResult.Name ? this.props.logResult.Name : ""),
-        (this.props.logResult.NO ? this.props.logResult.NO : ""),
+        let valueArr = [((this.props.logResult && this.props.logResult.Name) ? this.props.logResult.Name : ""),
+        ((this.props.logResult && this.props.logResult.NO) ? this.props.logResult.NO : ""),
         this.state.adressObj.Title,
-        (this.props.logResult.School ? this.props.logResult.School : ""),
+        ((this.props.logResult && this.props.logResult.School) ? this.props.logResult.School : ""),
         this.state.classObj.Title,
-        (this.props.logResult.Class ? this.props.logResult.Class : ""),];
+        ((this.props.logResult && this.props.logResult.Class) ? this.props.logResult.Class : ""),];
         return (
             <View style={styles.contain}>
                 <NavBar navtitle="编辑资料" isBack={true} navgation={this.props.navigation} />

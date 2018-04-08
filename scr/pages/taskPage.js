@@ -83,8 +83,9 @@ class TaskScreen extends Component {
                             <View style={styles.contain}>
                                 {
                                     this.state.dataArr.map((element, i) => {
-                                        const url = element.DownPath;
-                                        const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.path === url });
+                                        // const url = element.DownPath;
+                                        const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.docName === element.ID });
+                                        // const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.path === url });
                                         return <VideoCard cardDic={element} key={i} ishome={true} isFinish={this.state.isShowFinsh} isDown={isDown} navigation={this.props.navigation} />
                                     })
                                 }

@@ -22,17 +22,18 @@ class AnswerScreen extends Component {
         this.state = {
             serverAnswer: {},
             resetAnswer: {},
+            scoreFinish: true,//计分状态为计分完成
         }
 
         this.getExamAnserInfo();
     }
 
     componentDidMount(){
-        // if(this.state.serverAnswer==={}||this.state.serverAnswer.Status!==2){
-        //     getScoreTnterval=setInterval(()=>{
-        //         this.getExamAnserInfo();
-        //     },1000*60)
-        // }
+        if(this.state.serverAnswer==={}||this.state.scoreFinish===false){
+            getScoreTnterval=setInterval(()=>{
+                this.getExamAnserInfo();
+            },1000*60)
+        }
     }
     componentWillUnmount(){
         clearInterval(getScoreTnterval);
@@ -42,9 +43,17 @@ class AnswerScreen extends Component {
         let LogID = this.props.answerRecord.LogID;
         fetchPost(getExamLog, { LogID }).then((result) => {
             // alert("result: "+JSON.stringify(result));
+            this.setState({
+                scoreFinish:true,
+            });
             let tempObj = {};
             for (let i = 0; i < result.LogList.length; i++) {
                 ansObj = result.LogList[i];
+                if(ansObj.Status===0){//如果状态为计分中 试卷计分状态为计分中
+                    this.setState({
+                        scoreFinish:false,
+                    });
+                }
                 if (tempObj[ansObj.Type] === undefined)
                     tempObj[ansObj.Type] = {
                         totalScore: 0,
@@ -57,7 +66,7 @@ class AnswerScreen extends Component {
                 serverAnswer: result,
                 resetAnswer: tempObj,
             });
-            // debugger
+            
             console.log(tempObj);
         }, (error) => {
             Alert.alert("",utils.findErrorInfo(error));
@@ -70,9 +79,12 @@ class AnswerScreen extends Component {
             return <Text>{"亲！ 您交了白卷。。。"}</Text>
         }
         let scoreTxt = "正在\n计分中";
-        if(this.state.serverAnswer!==undefined && this.state.serverAnswer.Status===2){
-            scoreTxt = "得分\n" + ((this.state.serverAnswer !== {}) ? this.state.serverAnswer.Score : 0.00) + "分";
+        if(this.state.scoreFinish===true){
+            if(this.state.serverAnswer!==undefined && this.state.serverAnswer.Status===2){
+                scoreTxt = "得分\n" + ((this.state.serverAnswer !== {}) ? this.state.serverAnswer.Score : 0.00) + "分";
+            }
         }
+        
         return <ImageBackground
             source={require("../imgs/testIcon/cj_bg.png")}
             style={styles.contain}

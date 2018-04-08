@@ -21,12 +21,17 @@ export class adressPicker extends Component{
         if(nextprops.type!==this.props.type){
             setTimeout(()=>{
                 if(this.props.type===2){
-                    let tempAdressObj1=this.props.adressDataArr[0];
-                    let tempAdressObj2=tempAdressObj1.Childs[0];
-                    this.setState({
-                        tempAdressObj1: tempAdressObj1,
-                        tempAdressObj2: tempAdressObj2,
-                    })
+                    if(this.props.adressDataArr.length>0){
+                        let tempAdressObj1=this.props.adressDataArr[0];
+                        let tempAdressObj2=tempAdressObj1.Childs[0];
+                        this.setState({
+                            tempAdressObj1: tempAdressObj1,
+                            tempAdressObj2: tempAdressObj2,
+                        })
+                    }else{
+                        Alert.alert("","地区信息为空哦 !");
+                        this.props.setAdressID(3,{});
+                    }
                 }else {
                     let tempAdressObj1={};
                     let tempAdressObj2=this.props.classDataArr[0];
@@ -35,7 +40,7 @@ export class adressPicker extends Component{
                         tempAdressObj2: tempAdressObj2,
                     })
                 }
-            },500)
+            },200)
         }
     }
 
