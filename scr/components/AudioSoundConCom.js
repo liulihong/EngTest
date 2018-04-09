@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, DeviceEventEmitter, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, DeviceEventEmitter, Alert, BackHandler,Platform } from 'react-native';
 import utils from '../utils';
 import { connect } from "react-redux";
 import {
@@ -12,7 +12,7 @@ import { submitExamTopic, endExam } from '../request/requestUrl';
 import copy from 'lodash';
 import RNFS from 'react-native-fs';
 
-let isSubmited=false;//已交卷为否
+let isSubmited = false;//已交卷为否
 let timeInteval;//播放时间计时器
 let timeInteval2;//读题时间计时器
 let timeInteval3;//答题时间计时器
@@ -52,13 +52,14 @@ class AudioSoundConCom extends Component {
         this.findProgress = this.findProgress.bind(this);
         this.submitToServer = this.submitToServer.bind(this);
         this.submitExamFinish = this.submitExamFinish.bind(this);
+        this.onBackAndroid = this.onBackAndroid.bind(this);
         this.state = {
             isPlaying: true,//默认播放  播放为false代表录音
             isPaused: false,
             currPath: '',
             tempData: {},
         }
-        isSubmited=false;
+        isSubmited = false;
     }
 
     //组件加载完成
@@ -67,14 +68,31 @@ class AudioSoundConCom extends Component {
         this.startPlay(this.props.soundPath);//开始播放
     }
 
-    //组件卸载 播放停止
-    componentWillUnmount() {
+    componentWillMount() {
+        if (Platform.OS === 'android') {
+            BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
+        }
+    }
+    onBackAndroid = () => {
+        // alert("监听到了========");
         this.clearInteval();
         this.stopPlayAndRecord();
 
         let tempData = this.props.dataSource;
-        DeviceEventEmitter.emit('ChangeUI');
         this.saveAnsweRecord(tempData);
+    };
+
+    //组件卸载 播放停止
+    componentWillUnmount() {
+
+        this.onBackAndroid();
+        
+        DeviceEventEmitter.emit('ChangeUI');
+        
+        if (Platform.OS === 'android') {
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+        }
+
     }
 
     saveAnsweRecord(tempData) {
@@ -100,16 +118,16 @@ class AudioSoundConCom extends Component {
     //提交答案到服务器
     submitToServer(nextProps, currProps, isFinish) {
 
-        let job=1;
+        let job = 1;
 
         let isChange = nextProps.dataSource.topicInfo !== currProps.dataSource.topicInfo;
-        if (isChange === false) job=0;//当前信息没改变 不提交
+        if (isChange === false) job = 0;//当前信息没改变 不提交
         let isTopObj = currProps.dataSource.topicInfo.currLevel === "topObj";
-        if (isTopObj === false) job=0;//当前播放不是小题 不提交
-        if (nextProps.dataSource.topObj === currProps.dataSource.topicObj) job=0;//跟上次同一个小题 不提交
-        if (nextProps.answers === undefined) job=0;//没有答题记录
+        if (isTopObj === false) job = 0;//当前播放不是小题 不提交
+        if (nextProps.dataSource.topObj === currProps.dataSource.topicObj) job = 0;//跟上次同一个小题 不提交
+        if (nextProps.answers === undefined) job = 0;//没有答题记录
 
-        if(job===0){
+        if (job === 0) {
             this.submitExamFinish(isFinish);
             return;
         }
@@ -184,9 +202,13 @@ class AudioSoundConCom extends Component {
 
                                 fetchPost(submitExamTopic, paramts).then((result) => {
                                     this.submitExamFinish(isFinish);
-                                    // alert("音频提交成功" + JSON.stringify(result));
+                                    if(result.ErrorCode!==undefined){
+                                        // alert("音频提交失败" + utils.findErrorInfo(error));
+                                    }else{
+                                        // alert("音频提交成功" + JSON.stringify(result));
+                                    }
                                 }, (error) => {
-                                    // alert("音频提交失败" + utils.findErrorInfo(error));
+                                    alert("音频提交失败" + utils.findErrorInfo(error));
                                     // alert("失败");
                                 });
                             } else {
@@ -199,24 +221,24 @@ class AudioSoundConCom extends Component {
                         });
                 }
             }
-        }else{
+        } else {
             this.submitExamFinish(isFinish);
         }
     }
 
     //服务器交卷
     submitExamFinish(isFinish) {
-        if (isFinish && isSubmited===false ) {
-            isSubmited=true;
+        if (isFinish && isSubmited === false) {
+            isSubmited = true;
             let LogID = this.props.answerRecord.LogID;
-                let TaskLogID = this.props.answerRecord.TaskLogID;
-                // alert("LogID" + JSON.stringify(LogID) + "\nTaskLogID" + JSON.stringify(TaskLogID));
-                fetchPost(endExam, { LogID, TaskLogID }).then((res) => { 
-                    // this.props.navigation.goBack();
-                    // alert("考试完成，静待考试结果吧");
-                }, (error) => {
-                    alert("交卷错误:  " + JSON.stringify(error));
-                })
+            let TaskLogID = this.props.answerRecord.TaskLogID;
+            // alert("LogID" + JSON.stringify(LogID) + "\nTaskLogID" + JSON.stringify(TaskLogID));
+            fetchPost(endExam, { LogID, TaskLogID }).then((res) => {
+                // this.props.navigation.goBack();
+                // alert("考试完成，静待考试结果吧");
+            }, (error) => {
+                alert("交卷错误:  " + JSON.stringify(error));
+            })
         }
     }
 
@@ -315,7 +337,7 @@ class AudioSoundConCom extends Component {
                     let time1 = time.toFixed(0)
                     let time2 = Sound1.soundDuring().toFixed(0);
                     let currTime = time1 + ' / ' + time2;
-                    this.props.reloadCurrTime("播放进度："+currTime);
+                    this.props.reloadCurrTime("播放进度：" + currTime);
 
                     if (isPlaying === false) {
                         this.findProgress(timeInteval);
@@ -561,7 +583,6 @@ class AudioSoundConCom extends Component {
                 //开始读内容
                 this.startPlay(contentPath);
             }
-
         } else if (answerTime > 0) {// 如果是答题时间的话     跳过答题时间     去走下一步
             answerTime = 0;
             this.props.reloadCurrTime("跳过答题时间");

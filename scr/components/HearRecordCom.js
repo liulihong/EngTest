@@ -25,9 +25,15 @@ class HearRecord extends Component {
             this.setState({ height: newheight });
         })
 
-        if (this.props.answers !== undefined && this.props.answers['3'] !== undefined) {
+        
+        if (this.props.answers !== undefined && this.props.answers[3] !== undefined) {
+            let currAnswer=this.props.answers[3];
+            let unitID=this.props.contentData[0].UniqueID;
+            let answer = currAnswer[unitID].answer;
+            // ["answer"];
+            // debugger
             this.setState({
-                answer: this.props.answers['3'][this.props.contentData[0].UniqueID].answer
+                answer: answer,
             });
         } else {
             let n = this.props.contentData[0].ExampleAnswer.length;

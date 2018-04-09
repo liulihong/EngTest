@@ -65,7 +65,7 @@ class VideoTest extends Component{
             RNFS.writeFile(path, JSON.stringify(nextProps.answers) , 'utf8').then(()=>{});
         }
     }
-
+    
     getComponent(){
         if(this.props.isHaveContent){
             if(this.props.gropObj.Type===1) {//听后选择

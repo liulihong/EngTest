@@ -20,17 +20,19 @@ class HomeScreen extends Component {
         this.state = {
             isLoading: false,
         }
+
+        if (this.props.logResult && this.props.logResult !== undefined) {
+            this.props.GetPaperList();//获取试题列表
+            this.props.getCommon();//获取下载共用音频URL
+        }
     }
 
     //组件加载完成
     componentDidMount() {
         DeviceEventEmitter.addListener('reloadVideoList', () => {
-            setTimeout(() => {
-                if (this.props.logResult && this.props.logResult !== undefined) {
-                    this.props.GetPaperList();//获取试题列表
-                    this.props.getCommon();//获取下载共用音频URL
-                }
-            }, 100)
+            //获取试题列表
+            this.props.GetPaperList();//获取试题列表
+            this.props.getCommon();//获取下载共用音频URL
         });
     }
 
@@ -42,13 +44,13 @@ class HomeScreen extends Component {
                 isDown = nextProps.videoData.getCommenUrl === this.props.videoData.getCommenUrl;
             }
         }
-        
+
         // let loading = nextProps.videoData.downLoadInfo!==null && nextProps.videoData.downLoadInfo!==undefined && nextProps.videoData.downLoadInfo.status === "downloading";
         let getCommenUrl = nextProps.videoData.getCommenUrl;
 
 
         //判断是否下载过
-        if (!isDown && this.state.isLoading===false) {
+        if (!isDown && this.state.isLoading === false) {
             //检查网络
             if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
                 Alert.alert("", "请检查网络！");
@@ -103,15 +105,16 @@ class HomeScreen extends Component {
         return (
             <View style={{ backgroundColor: utils.COLORS.background1 }}>
                 <NavBar navtitle="模拟考试" isBack={false} />
-
                 <ScrollView>
+                    <Text style={{marginTop:10,marginLeft:10,color:utils.COLORS.theme1}}>{" 山东 --> 七年级 --> 模拟考试列表"}</Text>
                     <View style={styles.contain}>
                         {
-                            this.props.videoData.paperList && this.props.videoData.paperList!==undefined && this.props.videoData.paperList.map((element, i) => {
+                            this.props.videoData.paperList && this.props.videoData.paperList !== undefined && this.props.videoData.paperList.length>0 ?
+                            this.props.videoData.paperList.map((element, i) => {
                                 // const url = element.DownPath;
                                 const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.docName === element.ID });
                                 return <VideoCard cardDic={element} key={i} isDown={isDown} ishome={false} navigation={this.props.navigation} />
-                            })
+                            }):<View/>
                         }
                     </View>
                 </ScrollView>

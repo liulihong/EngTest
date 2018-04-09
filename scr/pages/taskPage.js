@@ -45,6 +45,7 @@ class TaskScreen extends Component {
         let Status = (isShowFinsh === true) ? 2 : 0;
         fetchPost(GetHomework, { Status: Status }).then((res) => {
             // alert("1111" + JSON.stringify(res));
+            // debugger
             if (res.PaperList !== undefined) {
                 dataArr = res.PaperList;
                 this.setState({

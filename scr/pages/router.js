@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, DeviceEventEmitter, View ,Text} from "react-native"
+import { Image, DeviceEventEmitter, View ,Text} from "react-native";
 import TabBarItem from '../components/tabItem';
 import HomePage from "./homePage";
 import TaskPage from "./taskPage"
@@ -20,13 +20,6 @@ import MineTxtInfo from "./motifyTxtInfo";
 import PwdScreen from "./forgetPwdPage";
 import { connect } from "react-redux";
 
-// const color  = {
-//     theme: '#12b7f5',
-//     theme1: '#333333',
-//     border: '#e0e0e0',
-//     background: '#f8f8ff',
-//     background1: '#dcdcdc',
-// };
 
 let loadtimeInterval;
 
@@ -34,6 +27,7 @@ let loadtimeInterval;
 class MainRoute extends Component {
     constructor() {
         super()
+        this.changeNavigation=this.changeNavigation.bind();
         this.state = {
             isloading: false,
             loadtxt: "正在加载共用音频",
@@ -63,10 +57,29 @@ class MainRoute extends Component {
         })
     }
 
+    changeNavigation(type,prevState,currenState){
+
+        let routes=currenState.routes;
+        //查找当前最上层页面路由
+        let currRoute=routes[routes.length-1];
+        if(currRoute.routeName==="HomePage"&&currRoute.index===0){
+            DeviceEventEmitter.emit('reloadVideoList');
+        }else if(currRoute.routeName==="HomePage"&&currRoute.index===1){
+            DeviceEventEmitter.emit('reloadHomework');
+        }
+    }
+
+    componentWillUnmount(){
+        DeviceEventEmitter.removeListener('reloadVideoList');
+        DeviceEventEmitter.removeListener('reloadHomework');
+    }
+
     render() {
         return (
             [
-                (this.props.isLogin === true) ? <Navigator key={1} /> : <LogRouter key={1} />,
+                (this.props.isLogin === true) ? 
+                <Navigator key={1} onNavigationStateChange={(prevState,currenState)=>{this.changeNavigation(1,prevState,currenState)}} /> : 
+                <LogRouter key={1} onNavigationStateChange={(prevState,currenState)=>{this.changeNavigation(2,prevState,currenState)}} />,
 
                 (this.state.isloading === true) ? <View key={2} style={{
                     backgroundColor: "rgba(0,0,0,0.5)",
@@ -97,7 +110,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        
+
     }
 };
 
@@ -111,7 +124,7 @@ export const Tab = TabNavigator(
             //对应的屏幕
             screen: HomePage,
             //用于屏幕的默认导航选项
-            navigationOptions: ({ navigation }) => ({
+            navigationOptions: (paramts) => ({
                 //选项卡名称
                 // tabBarLabel: '首页',
                 header: null,
@@ -193,7 +206,8 @@ export const Tab = TabNavigator(
             tabStyle: { width: 100, },//标签栏的样式对象
             //android
             scrollEnabled: true,//是否启用可滚动选项卡
-        }
+            
+        },
     }
 );
 
