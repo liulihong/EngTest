@@ -43,11 +43,12 @@ export default class Report extends Component {
                 <NavBar navtitle="意见建议" isBack={true} navgation={this.props.navigation} />
                 <View style={styles.txtView}>
                     <TextInput
+                        underlineColorAndroid = {'transparent'}
                         style={styles.txtInput}
                         multiline={true}
                         // numberOfLines={10}
                         placeholder={"赶紧提出意见吧，我们会更加完美的"}
-                        placeholderTextColor={utils.COLORS.theme1}
+                        placeholderTextColor={"#666666"}
                         onChangeText={(text) => this.setState({ text })}
                         value={this.state.text}
                     />
@@ -81,15 +82,18 @@ const styles = StyleSheet.create({
     txtView: {
         marginTop: 10,
         // padding:10,
-        backgroundColor:"#cccccc",
+        // backgroundColor:"#cccccc",
+        borderRadius:2,
+        borderColor:"#cccccc",
+        borderWidth:1,
         width: utils.SCREENWIDTH-20,
         height: 200,
     },
     txtInput: {
         margin: 1,
         padding:10,
-        width: utils.SCREENWIDTH-22,
-        height: 198,
+        width: utils.SCREENWIDTH-24,
+        // height: 198,
         backgroundColor: "#ffffff",
     },
     button: {

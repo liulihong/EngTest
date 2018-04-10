@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         width: utils.SCREENWIDTH - 22,
         height: 48,
         backgroundColor: "#ffffff",
-        lineHeight: 48,
+        // lineHeight: 48,
         alignSelf: "center",
         // textAlign:"center",
     },
