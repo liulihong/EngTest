@@ -30,6 +30,11 @@ class HomeScreen extends Component {
     //组件加载完成
     componentDidMount() {
         DeviceEventEmitter.addListener('reloadVideoList', () => {
+            //检查网络
+            if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
+                Alert.alert("", "请检查网络！");
+                return;
+            }
             //获取试题列表
             this.props.GetPaperList();//获取试题列表
             this.props.getCommon();//获取下载共用音频URL
@@ -107,10 +112,10 @@ class HomeScreen extends Component {
                 <NavBar navtitle="模拟考试" isBack={false} />
                 <ScrollView>
                     {
-                        (this.props.logResult && this.props.logResult !== undefined)?<View style={styles.whiteView}>
-                            <Text style={{ marginLeft: 10, color: "#666666" }}>{" "+this.props.logResult.CityText+" → "+this.props.logResult.GradeText+" → 模拟考试列表"}</Text>
+                        (this.props.logResult && this.props.logResult !== undefined) ? <View style={styles.whiteView}>
+                            <Text style={{ marginLeft: 10, color: "#666666" }}>{" " + this.props.logResult.CityText + " → " + this.props.logResult.GradeText + " → 模拟考试列表"}</Text>
                             <View style={styles.line}></View>
-                        </View>:<View/>
+                        </View> : <View />
                     }
                     <View style={styles.contain}>
                         {

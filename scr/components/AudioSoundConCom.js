@@ -337,7 +337,7 @@ class AudioSoundConCom extends Component {
                     let time1 = time.toFixed(0)
                     let time2 = Sound1.soundDuring().toFixed(0);
                     let currTime = time1 + ' / ' + time2;
-                    this.props.reloadCurrTime("播放进度：" + currTime);
+                    this.props.reloadCurrTime("播放中 " + currTime);
 
                     if (isPlaying === false) {
                         this.findProgress(timeInteval);
@@ -814,10 +814,10 @@ const styles = StyleSheet.create({
     button: {
         width: 75,
         height: 75,
-        backgroundColor: "#cccccc",
+        // backgroundColor: "#cccccc",
         borderRadius: 75 / 2,
         borderWidth: 1,
-        borderColor: '#cccccc',
+        borderColor: '#999999',
     },
     conBtnView: {
         position: "absolute",

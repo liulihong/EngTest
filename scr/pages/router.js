@@ -29,7 +29,7 @@ class MainRoute extends Component {
         super()
         this.changeNavigation=this.changeNavigation.bind();
         this.state = {
-            isloading: false,
+            // isloading: false,
             loadtxt: "正在加载共用音频",
         }
     }
@@ -41,12 +41,10 @@ class MainRoute extends Component {
                 isloading: true,
             });
             
-            // let arr=["努力加载中 •","努力加载中 • •","努力加载中 • • •"];
             loadtimeInterval=setInterval(()=>{
                 this.setState({
                     loadtxt: "正在下载共用音频 " + (this.props.downLoadInfo?this.props.downLoadInfo.progress:"0%"),
                 });
-                // alert(this.state.loadtxt);
             },100)
         })
         DeviceEventEmitter.addListener('endDownloadSound', () => {
@@ -58,7 +56,6 @@ class MainRoute extends Component {
     }
 
     changeNavigation(type,prevState,currenState){
-
         let routes=currenState.routes;
         //查找当前最上层页面路由
         let currRoute=routes[routes.length-1];

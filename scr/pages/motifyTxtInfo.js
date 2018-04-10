@@ -38,6 +38,10 @@ class MineTxtInfo extends Component {
             placeholder="请输入学校";
             navTitle="编辑学校";
             text=this.props.logResult.School?this.props.logResult.School:"";
+        }else if( this.props.navigation.state.params.type === "班级" ){
+            placeholder="请输入班级名称";
+            navTitle="编辑班级名称";
+            text=this.props.logResult.Class?this.props.logResult.Class:"";
         }
         this.setState({
             placeholder,
@@ -58,6 +62,8 @@ class MineTxtInfo extends Component {
             paramts={ NO: this.state.text };
         }else if( this.props.navigation.state.params.type === "学校" ){
             paramts={ School: this.state.text };
+        }else if( this.props.navigation.state.params.type === "班级" ){
+            paramts={ Class: this.state.text };
         }
         this.props.motifyInfo(paramts,()=>{
             Alert.alert("","恭喜，修改成功！");
@@ -69,6 +75,7 @@ class MineTxtInfo extends Component {
         return (
             <View style={styles.contain}>
                 <NavBar navtitle={this.state.navTitle} isBack={true} navgation={this.props.navigation} />
+                {/* <ScroolView> */}
                 <View style={styles.txtView}>
                     <TextInput
                         underlineColorAndroid = {'transparent'}
@@ -80,6 +87,7 @@ class MineTxtInfo extends Component {
                         value={this.state.text}
                     />
                 </View>
+                {/* </ScroolView> */}
 
                 <TouchableOpacity
                     style={styles.button}

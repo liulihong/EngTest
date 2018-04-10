@@ -1,5 +1,5 @@
 import React, { Compnents, Component } from 'react';
-import { ScrollView, StyleSheet, View, Button, Text, TouchableOpacity, DeviceEventEmitter } from 'react-native';
+import { ScrollView, StyleSheet, View, Button, Text, TouchableOpacity,Alert, DeviceEventEmitter } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import VideoCard from '../components/videoCard';
 import utils from '../utils';
@@ -29,6 +29,11 @@ class TaskScreen extends Component {
     componentWillMount() {
         DeviceEventEmitter.addListener('reloadHomework', () => {
             if (this.props.logResult && this.props.logResult !== undefined) {
+                //检查网络
+                if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
+                    Alert.alert("", "请检查网络！");
+                    return;
+                }
                 //获取试题列表
                 this.GetPaperList(this.state.isShowFinsh);
             }
@@ -99,11 +104,13 @@ class TaskScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const logResult=state.userInfo.logResult;
+    const logResult = state.userInfo.logResult;
     const videoData = state.videoList;
+    const netInfo = state.userInfo.netInfo;
     return {
         videoData,
         logResult,
+        netInfo,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {

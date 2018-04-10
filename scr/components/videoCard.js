@@ -51,35 +51,41 @@ class VideoCard extends Component {
     }
 
     downLoad() {
-
+        let docName=this.props.cardDic.ID;
+        //加入下载列表
+        this.setState({
+            clickCardID: docName
+        });
+        this.props.saveDownInfo({"path":"","docName":docName,"status":"prePare","progress":"..."});
+        
         //获取试卷下载地址
         fetchPost(examPackage, { EnumDownType: 0, ID: this.props.cardDic.ID }).then((result) => {
-            let path=result.Url;
-            let docName=this.props.cardDic.ID;
-
-            //加入下载列表
-            this.setState({
-                clickCardID: this.props.cardDic.ID
-            });
-
-            download(path, docName, (obj) => {
-
-                this.props.saveDownInfo(obj);
-                if (obj.status === "success") {
-                    this.props.saveUrl(obj);
-                    this.setState({
-                        clickCardID: "",
-                    });
-                } else if (obj.status === "faild") {
-                    Alert.alert("", this.props.cardDic.SecTitle + "下载失败！");
-                    // this.props.downFaild();
-                    // this.props.saveDownInfo(obj);
-                    this.setState({
-                        clickCardID: ""
-                    });
-                }
-
-            }).download();
+            if(result.Url&&result.Url!==undefined){//获取地址成功
+                let path=result.Url;
+                download(path, docName, (obj) => {
+                    this.props.saveDownInfo(obj);
+                    if (obj.status === "success") {
+                        this.props.saveUrl(obj);
+                        this.setState({
+                            clickCardID: "",
+                        });
+                    } else if (obj.status === "faild") {
+                        Alert.alert("", this.props.cardDic.SecTitle + "下载失败！");
+                        // this.props.downFaild();
+                        // this.props.saveDownInfo(obj);
+                        this.setState({
+                            clickCardID: ""
+                        });
+                    }
+                }).download();
+            }else{
+                Alert.alert("", result.ErrorMessage);
+                // this.props.downFaild();
+                // this.props.saveDownInfo(obj);
+                this.setState({
+                    clickCardID: ""
+                });
+            }
         })
 
 

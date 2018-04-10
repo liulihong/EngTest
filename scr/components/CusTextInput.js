@@ -43,7 +43,6 @@ class TextInputLogin extends Component {
                             this.setState({
                                 txtValue: text
                             },()=>this.props.getValue(this.state.txtValue))
-
                         }}
                         value={this.state.txtValue}
                     />

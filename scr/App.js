@@ -39,7 +39,7 @@ export default class App extends Component {
                 <PersistGate persistor={persistor}>
                     <NetInfoProvider
                         onChange={({ isConnected, connectionInfo }) => {
-                            if(!isConnected){
+                            if(isConnected===false){
                                 Alert.alert('','网络不可用，请检查网络');
                             }
                             store.dispatch({type: NETINFO , result: {isConnected,connectionInfo}})

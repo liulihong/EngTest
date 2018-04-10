@@ -100,10 +100,11 @@ class MineInfo extends Component {
         } else if (tag === 4) {//年级
             // this.setState({pickerType: 1,})
         } else if (tag === 5) {//班级
-            if (this.props.logResult.Name === null)
-                Alert.alert("","请先编辑姓名！");
-            else
-                this.props.navigation.navigate('JoinClass', { UserID: this.props.logResult.ID });
+            this.props.navigation.navigate("MineTxtInfo", { type: "班级" });
+            // if (this.props.logResult.Name === null)
+            //     Alert.alert("","请先编辑姓名！");
+            // else
+            //     this.props.navigation.navigate('JoinClass', { UserID: this.props.logResult.ID });
         }
     }
 

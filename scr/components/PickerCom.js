@@ -59,6 +59,8 @@ export class adressPicker extends Component{
             return <View style={styles.pickerView} >
                 <Picker
                     style={styles.picker}
+                    mode = { "dropdown" }
+                    enabled = { true }
                     selectedValue={this.state.tempAdressObj2}
                     onValueChange={(itemValue,itemPosition) => {
                         let tempAdressObj2=this.props.classDataArr[itemPosition];
@@ -78,6 +80,7 @@ export class adressPicker extends Component{
             return <View style={styles.pickerView} >
                 <Picker
                     style={styles.picker}
+                    mode = { "dropdown" }
                     selectedValue={this.state.tempAdressObj1.ID}
                     onValueChange={(itemValue,itemPosition) => {
                         let tempAdressObj1=this.props.adressDataArr[itemPosition];
@@ -96,6 +99,7 @@ export class adressPicker extends Component{
                 </Picker>
                 <Picker
                     style={styles.picker}
+                    mode = { "dropdown" }
                     selectedValue={this.state.tempAdressObj2.ID}
                     onValueChange={(itemValue,itemPosition) => {
                         let tempAdressObj2=this.state.tempAdressObj1.Childs[itemPosition];
@@ -194,10 +198,11 @@ const styles=StyleSheet.create({
         flexDirection:'row',
         backgroundColor:utils.COLORS.background1,
         width:"100%",
+        height:200,
         justifyContent:"center"
     },
     picker:{
         width:"40%",
-        height:200
+        height:100
     },
 });
