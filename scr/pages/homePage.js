@@ -106,15 +106,20 @@ class HomeScreen extends Component {
             <View style={{ backgroundColor: utils.COLORS.background1 }}>
                 <NavBar navtitle="模拟考试" isBack={false} />
                 <ScrollView>
-                    <Text style={{marginTop:10,marginLeft:10,color:utils.COLORS.theme1}}>{" 山东 --> 七年级 --> 模拟考试列表"}</Text>
+                    {
+                        (this.props.logResult && this.props.logResult !== undefined)?<View style={styles.whiteView}>
+                            <Text style={{ marginLeft: 10, color: "#666666" }}>{" "+this.props.logResult.CityText+" → "+this.props.logResult.GradeText+" → 模拟考试列表"}</Text>
+                            <View style={styles.line}></View>
+                        </View>:<View/>
+                    }
                     <View style={styles.contain}>
                         {
-                            this.props.videoData.paperList && this.props.videoData.paperList !== undefined && this.props.videoData.paperList.length>0 ?
-                            this.props.videoData.paperList.map((element, i) => {
-                                // const url = element.DownPath;
-                                const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.docName === element.ID });
-                                return <VideoCard cardDic={element} key={i} isDown={isDown} ishome={false} navigation={this.props.navigation} />
-                            }):<View/>
+                            this.props.videoData.paperList && this.props.videoData.paperList !== undefined && this.props.videoData.paperList.length > 0 ?
+                                this.props.videoData.paperList.map((element, i) => {
+                                    // const url = element.DownPath;
+                                    const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.docName === element.ID });
+                                    return <VideoCard cardDic={element} key={i} isDown={isDown} ishome={false} navigation={this.props.navigation} />
+                                }) : <View />
                         }
                     </View>
                 </ScrollView>
@@ -135,6 +140,21 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
     },
+    whiteView: {
+        width: '100%',
+        height: 40,
+        backgroundColor: 'white',
+        flexDirection: "column",
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+    },
+    line: {
+        width: utils.SCREENWIDTH,
+        height: 1,
+        backgroundColor: "#cccccc",
+        position: "absolute",
+        bottom: 0,
+    }
     // grayView: {
     //     backgroundColor: "rgba(0,0,0,0.5)",
     //     position: "absolute",
