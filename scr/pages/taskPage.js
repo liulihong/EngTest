@@ -19,7 +19,7 @@ class TaskScreen extends Component {
         this.GetPaperList = this.GetPaperList.bind(this);
 
         this.state = {
-            isShowFinsh: false,
+            // isShowFinsh: false,
             dataArr: [],
         }
         // this.GetPaperList(this.state.isShowFinsh);

@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { NetInfoProvider } from 'react-native-netinfo';
 import { PersistGate } from "redux-persist/es/integration/react";
-import { Image, Text ,Alert } from "react-native";
+import { Image, Text ,Alert ,DeviceEventEmitter} from "react-native";
 import configureStore from './store';
 import Router from './pages/router'
 import getToken from './request/getToken'
@@ -26,6 +26,17 @@ export default class App extends Component {
             hasToken: false,
             isLogin: true,
         };
+    }
+    componentDidMount(){
+        DeviceEventEmitter.addListener('replaceRoute', () => {
+            let isLogin=!this.state.isLogin;
+            if(isLogin===true){
+                DeviceEventEmitter.emit('reloadVideoList');
+            }
+            this.setState({
+                isLogin: isLogin,
+            });
+        });
     }
     setToken(obj) {
         this.setState({

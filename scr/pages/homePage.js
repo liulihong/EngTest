@@ -1,5 +1,5 @@
 import React, { Compnents, Component } from 'react';
-import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, DeviceEventEmitter, Alert } from 'react-native';
+import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, DeviceEventEmitter, Alert, Platform,BackHandler,ToastAndroid } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import VideoCard from '../components/videoCard';
 import utils from '../utils'
@@ -15,7 +15,7 @@ class HomeScreen extends Component {
         super(props);
         this.prepareDown = this.prepareDown.bind(this);
         this.downLoad = this.downLoad.bind(this);
-
+        // this.onBackAndroid=this.onBackAndroid.bind();
         //开始下载
         this.state = {
             isLoading: false,
@@ -27,9 +27,34 @@ class HomeScreen extends Component {
         }
     }
 
+    // componentWillMount() {
+    //     if (Platform.OS === 'android') {
+    //         BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
+    //     }
+    // }
+    // onBackAndroid = () => {
+    //     if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+    //         BackHandler.exitApp()
+    //         return false;
+    //       }
+    //       this.setState({
+    //         lastBackPressed:Date.now(),
+    //       });
+    //       this.lastBackPressed = Date.now();
+    //       return true;
+    // };
+    // //组件卸载 播放停止
+    // componentWillUnmount() {
+    //     this.onBackAndroid();
+    //     if (Platform.OS === 'android') {
+    //         BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+    //     }
+    // }
+
     //组件加载完成
     componentDidMount() {
         DeviceEventEmitter.addListener('reloadVideoList', () => {
+            
             //检查网络
             if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
                 Alert.alert("", "请检查网络！");
@@ -38,6 +63,7 @@ class HomeScreen extends Component {
             //获取试题列表
             this.props.GetPaperList();//获取试题列表
             this.props.getCommon();//获取下载共用音频URL
+            
         });
     }
 

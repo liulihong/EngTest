@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, DeviceEventEmitter, View ,Text} from "react-native";
+import { Image, DeviceEventEmitter, View, Text, Platform, BackHandler } from "react-native";
 import TabBarItem from '../components/tabItem';
 import HomePage from "./homePage";
 import TaskPage from "./taskPage"
@@ -22,30 +22,55 @@ import { connect } from "react-redux";
 
 
 let loadtimeInterval;
+// let routeName;
 
 
 class MainRoute extends Component {
     constructor() {
         super()
-        this.changeNavigation=this.changeNavigation.bind();
+        this.changeNavigation = this.changeNavigation.bind();
+        // this.onBackAndroid = this.onBackAndroid.bind();
         this.state = {
             // isloading: false,
             loadtxt: "正在加载共用音频",
         }
     }
 
+    // componentWillMount() {
+    //     if (Platform.OS === 'android') {
+    //         BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
+    //     }
+    // }
+    // onBackAndroid = () => {
+    //     if (this.routeName === "HomePage" || this.routeName === "Login") {
+    //         if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+    //             BackHandler.exitApp();
+    //             return false;
+    //         }
+    //         this.lastBackPressed = Date.now();
+    //         return true;
+    //     }
+    // };
+    //组件卸载 播放停止
+    // componentWillUnmount() {
+    //     if (Platform.OS === 'android') {
+    //         BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+    //     }
+    // }
+
     componentDidMount() {
+        // routeName = (this.props.isLogin === true) ? "HomePage" : "Login";
         DeviceEventEmitter.addListener('startDownloadSound', () => {
             clearInterval(loadtimeInterval);
             this.setState({
                 isloading: true,
             });
-            
-            loadtimeInterval=setInterval(()=>{
+
+            loadtimeInterval = setInterval(() => {
                 this.setState({
-                    loadtxt: "正在下载共用音频 " + (this.props.downLoadInfo?this.props.downLoadInfo.progress:"0%"),
+                    loadtxt: "正在下载共用音频 " + (this.props.downLoadInfo ? this.props.downLoadInfo.progress : "0%"),
                 });
-            },100)
+            }, 100)
         })
         DeviceEventEmitter.addListener('endDownloadSound', () => {
             this.setState({
@@ -55,28 +80,32 @@ class MainRoute extends Component {
         })
     }
 
-    changeNavigation(type,prevState,currenState){
-        let routes=currenState.routes;
+    changeNavigation(type, prevState, currenState) {
+        let routes = currenState.routes;
         //查找当前最上层页面路由
-        let currRoute=routes[routes.length-1];
-        if(currRoute.routeName==="HomePage"&&currRoute.index===0){
+        let currRoute = routes[routes.length - 1];
+        // this.routeName = currRoute.routeName;
+        if (currRoute.routeName === "HomePage" && currRoute.index === 0) {
             DeviceEventEmitter.emit('reloadVideoList');
-        }else if(currRoute.routeName==="HomePage"&&currRoute.index===1){
+        } else if (currRoute.routeName === "HomePage" && currRoute.index === 1) {
             DeviceEventEmitter.emit('reloadHomework');
         }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         DeviceEventEmitter.removeListener('reloadVideoList');
         DeviceEventEmitter.removeListener('reloadHomework');
+        if (Platform.OS === 'android') {
+            BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+        }
     }
 
     render() {
         return (
             [
-                (this.props.isLogin === true) ? 
-                <Navigator key={1} onNavigationStateChange={(prevState,currenState)=>{this.changeNavigation(1,prevState,currenState)}} /> : 
-                <LogRouter key={1} onNavigationStateChange={(prevState,currenState)=>{this.changeNavigation(2,prevState,currenState)}} />,
+                (this.props.isLogin === true) ?
+                    <Navigator key={1} onNavigationStateChange={(prevState, currenState) => { this.changeNavigation(1, prevState, currenState) }} /> :
+                    <LogRouter key={1} onNavigationStateChange={(prevState, currenState) => { this.changeNavigation(2, prevState, currenState) }} />,
 
                 (this.state.isloading === true) ? <View key={2} style={{
                     backgroundColor: "rgba(0,0,0,0.5)",
@@ -92,7 +121,7 @@ class MainRoute extends Component {
                         fontSize: 18,
                         fontWeight: "500",
                     }}>{this.state.loadtxt}</Text>
-                </View> : <View key={2}/>
+                </View> : <View key={2} />
 
             ]
         )
@@ -203,7 +232,7 @@ export const Tab = TabNavigator(
             tabStyle: { width: 100, },//标签栏的样式对象
             //android
             scrollEnabled: true,//是否启用可滚动选项卡
-            
+
         },
     }
 );

@@ -11,6 +11,7 @@ import {
     AsyncStorage,
     Alert,
     Linking,
+    DeviceEventEmitter,
 } from 'react-native';
 import { LogOut } from "../store/actions";
 import { connect } from "react-redux";
@@ -28,7 +29,8 @@ class mineCell extends Component {
     btnClick() {
         if (this.props.title === "退出登录") {
             this.props.logOut(() => {
-                this.props.navigation.navigate('Login');
+                DeviceEventEmitter.emit('replaceRoute');
+                // this.props.navigation.navigate('Login');
             });
         } else if (this.props.title === "版本检查") {
             this.CheckVersion();

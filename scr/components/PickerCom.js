@@ -170,7 +170,7 @@ const styles=StyleSheet.create({
         flexWrap:'wrap'
     },
     titleView:{
-        width:'100%',
+        width:utils.SCREENWIDTH,
         height:46,
         backgroundColor:"white",
         flexDirection:"row",
@@ -196,13 +196,17 @@ const styles=StyleSheet.create({
     },
     pickerView:{
         flexDirection:'row',
+        // backgroundColor:"red",
         backgroundColor:utils.COLORS.background1,
-        width:"100%",
-        height:200,
+        // position:"absolute",
+        // width:"100%",
+        bottom:0,
+        width:utils.SCREENWIDTH,
+        height:100,
         justifyContent:"center"
     },
     picker:{
-        width:"40%",
-        height:100
+        width:utils.SCREENWIDTH*0.4,
+        // height:100
     },
 });

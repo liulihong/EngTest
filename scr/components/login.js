@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button, TextInput, Alert, StyleSheet, TouchableOpacity ,ScrollView } from 'react-native';
+import { View, Text, Button, TextInput, Alert, StyleSheet, TouchableOpacity ,ScrollView,DeviceEventEmitter } from 'react-native';
 import { connect } from 'react-redux';
 import { Login as logReg, GetCommon } from '../store/actions';
 import utils from '../utils'
@@ -55,7 +55,8 @@ class LoginView extends Component {
             // DeviceID:null,
             // Model:null
         }, () => {
-            this.props.navigation.navigate('HomePage');
+            DeviceEventEmitter.emit('replaceRoute');
+            // this.props.navigation.navigate('HomePage');
         });
     }
 

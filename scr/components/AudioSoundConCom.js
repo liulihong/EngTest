@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, DeviceEventEmitter, Alert, BackHandler,Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, DeviceEventEmitter, Alert ,Platform,BackHandler } from 'react-native';
 import utils from '../utils';
 import { connect } from "react-redux";
 import {
@@ -74,7 +74,6 @@ class AudioSoundConCom extends Component {
         }
     }
     onBackAndroid = () => {
-        // alert("监听到了========");
         this.clearInteval();
         this.stopPlayAndRecord();
 
@@ -84,15 +83,12 @@ class AudioSoundConCom extends Component {
 
     //组件卸载 播放停止
     componentWillUnmount() {
+        DeviceEventEmitter.emit('ChangeUI');
 
         this.onBackAndroid();
-        
-        DeviceEventEmitter.emit('ChangeUI');
-        
         if (Platform.OS === 'android') {
             BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
         }
-
     }
 
     saveAnsweRecord(tempData) {
