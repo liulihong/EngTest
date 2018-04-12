@@ -28,14 +28,21 @@ class HearRecord extends Component {
 
 
         if (this.props.answers !== undefined && this.props.answers[3] !== undefined) {
+            debugger
             let currAnswer = this.props.answers[3];
             let unitID = this.props.contentData[0].UniqueID;
-            let answer = currAnswer[unitID].answer;
-            // ["answer"];
-            // debugger
-            this.setState({
-                answer: answer,
-            });
+            if (currAnswer[unitID] !== undefined && currAnswer[unitID].answer !== undefined) {
+                let answer = currAnswer[unitID].answer;
+                this.setState({
+                    answer: answer,
+                });
+            } else {
+                let n = this.props.contentData[0].ExampleAnswer.length;
+                let arr = new Array(n).fill("");
+                this.setState({
+                    answer: arr,
+                });
+            }
         } else {
             let n = this.props.contentData[0].ExampleAnswer.length;
             let arr = new Array(n).fill("");
@@ -84,8 +91,9 @@ class HearRecord extends Component {
                             let newNum = num + i;
                             return <TextInput
                                 key={newNum + i}
+                                autoCapitalize={"none"} //不自动大写
                                 underlineColorAndroid={'transparent'}
-                                style={{ height: 40, width: "70%", borderRadius: 5, fontSize: 16, textAlign: 'center',borderColor:utils.COLORS.theme,borderWidth:1, backgroundColor:"rgba(18,183,247,.5)", marginTop: 10 }}
+                                style={{ height: 40, width: "70%", borderRadius: 5, fontSize: 16, textAlign: 'center', borderColor: utils.COLORS.theme, borderWidth: 1, backgroundColor: "rgba(18,183,247,.5)", marginTop: 10 }}
                                 multiline={false}
                                 placeholder={newNum + ''}
                                 secureTextEntry={false}
@@ -94,7 +102,7 @@ class HearRecord extends Component {
                                     tempArr.splice(i, 1, text)
                                     this.setState({
                                         answer: tempArr
-                                    },()=>{
+                                    }, () => {
                                         this.props.saveAnswer(3, this.props.contentData[0].UniqueID, this.props.contentData[0].ID, this.state.answer);
                                     })
                                 }}

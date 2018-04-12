@@ -251,15 +251,6 @@ const Navigator = StackNavigator(
                 backgroundColor: utils.COLORS.background,
             },
         },
-        Login: {
-            screen: Login,
-            navigationOptions: {
-                //设置隐藏标题。HeaderProps null
-                header: null,
-                //禁止滑动返回
-                gesturesEnabled: false,
-            },
-        },
         TestStart: {
             screen: TestStart,
             navigationOptions: {
@@ -342,74 +333,13 @@ const LogRouter = StackNavigator(
                 gesturesEnabled: false,
             },
         },
-        HomePage: {
-            screen: Navigator,
-            //屏幕导航选项
-            navigationOptions: {
-                //设置隐藏标题。HeaderProps null
-                header: null,
-                //禁止滑动返回
-                gesturesEnabled: false,
-            },
-            cardStyle: {
-                backgroundColor: utils.COLORS.background,
-            },
-        },
-        TestStart: {
-            screen: TestStart,
-            navigationOptions: {
-                header: null,
-            }
-        },
-        VideoTest: {
-            screen: VideoTest,
-            navigationOptions: {
-                header: null,
-            }
-        },
-        AnswerScreen: {
-            screen: AnswerScreen,
-            navigationOptions: {
-                header: null,
-            }
-        },
+        
         Regist: {
             screen: Regist,
             navigationOptions: {
                 //设置隐藏标题。HeaderProps null
                 header: null,
             },
-        },
-        AnsweredDetail: {
-            screen: AnsweredDetail,
-            navigationOptions: {
-                //设置隐藏标题。HeaderProps null
-                header: null,
-            },
-        },
-        WebViewScreen: {
-            screen: WebViewScreen,
-            navigationOptions: {
-                header: null,
-            }
-        },
-        Report: {
-            screen: Report,
-            navigationOptions: {
-                header: null,
-            }
-        },
-        MineInfo: {
-            screen: MineInfo,
-            navigationOptions: {
-                header: null,
-            }
-        },
-        MineTxtInfo: {
-            screen: MineTxtInfo,
-            navigationOptions: {
-                header: null,
-            }
         },
         PwdScreen: {
             screen: PwdScreen,

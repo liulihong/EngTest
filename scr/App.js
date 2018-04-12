@@ -24,17 +24,17 @@ export default class App extends Component {
         getToken(store, this.setToken);
         this.state = {
             hasToken: false,
-            isLogin: true,
+            isLogin: false,
         };
     }
     componentDidMount(){
-        DeviceEventEmitter.addListener('replaceRoute', () => {
-            let isLogin=!this.state.isLogin;
-            if(isLogin===true){
+        DeviceEventEmitter.addListener('replaceRoute', (obj) => {
+            // let isLogin=!this.state.isLogin;
+            if(obj.isLogin===true){
                 DeviceEventEmitter.emit('reloadVideoList');
             }
             this.setState({
-                isLogin: isLogin,
+                isLogin: obj.isLogin,
             });
         });
     }

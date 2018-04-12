@@ -204,7 +204,7 @@ class AudioSoundConCom extends Component {
                                         // alert("音频提交成功" + JSON.stringify(result));
                                     }
                                 }, (error) => {
-                                    alert("音频提交失败" + utils.findErrorInfo(error));
+                                    // alert("音频提交失败" + utils.findErrorInfo(error));
                                     // alert("失败");
                                 });
                             } else {
@@ -212,8 +212,8 @@ class AudioSoundConCom extends Component {
                             }
                         })
                         .catch((err) => {
-                            console.log(err.message);
-                            // alert("转字符串失败" + err);
+                            // console.log(err.message);
+                             alert("转字符串失败：" + err);
                         });
                 }
             }

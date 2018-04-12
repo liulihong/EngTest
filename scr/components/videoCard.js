@@ -64,12 +64,12 @@ class VideoCard extends Component {
                 let path=result.Url;
                 download(path, docName, (obj) => {
                     this.props.saveDownInfo(obj);
-                    if (obj.status === "success") {
+                    if (obj.status === "success" && obj.unzip === "success") {
                         this.props.saveUrl(obj);
                         this.setState({
                             clickCardID: "",
                         });
-                    } else if (obj.status === "faild") {
+                    } else if (obj.status === "faild" || obj.unzip === "faild") {
                         Alert.alert("", this.props.cardDic.SecTitle + "下载失败！");
                         // this.props.downFaild();
                         // this.props.saveDownInfo(obj);

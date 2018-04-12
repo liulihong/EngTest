@@ -21,10 +21,10 @@ class HomeScreen extends Component {
             isLoading: false,
         }
 
-        if (this.props.logResult && this.props.logResult !== undefined) {
+        // if (this.props.logResult && this.props.logResult !== undefined) {
             this.props.GetPaperList();//获取试题列表
             this.props.getCommon();//获取下载共用音频URL
-        }
+        // }
     }
 
     // componentWillMount() {
@@ -54,7 +54,6 @@ class HomeScreen extends Component {
     //组件加载完成
     componentDidMount() {
         DeviceEventEmitter.addListener('reloadVideoList', () => {
-            
             //检查网络
             if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
                 Alert.alert("", "请检查网络！");

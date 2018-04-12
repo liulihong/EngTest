@@ -29,7 +29,7 @@ class mineCell extends Component {
     btnClick() {
         if (this.props.title === "退出登录") {
             this.props.logOut(() => {
-                DeviceEventEmitter.emit('replaceRoute');
+                DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
                 // this.props.navigation.navigate('Login');
             });
         } else if (this.props.title === "版本检查") {

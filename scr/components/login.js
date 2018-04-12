@@ -55,7 +55,7 @@ class LoginView extends Component {
             // DeviceID:null,
             // Model:null
         }, () => {
-            DeviceEventEmitter.emit('replaceRoute');
+            DeviceEventEmitter.emit('replaceRoute',{isLogin:true});
             // this.props.navigation.navigate('HomePage');
         });
     }

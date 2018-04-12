@@ -64,10 +64,16 @@ const findErrorInfo = (err)=> {
         return "没有权限";
     if(err.ErrorCode===1002)
         return "数据不存在";
-    if(err.ErrorCode===1003)
-        return "会话不存在";
-    if(err.ErrorCode===1004)//用户尚未点登录
-        return "用户尚未登录";
+    if(err.ErrorCode===1003){//会话不存在
+        DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
+        return "登录异常，请重新登录";
+    }
+        
+    if(err.ErrorCode===1004){//用户尚未点登录
+        DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
+        return "登录异常，请重新登录";
+    }
+        
     if(err.ErrorCode===1005)
         return "频繁发送手机短信";
     if(err.ErrorCode===1006)
@@ -84,8 +90,11 @@ const findErrorInfo = (err)=> {
         return "服务端禁止新的登录会话";
     if(err.ErrorCode===1105)
         return "用户名或者密码错误";
-    if(err.ErrorCode===1106)
-        return "会话被踢出";
+    if(err.ErrorCode===1106){//会话被踢出
+        DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
+        return "您的账户在其他地方登录，请重新登录";
+    }
+        
     if(err.ErrorCode===1107)
         return "用户被禁用";
 
@@ -113,7 +122,7 @@ module.exports = {
     COLORS:colors,
     DOWNLOADDOCUMENTPATH:downloadDest,
     version_ios:1,//苹果当前版本
-    version_android:1,//安卓当前版本
+    version_android:2,//安卓当前版本
     isLastIndex,
     findPlayPath,
     findPicturePath,
