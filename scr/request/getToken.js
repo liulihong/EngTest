@@ -2,7 +2,7 @@ import { COOKIE, ERROR,LOGIN } from '../store/actionTypes';
 import { fetchPost, setCookie } from "../request/fetch";
 import { getCookie } from "../request/requestUrl";
 import utils from  '../utils';
-import { AsyncStorage,Alert } from "react-native";
+import { AsyncStorage,Alert ,Linking} from "react-native";
 import SplashScreen from "rn-splash-screen";
 
 
@@ -16,9 +16,31 @@ export default (store, callback) => {
                 "ProtocolVersion": 2,
                 "LastSessionID": token,
             }).then(res => {
+                
                 if(res.ErrorCode!==undefined){
                     Alert.alert("",utils.findErrorInfo(res));
                 }
+
+                if ((res.LastClientVersion > version)) {
+                    Alert.alert('有新版本', '更新说明：' + res.LastClientText,
+                        [
+                            { text: "暂不更新", onPress: () => { } },
+                            {
+                                text: "立即更新", onPress: () => {
+                                    
+                                    Linking.canOpenURL(res.UploadUrl).then(supported => {
+                                        if (supported) {
+                                            Linking.openURL(res.UploadUrl);
+                                        } else {
+                                            alert("打不开下载地址哦！");
+                                        }
+                                    })
+
+                                }
+                            },
+                        ]
+                    );
+                } 
 
                 callback({hasToken:res.SessionID,isLogin:(res.CurrentUser!==null)});
 

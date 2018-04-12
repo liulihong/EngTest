@@ -174,6 +174,7 @@ class AudioSoundConCom extends Component {
                     this.submitExamFinish(isFinish);
                 }
             } else {//提交音频
+                // alert("提交音频");
                 let topicObj = topObj.TopicInfoList[0];//小题数据信息
                 let topicObjAnswer = answer[topicObj.UniqueID];//小题答案
                 if (topicObjAnswer !== undefined) {
@@ -199,12 +200,12 @@ class AudioSoundConCom extends Component {
                                 fetchPost(submitExamTopic, paramts).then((result) => {
                                     this.submitExamFinish(isFinish);
                                     if(result.ErrorCode!==undefined){
-                                        // alert("音频提交失败" + utils.findErrorInfo(error));
+                                        alert("音频提交失败" + utils.findErrorInfo(error));
                                     }else{
                                         // alert("音频提交成功" + JSON.stringify(result));
                                     }
                                 }, (error) => {
-                                    // alert("音频提交失败" + utils.findErrorInfo(error));
+                                    alert("音频提交失败" + utils.findErrorInfo(error));
                                     // alert("失败");
                                 });
                             } else {

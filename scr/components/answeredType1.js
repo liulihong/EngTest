@@ -121,6 +121,7 @@ export default class AnsweredType1 extends Component {
                                                 <Text style={styles.minTitle}>
                                                     {minObj.Title}
                                                     <Text style={isCorrect?styles.correctScore:styles.errorScore}>{scoreStr}</Text>
+                                                    <Text style={{color:"rgba(0,0,0,0)"}}>{"__"}</Text>
                                                 </Text>
                                                 {
                                                     minObj.Answers.map((selObj,k) => {
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
         // paddingBottom:0,
         // paddingTop:0,
         flexDirection: 'row',
-        flexWrap: 'wrap',
+        // flexWrap: 'nowrap',
         justifyContent: 'flex-start',
         alignItems: "flex-end",
         // backgroundColor:"#eeeeee",  
@@ -198,7 +199,10 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "600",
         lineHeight: 26,
-        textAlign: "justify",
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        // textAlign: "justify",
     },
     audioBtn: {//原音频播放按钮
         width:utils.PLATNAME==="IOS" ? 16 : 32,

@@ -30,7 +30,11 @@ export const fetchPost = (url, obj) => fetch(url, {
         // "Cookie": sesstionId
     }),
     body: JSON.stringify(obj),
-}).then(res => response(res))
+})
+.then(res => response(res))
+.catch((err)=>{
+    alert(err+"catsh");
+});
 
 export const fetchGet = (url, obj) => fetch(url + '?' + $params(obj), {
     // "sid": sesstionId

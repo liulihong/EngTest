@@ -117,20 +117,20 @@ export default class AnsweredType10 extends Component {
                                             newAns = localAnswer[minObj.UniqueID].answer;
 
                                         let isCorrect = false;
-                                        let scoreStr = "  (未作答)";
+                                        let scoreStr = "  (未作答) ";
                                         if (serverAnswer !== undefined && serverAnswer.LogList !== undefined && serverAnswer.LogList.length > 0) {
                                             for (let i = 0; i < serverAnswer.LogList.length; i++) {
                                                 let answerInfo = serverAnswer.LogList[i];
                                                 if (answerInfo.ID === minObj.UniqueID) {
                                                     if (answerInfo.Status === 1) {
                                                         isCorrect = answerInfo.Total === answerInfo.Score;
-                                                        scoreStr = "  (得分：" + answerInfo.Score + "分 / " + answerInfo.Total + "分)"
+                                                        scoreStr = "  (得分：" + answerInfo.Score + "分 / " + answerInfo.Total + "分) "
                                                     } else if (answerInfo.Status === 2) {
-                                                        scoreStr = "  (抱歉，计分失败了)";
+                                                        scoreStr = "  (抱歉，计分失败了) ";
                                                     } else if (answerInfo.Status === 0) {
-                                                        scoreStr = "  (正在阅卷中...)";
+                                                        scoreStr = "  (正在阅卷中...) ";
                                                     } else {
-                                                        scoreStr = "  (未知异常...)";
+                                                        scoreStr = "  (未知异常...) ";
                                                     }
                                                     break;
                                                 }
@@ -146,7 +146,7 @@ export default class AnsweredType10 extends Component {
                                                 </Text>
                                                 {/* 我的答案 */}
                                                 {
-                                                    (scoreStr !== "  (未作答)")?<Text style={[isCorrect ? styles.correctScore : styles.errorScore,{marginBottom:10,marginTop:10}]}>{"我的答案："+selTitleArr[newAns-1]}</Text>:<Text/>
+                                                    (scoreStr !== "  (未作答) ")?<Text style={[isCorrect ? styles.correctScore : styles.errorScore,{marginBottom:10,marginTop:10}]}>{"我的答案："+selTitleArr[newAns-1]}</Text>:<Text/>
                                                 }
                                                 {/* 正确答案 */}
                                                 <Text style={styles.correctScore}>{"正确答案："+selTitleArr[oriAns-1]}</Text>

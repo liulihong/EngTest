@@ -43,31 +43,33 @@ class AnswerScreen extends Component {
         let LogID = this.props.answerRecord.LogID;
         fetchPost(getExamLog, { LogID }).then((result) => {
             // alert("result: "+JSON.stringify(result));
-            this.setState({
-                scoreFinish:true,
-            });
-            let tempObj = {};
-            for (let i = 0; i < result.LogList.length; i++) {
-                ansObj = result.LogList[i];
-                if(ansObj.Status===0){//如果状态为计分中 试卷计分状态为计分中
-                    this.setState({
-                        scoreFinish:false,
-                    });
-                }
-                if (tempObj[ansObj.Type] === undefined)
-                    tempObj[ansObj.Type] = {
-                        totalScore: 0,
-                        LogList: [],
+            if(result.LogList!==undefined){
+                this.setState({
+                    scoreFinish:true,
+                });
+                let tempObj = {};
+                for (let i = 0; i < result.LogList.length; i++) {
+                    ansObj = result.LogList[i];
+                    if(ansObj.Status===0){//如果状态为计分中 试卷计分状态为计分中
+                        this.setState({
+                            scoreFinish:false,
+                        });
                     }
-                tempObj[ansObj.Type].totalScore = ansObj.Score + tempObj[ansObj.Type].totalScore;
-                tempObj[ansObj.Type].LogList.push(ansObj);
-            }
-            this.setState({
-                serverAnswer: result,
-                resetAnswer: tempObj,
-            });
-            
-            console.log(tempObj);
+                    if (tempObj[ansObj.Type] === undefined)
+                        tempObj[ansObj.Type] = {
+                            totalScore: 0,
+                            LogList: [],
+                        }
+                    tempObj[ansObj.Type].totalScore = ansObj.Score + tempObj[ansObj.Type].totalScore;
+                    tempObj[ansObj.Type].LogList.push(ansObj);
+                }
+                this.setState({
+                    serverAnswer: result,
+                    resetAnswer: tempObj,
+                });
+                console.log(tempObj);
+            }else
+                Alert.alert("",utils.findErrorInfo(result));
         }, (error) => {
             Alert.alert("",utils.findErrorInfo(error));
         })
@@ -107,14 +109,15 @@ class AnswerScreen extends Component {
                         const totalScore = (this.state.resetAnswer[element.Type] !== undefined) ? this.state.resetAnswer[element.Type].totalScore : 0.00;
                         const sResetAnswer = (this.state.resetAnswer[element.Type] !== undefined) ? this.state.resetAnswer[element.Type] : {};
 
-                        let tempScore = 0;//计算大题题目总分
+                        let tempScore = 0;//计算大题题目总分.
                         element.ExamTopics.map((topObj) => {
                             topObj.TopicInfoList.map((sObj) => {
                                 tempScore += sObj.Score;
                             })
                         })
                         // alert(JSON.stringify(sResetAnswer));
-                        let newTitle = "   " + title + " ( " + totalScore.toFixed(2) + " / " + tempScore.toFixed(2) + " )";
+
+                        let newTitle = '   ' + title + ' ( ' + totalScore.toFixed(2) + ' / ' + tempScore.toFixed(2) + ' ) ';
                         let examPath = this.props.currentExamPath;
                         return (
                             <TouchableOpacity key={element.Type} onPress={() => {

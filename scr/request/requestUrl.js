@@ -4,7 +4,8 @@
 // const hostUrl = 'http://tsk.demo.17work.cn';//外网测试账号
 // const hostUrl = 'http://tsk.17work.com.cn';//外网测试账号
 // const hostUrl = 'https://tsk.dev.17work.com.cn';//测试
-const hostUrl = 'http://39.107.247.196:17800';//测试
+// const hostUrl = 'http://39.107.247.196:17800';//测试
+const hostUrl = 'http://tsk.eqd.17work.cn:17000';//测试
 
 module.exports = {
     hostUrl: hostUrl,

@@ -5,6 +5,7 @@ import utils from "../utils";
 
 export default class ProgressButton extends Component {
     render() {
+          
         return (
             <View style={{
                 flexDirection: 'row',
