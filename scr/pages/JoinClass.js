@@ -162,14 +162,17 @@ export default class LoginScreen extends Component {
                             />
                             <CusSelBtn title={this.state.classTitle} clickEvent={() => { this.getClassData() }} />
                         </View>
-                    </ScrollView>
 
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={this.applyJoin}
-                    >
-                        <Text style={styles.buttonText}>{"申请加入"}</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={this.applyJoin}
+                        >
+                            <Text style={styles.buttonText}>{"申请加入"}</Text>
+                        </TouchableOpacity>
+
+
+
+                    </ScrollView>
 
                     <AdressPicker
                         classDataArr={this.state.classDataArr}
@@ -220,6 +223,7 @@ const styles = StyleSheet.create({
         backgroundColor: utils.COLORS.theme,
         justifyContent: 'center',
         marginTop: 30,
+        alignSelf: "center",
     },
     buttonText: {
         textAlign: 'center',

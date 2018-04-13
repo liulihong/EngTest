@@ -156,15 +156,16 @@ const styles=StyleSheet.create({
     contain:{
         width:utils.SCREENWIDTH,
         height:utils.SCREENHEIGHT,
-        // backgroundColor:"rgba(0,0,0,0.5)",
+        backgroundColor:"rgba(0,0,0,0.5)",
         
         position:'absolute'
     },
     content:{
-        position:'absolute',
+        // position:'absolute',
+        marginTop:utils.SCREENHEIGHT-240,
         width:utils.SCREENWIDTH,
-        height:300,
-        bottom:0,
+        height:240,
+        backgroundColor:"white",
         flexDirection:'row',
         justifyContent:'center',
         alignItems:'flex-end',
@@ -198,17 +199,17 @@ const styles=StyleSheet.create({
     pickerView:{
         flexDirection:'row',
         // backgroundColor:"red",
-        backgroundColor:utils.COLORS.background1,
+        // backgroundColor:utils.COLORS.background1,
         // position:"absolute",
         // width:"100%",
-        bottom:0,
+        // bottom:0,
         width:utils.SCREENWIDTH,
-        height:100,
+        // height:300,
         justifyContent:"center"
     },
     picker:{
         width:utils.SCREENWIDTH*0.4,
         // backgroundColor:utils.COLORS.background1,
-        height:100
+        // height:300
     },
 });

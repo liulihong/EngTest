@@ -53,7 +53,7 @@ class mineCell extends Component {
         let version = (utils.PLATNAME === "IOS") ? utils.version_ios : utils.version_android;
         let paramts = { ClientName: utils.PLATNAME, ClientVersion: version };
         fetchPost(CheckVersion, paramts).then((result) => {
-            alert(JSON.stringify(result));
+            // alert(JSON.stringify(result));
             if ((result.LastClientVersion > version)) {
                 Alert.alert('有新版本', '更新说明：' + result.LastClientText,
                     [
