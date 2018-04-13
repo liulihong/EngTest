@@ -1,5 +1,5 @@
 import React, { Compnents, Component } from 'react';
-import { ScrollView, StyleSheet, View, Button, Text, TouchableOpacity,Alert, DeviceEventEmitter } from 'react-native';
+import { ScrollView, StyleSheet, View, Button, Text, TouchableOpacity, Alert, DeviceEventEmitter } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import VideoCard from '../components/videoCard';
 import utils from '../utils';
@@ -18,28 +18,30 @@ class TaskScreen extends Component {
         this.btnClick = this.btnClick.bind(this);
         this.GetPaperList = this.GetPaperList.bind(this);
 
-        this.state = {
-            // isShowFinsh: false,
-            dataArr: [],
-        }
-        // this.GetPaperList(this.state.isShowFinsh);
+        this.state={
+            // dataArr:[],
+        };
     }
 
     //组件加载完成
     componentWillMount() {
         DeviceEventEmitter.addListener('reloadHomework', () => {
-            if (this.props.logResult && this.props.logResult !== undefined) {
-                //检查网络
-                if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
-                    Alert.alert("", "请检查网络！");
-                    return;
-                }
-                //获取试题列表
-                this.GetPaperList(this.state.isShowFinsh);
+            // if (this.props.logResult && this.props.logResult !== undefined) {
+            //检查网络
+            if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
+                Alert.alert("", "请检查网络！");
+                return;
             }
+
+            // alert(JSON.stringify(this.state));
+            //获取试题列表
+            this.GetPaperList(this.state.isShowFinsh);
+            // }
         });
     }
-
+    componentWillUnmount(){
+        DeviceEventEmitter.removeListener('reloadHomework');
+    }
 
     GetPaperList(isShowFinsh) {
         if (isShowFinsh !== this.state.isShowFinsh) {
@@ -49,16 +51,21 @@ class TaskScreen extends Component {
         }
         let Status = (isShowFinsh === true) ? 2 : 0;
         fetchPost(GetHomework, { Status: Status }).then((res) => {
-            // alert("1111" + JSON.stringify(res));
-            // debugger
-            if (res.PaperList !== undefined) {
-                dataArr = res.PaperList;
-                this.setState({
-                    dataArr,
-                });
+            if (res.ErrorCode !== undefined) {
+                Alert.alert("", utils.findErrorInfo(res));
+                if(res.ErrorCode===1003||res.ErrorCode===1004||res.ErrorCode===1106){
+                    DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
+                }
+            }else{
+                if (res.PaperList !== undefined) {
+                    dataArr = res.PaperList;
+                    this.setState({
+                        dataArr,
+                    });
+                }
             }
         }, (error) => {
-            // alert("2222"+JSON.stringify(error));
+            alert("作业"+error);
         })
     }
 
@@ -82,7 +89,7 @@ class TaskScreen extends Component {
                 <View style={styles.line2} />
 
                 {
-                    (this.state.dataArr && this.state.dataArr === undefined || this.state.dataArr.length <= 0) ? <Text
+                    (this.state.dataArr === null || this.state.dataArr === undefined || this.state.dataArr.length <= 0) ? <Text
                         style={{ width: utils.SCREENWIDTH, lineHeight: 50, textAlign: "center" }}
                     >{"没有相关作业哦"}</Text> :
                         <ScrollView>

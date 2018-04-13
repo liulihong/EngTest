@@ -39,7 +39,7 @@ module.exports = (path, docName ,callback ) => {// 参数写一下
                 console.log("file download ");
                 console.log(downloadDest);
                 console.log(res);
-                callback({"path":path,"docName":docName,"status":"success","progress":"99%",unzip:"start"});
+                callback({"path":path,"docName":docName,"status":"success","progress":"解压中",unzip:"start"});
                 // 调用解压函数
                 this.unzipNewCourse(docName);
 
@@ -57,7 +57,7 @@ module.exports = (path, docName ,callback ) => {// 参数写一下
             Zip.unzip(oriPath, newPath , (err)=>{
                 if (err)
                 {
-                    callback({"path":path,"docName":docName,"status":"success","progress":"100%",unzip:"faild"});
+                    callback({"path":path,"docName":docName,"status":"success","progress":"0%",unzip:"faild"});
                     // 解压失败
                     console.log('error')
                 }

@@ -17,7 +17,7 @@ import {
     GETANSWERBLOW,
     DOWNLOADINFO,
 } from './actionTypes';
-import { Alert } from "react-native";
+import { Alert,DeviceEventEmitter } from "react-native";
 import { fetchGet, fetchPost } from "../request/fetch";
 import { getCode, regist, login, getPaperList, getCommon, logOut, Modify } from "../request/requestUrl";
 import RNFS from "react-native-fs";
@@ -34,6 +34,9 @@ export const Login = (obj, callBack) => {
             // debugger
             if (res.ErrorCode !== undefined) {
                 Alert.alert("", utils.findErrorInfo(res));
+                if(res.ErrorCode===1003||res.ErrorCode===1004||res.ErrorCode===1106){
+                    DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
+                }
             } else {
                 callBack();
                 return res;
@@ -49,6 +52,9 @@ export const motifyMyInfo = (paramts, callBack) => {
 
             if (result.ErrorCode !== undefined) {
                 Alert.alert("", utils.findErrorInfo(result));
+                if(res.ErrorCode===1003||res.ErrorCode===1004||res.ErrorCode===1106){
+                    DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
+                }
             } else {
                 // alert(JSON.stringify(result));
                 callBack();
@@ -76,6 +82,9 @@ export const getMovieList = () => {
             // debugger
             if (res.ErrorCode !== undefined) {
                 Alert.alert("", utils.findErrorInfo(res));
+                if(res.ErrorCode===1003||res.ErrorCode===1004||res.ErrorCode===1106){
+                    DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
+                }
             } else {
                 return res;
             }
@@ -88,8 +97,12 @@ export const getMovieList = () => {
 export const GetCommon = () => {
     return {
         promise: fetchPost(getCommon, {}).then(res => {
+            // alert(JSON.stringify(res));
             if (res.ErrorCode !== undefined) {
                 Alert.alert("", utils.findErrorInfo(res));
+                if(res.ErrorCode===1003||res.ErrorCode===1004||res.ErrorCode===1106){
+                    DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
+                }
             } else {
                 return res;
             }

@@ -81,24 +81,26 @@ class MainRoute extends Component {
     }
 
     changeNavigation(type, prevState, currenState) {
+        // alert("更新路由");
         let routes = currenState.routes;
         //查找当前最上层页面路由
         let currRoute = routes[routes.length - 1];
         // this.routeName = currRoute.routeName;
         if (currRoute.routeName === "HomePage" && currRoute.index === 0) {
-            DeviceEventEmitter.emit('reloadVideoList');
+            DeviceEventEmitter.emit('reloadVideoList',{isCheck:false});
         } else if (currRoute.routeName === "HomePage" && currRoute.index === 1) {
             DeviceEventEmitter.emit('reloadHomework');
         }
     }
 
-    componentWillUnmount() {
-        DeviceEventEmitter.removeListener('reloadVideoList');
-        DeviceEventEmitter.removeListener('reloadHomework');
-        if (Platform.OS === 'android') {
-            BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
-        }
-    }
+    // componentWillUnmount() {
+    //     alert("移除监听");
+    //     DeviceEventEmitter.removeListener('reloadVideoList');
+    //     DeviceEventEmitter.removeListener('reloadHomework');
+    //     if (Platform.OS === 'android') {
+    //         BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+    //     }
+    // }
 
     render() {
         return (

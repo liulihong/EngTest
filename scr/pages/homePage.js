@@ -15,56 +15,43 @@ class HomeScreen extends Component {
         super(props);
         this.prepareDown = this.prepareDown.bind(this);
         this.downLoad = this.downLoad.bind(this);
+        // this.reloadListAndCheckCommon=this.reloadListAndCheckCommon.bind();
         // this.onBackAndroid=this.onBackAndroid.bind();
         //开始下载
         this.state = {
             isLoading: false,
         }
-
-        // if (this.props.logResult && this.props.logResult !== undefined) {
-            this.props.GetPaperList();//获取试题列表
-            this.props.getCommon();//获取下载共用音频URL
-        // }
+        this.props.GetPaperList();//获取试题列表
     }
-
-    // componentWillMount() {
-    //     if (Platform.OS === 'android') {
-    //         BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
-    //     }
-    // }
-    // onBackAndroid = () => {
-    //     if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
-    //         BackHandler.exitApp()
-    //         return false;
-    //       }
-    //       this.setState({
-    //         lastBackPressed:Date.now(),
-    //       });
-    //       this.lastBackPressed = Date.now();
-    //       return true;
-    // };
-    // //组件卸载 播放停止
-    // componentWillUnmount() {
-    //     this.onBackAndroid();
-    //     if (Platform.OS === 'android') {
-    //         BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
-    //     }
-    // }
 
     //组件加载完成
     componentDidMount() {
-        DeviceEventEmitter.addListener('reloadVideoList', () => {
+        DeviceEventEmitter.addListener('reloadVideoList', (obj) => {
+            // alert(JSON.stringify(obj));
             //检查网络
             if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
                 Alert.alert("", "请检查网络！");
                 return;
             }
-            //获取试题列表
+            // this.reloadListAndCheckCommon(obj.isCheck);
+
+            if(obj.isCheck){
+                this.props.getCommon();//获取下载共用音频URL
+            }
             this.props.GetPaperList();//获取试题列表
-            this.props.getCommon();//获取下载共用音频URL
-            
         });
     }
+    componentWillUnmount(){
+        DeviceEventEmitter.removeListener('reloadVideoList');
+    }
+
+    // reloadListAndCheckCommon(have){
+    //     alert(have);
+    //     if(have){
+    //         this.props.getCommon();//获取下载共用音频URL
+    //     }
+    //     this.props.GetPaperList();//获取试题列表
+    // }
 
     prepareDown(nextProps) {
         let isDown = false;

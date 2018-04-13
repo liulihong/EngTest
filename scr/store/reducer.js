@@ -112,9 +112,10 @@ export const videoList = (state = { downedUrls: [] }, action) => {
                 loading: false
             }
         case GETCOMMON:
+            let url=(action.result.Uri!==undefined)?action.result.Uri:state.getCommenUrl;
             return {
                 ...state,
-                getCommenUrl: action.result.Uri,
+                getCommenUrl: url,
             }
         // case STARTDOWN:
         //     return {

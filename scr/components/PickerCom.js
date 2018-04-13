@@ -110,7 +110,7 @@ export class adressPicker extends Component{
                 >
                     {
                         this.state.tempAdressObj1.Childs && this.state.tempAdressObj1.Childs.map((adress)=>{
-                            return <Picker.Item style={{fontSize:10,backgroundColor:'red'}} key={adress.ID} label={adress.Title} value={adress.ID} />
+                            return <Picker.Item style={{fontSize:10}} key={adress.ID} label={adress.Title} value={adress.ID} />
                         })
                     }
                 </Picker>
@@ -156,13 +156,14 @@ const styles=StyleSheet.create({
     contain:{
         width:utils.SCREENWIDTH,
         height:utils.SCREENHEIGHT,
-        backgroundColor:"rgba(0,0,0,0.5)",
+        // backgroundColor:"rgba(0,0,0,0.5)",
+        
         position:'absolute'
     },
     content:{
         position:'absolute',
         width:utils.SCREENWIDTH,
-        height:200,
+        height:300,
         bottom:0,
         flexDirection:'row',
         justifyContent:'center',
@@ -207,6 +208,7 @@ const styles=StyleSheet.create({
     },
     picker:{
         width:utils.SCREENWIDTH*0.4,
-        // height:100
+        // backgroundColor:utils.COLORS.background1,
+        height:100
     },
 });

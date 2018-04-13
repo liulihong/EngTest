@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { NetInfoProvider } from 'react-native-netinfo';
 import { PersistGate } from "redux-persist/es/integration/react";
-import { Image, Text ,Alert ,DeviceEventEmitter} from "react-native";
+import { Image, Text, Alert, DeviceEventEmitter } from "react-native";
 import configureStore from './store';
 import Router from './pages/router'
 import getToken from './request/getToken'
@@ -27,16 +27,23 @@ export default class App extends Component {
             isLogin: false,
         };
     }
-    componentDidMount(){
+    componentDidMount() {
         DeviceEventEmitter.addListener('replaceRoute', (obj) => {
+            // alert("路由切换");
             // let isLogin=!this.state.isLogin;
-            if(obj.isLogin===true){
-                DeviceEventEmitter.emit('reloadVideoList');
+            if (obj.isLogin !== this.state.isLogin) {
+                this.setState({
+                    isLogin: obj.isLogin,
+                }, () => {
+                    if (this.state.isLogin === true) {
+                        DeviceEventEmitter.emit('reloadVideoList', { isCheck: true });
+                    }
+                });
             }
-            this.setState({
-                isLogin: obj.isLogin,
-            });
         });
+    }
+    componentWillUnmount() {
+        DeviceEventEmitter.removeListener('replaceRoute');
     }
     setToken(obj) {
         this.setState({
@@ -50,10 +57,10 @@ export default class App extends Component {
                 <PersistGate persistor={persistor}>
                     <NetInfoProvider
                         onChange={({ isConnected, connectionInfo }) => {
-                            if(isConnected===false){
-                                Alert.alert('','网络不可用，请检查网络');
+                            if (isConnected === false) {
+                                Alert.alert('', '网络不可用，请检查网络');
                             }
-                            store.dispatch({type: NETINFO , result: {isConnected,connectionInfo}})
+                            store.dispatch({ type: NETINFO, result: { isConnected, connectionInfo } })
                         }}
                         render={({ isConnected, connectionInfo }) => <Router isLogin={this.state.isLogin} />}
                     />

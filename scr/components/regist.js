@@ -71,6 +71,9 @@ class RegistView extends Component {
                 Alert.alert("", "验证码已发出，请注意查收");
             } else {
                 Alert.alert("", utils.findErrorInfo(res));
+                if(res.ErrorCode===1003||res.ErrorCode===1004||res.ErrorCode===1106){
+                    DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
+                }
             }
         }, (error) => {
             Alert.alert("", error);
