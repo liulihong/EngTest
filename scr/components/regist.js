@@ -173,7 +173,7 @@ class RegistView extends Component {
     render() {
         let proImg = this.state.isAgree ? require("../imgs/logIcon/zc_icon_click.png") : require("../imgs/logIcon/zc_icon_mr.png")
         return (
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps={"handled"}>
                 <View style={styles.container}>
 
                     <CusTextIput

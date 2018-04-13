@@ -71,7 +71,7 @@ class LoginView extends Component {
 
     render() {
         return (
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps={"handled"}>
                 <View style={styles.container}>
                     <CusTextIput
                         txtHide='请输入用户名或邮箱'

@@ -91,7 +91,7 @@ export default class AnsweredType10 extends Component {
                                     (i===0)?<Text style={[styles.minTitle,{margin:10}]}>{topObj.Desc}</Text>:<Text/>
                                 }
 
-                                {/*  */}
+                                {/* 听力原文按钮 */}
                                 <TouchableOpacity style={styles.audioInfo} onPress={() => {
                                     if (isPlay) {
                                         Sound1.soundStop();

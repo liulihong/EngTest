@@ -2,9 +2,9 @@ import NavBar from '../components/navBar';
 import utils from "../utils";
 import { protocal } from "../request/requestUrl"
 
-var React = require('react');
-var ReactNative = require('react-native');
-var {
+let React = require('react');
+let ReactNative = require('react-native');
+let {
     StyleSheet,
     Text,
     TextInput,
@@ -14,13 +14,13 @@ var {
     WebView
 } = ReactNative;
 
-var HEADER = '#3b5998';
-var BGWASH = 'rgba(255,255,255,0.8)';
-var DISABLED_WASH = 'rgba(255,255,255,0.25)';
+let HEADER = '#3b5998';
+let BGWASH = 'rgba(255,255,255,0.8)';
+let DISABLED_WASH = 'rgba(255,255,255,0.25)';
 
-var TEXT_INPUT_REF = 'urlInput';
-var WEBVIEW_REF = 'webview';
-var DEFAULT_URL = 'https://m.facebook.com';
+let TEXT_INPUT_REF = 'urlInput';
+let WEBVIEW_REF = 'webview';
+let DEFAULT_URL = 'https://m.facebook.com';
 
 export default class WebViewPage extends React.Component {
 

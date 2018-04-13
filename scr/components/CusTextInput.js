@@ -7,7 +7,8 @@ import {
     TextInput,
     View,
     StyleSheet,
-    ToastAndroid
+    ToastAndroid,
+    DeviceEventEmitter
 } from 'react-native'
 
 class TextInputLogin extends Component {
@@ -23,6 +24,7 @@ class TextInputLogin extends Component {
             txtValue: "",
         }
     }
+
     render () {
         var { style, name, txtHide, ispassword } = this.props
         return(
@@ -34,6 +36,7 @@ class TextInputLogin extends Component {
                     />
                     {/*<Text style={styles.txtName}>{name}</Text>*/}
                     <TextInput
+                        ref={"textInput"}
                         underlineColorAndroid = {'transparent'}
                         style={styles.textInput}
                         multiline={false}

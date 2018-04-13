@@ -117,7 +117,7 @@ class VideoTest extends Component{
                 <NavBar navtitle={this.props.examContent.SecTitle}  isBack={true} navgation={this.props.navigation}/>
 
                 <View style={styles.content}>
-                    <ScrollView >
+                    <ScrollView keyboardShouldPersistTaps={"handled"}>
                         {
                             this.getContent()
                         }

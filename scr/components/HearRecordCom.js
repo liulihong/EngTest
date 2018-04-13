@@ -51,12 +51,12 @@ class HearRecord extends Component {
             });
         }
 
-        if (this.props.type === 3) {
-            this.keyboardShow = Platform.OS === 'ios' ?
-                Keyboard.addListener('keyboardWillShow', this.updateKeyboardSpace.bind(this)) : Keyboard.addListener('keyboardDidShow', this.updateKeyboardSpace.bind(this));
-            this.keyboardHide = Platform.OS === 'ios' ?
-                Keyboard.addListener('keyboardWillHide', this.resetKeyboardSpace.bind(this)) : Keyboard.addListener('keyboardDidHide', this.resetKeyboardSpace.bind(this));
-        }
+        // if (this.props.type === 3) {
+        //     this.keyboardShow = Platform.OS === 'ios' ?
+        //         Keyboard.addListener('keyboardWillShow', this.updateKeyboardSpace.bind(this)) : Keyboard.addListener('keyboardDidShow', this.updateKeyboardSpace.bind(this));
+        //     this.keyboardHide = Platform.OS === 'ios' ?
+        //         Keyboard.addListener('keyboardWillHide', this.resetKeyboardSpace.bind(this)) : Keyboard.addListener('keyboardDidHide', this.resetKeyboardSpace.bind(this));
+        // }
     }
 
     updateKeyboardSpace(frames) {
