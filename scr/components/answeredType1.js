@@ -121,7 +121,7 @@ export default class AnsweredType1 extends Component {
                                                 <Text style={styles.minTitle}>
                                                     {minObj.Title}
                                                     <Text style={isCorrect?styles.correctScore:styles.errorScore}>{scoreStr}</Text>
-                                                    <Text style={{color:"rgba(0,0,0,0)"}}>{"__"}</Text>
+                                                    <Text style={{color:"rgba(0,0,0,0)"}}>{"答 "}</Text>
                                                 </Text>
                                                 {
                                                     minObj.Answers.map((selObj,k) => {
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         lineHeight: 26,
         flexDirection: 'row',
-        flexWrap: 'wrap',
+        // flexWrap: 'wrap',
         justifyContent: 'flex-start',
         // textAlign: "justify",
     },

@@ -103,7 +103,7 @@ export default class AnsweredType10 extends Component {
                                         <Image style={styles.audioBtn}
                                             source={source}
                                         />
-                                        {" 听力原文"}
+                                        {" 听力原文 "}
                                     </Text>
                                 </TouchableOpacity>
                                 {/* 音频内容 */}
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     },
     audioInfo: {//音频对应文本描述
         // margin:10,
+        width:"100%",
         padding: 10,
         // paddingBottom:0,
         // paddingTop:0,
