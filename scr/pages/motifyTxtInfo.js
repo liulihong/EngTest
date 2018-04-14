@@ -65,8 +65,8 @@ class MineTxtInfo extends Component {
         }else if( this.props.navigation.state.params.type === "班级" ){
             paramts={ Class: this.state.text };
         }
-        this.props.motifyInfo(paramts,()=>{
-            Alert.alert("","恭喜，修改成功！");
+        this.props.motifyInfo(paramts,(res)=>{
+            this.props.navigation.goBack();
         })
     }
 

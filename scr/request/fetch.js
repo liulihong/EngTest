@@ -33,7 +33,7 @@ export const fetchPost = (url, obj) => fetch(url, {
 })
 .then(res => response(res))
 .catch((err)=>{
-    alert(err+"catsh");
+    alert(err);
 });
 
 export const fetchGet = (url, obj) => fetch(url + '?' + $params(obj), {
