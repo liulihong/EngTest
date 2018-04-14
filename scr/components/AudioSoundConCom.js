@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, DeviceEventEmitter, Alert ,Platform,BackHandler } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, DeviceEventEmitter, Alert, Platform, BackHandler } from 'react-native';
 import utils from '../utils';
 import { connect } from "react-redux";
 import {
@@ -12,7 +12,7 @@ import { submitExamTopic, endExam } from '../request/requestUrl';
 import copy from 'lodash';
 import RNFS from 'react-native-fs';
 
-let isSubmited = false;//已交卷为否
+// let isSubmited = false;//已交卷为否
 let timeInteval;//播放时间计时器
 let timeInteval2;//读题时间计时器
 let timeInteval3;//答题时间计时器
@@ -59,13 +59,18 @@ class AudioSoundConCom extends Component {
             currPath: '',
             tempData: {},
         }
-        isSubmited = false;
+        // isSubmited = false;
+        this.submitNum = 0;
+        this.haveSubmit = false;
     }
 
     //组件加载完成
     componentDidMount() {
         Audio1.getPermission(audioPath);//检查录音权限
         this.startPlay(this.props.soundPath);//开始播放
+
+        this.submitNum = 0;
+        this.haveSubmit = false;
     }
 
     componentWillMount() {
@@ -114,21 +119,14 @@ class AudioSoundConCom extends Component {
     //提交答案到服务器
     submitToServer(nextProps, currProps, isFinish) {
 
-        let job = 1;
-
         let isChange = nextProps.dataSource.topicInfo !== currProps.dataSource.topicInfo;
-        if (isChange === false) job = 0;//当前信息没改变 不提交
+        if (isChange === false) return;//当前信息没改变 不提交
         let isTopObj = currProps.dataSource.topicInfo.currLevel === "topObj";
-        if (isTopObj === false) job = 0;//当前播放不是小题 不提交
-        if (nextProps.dataSource.topObj === currProps.dataSource.topicObj) job = 0;//跟上次同一个小题 不提交
-        if (nextProps.answers === undefined) job = 0;//没有答题记录
+        if (isTopObj === false) return;//当前播放不是小题 不提交
+        if (nextProps.dataSource.topObj === currProps.dataSource.topicObj) return;//跟上次同一个小题 不提交
+        if (nextProps.answers === undefined) return;//没有答题记录
 
-        if (job === 0) {
-            this.submitExamFinish(isFinish);
-            return;
-        }
 
-        // let isFinish = nextProps.dataSource.topicInfo.currLevel === "finished";
         let gropObj1 = currProps.dataSource.gropObj;//当前数组
         let gropObj = copy.cloneDeep(gropObj1);
         let answer1 = nextProps.answers[gropObj.Type];//当前类型题答案
@@ -136,10 +134,10 @@ class AudioSoundConCom extends Component {
         let topObj1 = currProps.dataSource.topObj;//页面数据信息
         let topObj = copy.cloneDeep(topObj1);
 
-        // alert(JSON.stringify(topObj.TopicInfoList));
+        // let submitNum=this.state.submitNum;
         if (answer !== undefined && topObj.TopicInfoList !== undefined) {//如果有答案记录
+            this.submitNum++;
             let paraArr = [];
-
             if (gropObj.Type === 1 || gropObj.Type === 10 || gropObj.Type === 3) {
 
                 let arr = topObj.TopicInfoList;
@@ -156,6 +154,7 @@ class AudioSoundConCom extends Component {
                         paraArr.push(paraObj);
                     }
                 }
+
                 if (paraArr.length) {
                     let LogID = currProps.answerRecord.LogID;
                     let paramts = {
@@ -166,12 +165,16 @@ class AudioSoundConCom extends Component {
 
                     fetchPost(submitExamTopic, paramts).then((result) => {
                         // alert("非音频提交成功" + JSON.stringify(result));
-                        this.submitExamFinish(isFinish);
+                        this.submitNum--;
+                        this.submitExamFinish();
                     }, (error) => {
-                        // alert("非音频提交失败" + utils.findErrorInfo(error));
+                        alert("非音频提交失败" + utils.findErrorInfo(error));
+                        this.submitNum--;
+                        this.submitExamFinish();
                     });
                 } else {
-                    this.submitExamFinish(isFinish);
+                    this.submitNum--;
+                    this.submitExamFinish();
                 }
             } else {//提交音频
                 // alert("提交音频");
@@ -198,40 +201,46 @@ class AudioSoundConCom extends Component {
                                 }
 
                                 fetchPost(submitExamTopic, paramts).then((result) => {
-                                    this.submitExamFinish(isFinish);
-                                    if(result.ErrorCode!==undefined){
+                                    if (result.ErrorCode !== undefined) {
                                         alert("音频提交失败" + utils.findErrorInfo(error));
-                                    }else{
+                                        this.submitNum--;
+                                        this.submitExamFinish();
+                                    } else {
                                         // alert("音频提交成功" + JSON.stringify(result));
+                                        this.submitNum--;
+                                        this.submitExamFinish();
                                     }
                                 }, (error) => {
                                     alert("音频提交失败" + utils.findErrorInfo(error));
-                                    // alert("失败");
+                                    this.submitNum--;
+                                    this.submitExamFinish();
                                 });
                             } else {
-                                this.submitExamFinish(isFinish);
+                                this.submitNum--;
+                                this.submitExamFinish();
                             }
                         })
                         .catch((err) => {
-                            // console.log(err.message);
-                             alert("转字符串失败：" + err);
+                            this.submitNum--;
+                            this.submitExamFinish();
+                            alert("转字符串失败：" + err);
                         });
+                } else {
+                    this.submitNum--;
+                    this.submitExamFinish();
                 }
             }
-        } else {
-            this.submitExamFinish(isFinish);
         }
     }
 
     //服务器交卷
-    submitExamFinish(isFinish) {
-        if (isFinish && isSubmited === false) {
-            isSubmited = true;
+    submitExamFinish() {
+        if (this.submitNum <= 0 && this.haveSubmit === true) {
+            this.haveSubmit === false;
             let LogID = this.props.answerRecord.LogID;
             let TaskLogID = this.props.answerRecord.TaskLogID;
-            // alert("LogID" + JSON.stringify(LogID) + "\nTaskLogID" + JSON.stringify(TaskLogID));
             fetchPost(endExam, { LogID, TaskLogID }).then((res) => {
-                // this.props.navigation.goBack();
+                this.props.navigation.goBack();
                 // alert("考试完成，静待考试结果吧");
             }, (error) => {
                 alert("交卷错误:  " + JSON.stringify(error));
@@ -245,10 +254,12 @@ class AudioSoundConCom extends Component {
             tempData: nextProps.dataSource,//新数据源
         });
         if (nextProps.dataSource.topicInfo.currLevel === "finished") {
-            this.submitToServer(nextProps, this.props, true);//提交答案到服务器
+            this.submitToServer(nextProps, this.props, false);//提交答案到服务器
             this.clearInteval();
             this.stopPlayAndRecord();
             this.saveAnsweRecord(nextProps.dataSource);
+            this.haveSubmit=true;
+            this.submitExamFinish();//提交答案到服务器   
         } else if (nextProps.dataSource.topicInfo !== this.props.dataSource.topicInfo) {
             this.submitToServer(nextProps, this.props, false);//提交答案到服务器
             this.saveAnsweRecord(nextProps.dataSource);
@@ -634,8 +645,8 @@ class AudioSoundConCom extends Component {
     getButton() {
         if (this.props.dataSource.topicInfo.currLevel === "finished") {
             return <View>
-                <Text>{"如上为本次答题记录,当前正在阅卷中..."}</Text>
-                <Text>{"返回开始考试页，点击查看上次成绩，可以查看考试结果"}</Text>
+                <Text>{"正在交卷中，请稍等，退出或返回可能会导致答案提交失败\n"}</Text>
+                <Text>{"交卷成功，将自动返回到开始考试页，点击查看考试记录进入考试记录详情"}</Text>
             </View>
         } else if (this.state.isPlaying && this.state.isPaused === false) {//点击按钮暂停播放
             return <TouchableOpacity style={styles.button} onPress={() => this.pause()}>

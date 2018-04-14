@@ -284,7 +284,7 @@ class TestStart extends Component {
             return <View style={styles.whiteView}>
 
                 <TouchableOpacity onPress={() => { this.showBlowInfo() }}>
-                    <Text style={styles.scoreText}>{"查看上次成绩 > "}</Text>
+                    <Text style={styles.scoreText}>{"查看考试记录 > "}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity

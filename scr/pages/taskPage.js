@@ -58,7 +58,7 @@ class TaskScreen extends Component {
                 }
             }else{
                 if (res.PaperList !== undefined) {
-                    dataArr = res.PaperList;
+                    let dataArr = res.PaperList;
                     this.setState({
                         dataArr,
                     });
