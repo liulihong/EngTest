@@ -85,22 +85,18 @@ class MainRoute extends Component {
         let routes = currenState.routes;
         //查找当前最上层页面路由
         let currRoute = routes[routes.length - 1];
+        //上次路由最上层
+        let lastRoute = prevState.routes[prevState.routes.length-1];
         // this.routeName = currRoute.routeName;
         if (currRoute.routeName === "HomePage" && currRoute.index === 0) {
             DeviceEventEmitter.emit('reloadVideoList',{isCheck:false});
         } else if (currRoute.routeName === "HomePage" && currRoute.index === 1) {
             DeviceEventEmitter.emit('reloadHomework');
+        } else if(currRoute.routeName==="AnswerScreen"&&lastRoute.routeName==="AnsweredDetail"){
+            DeviceEventEmitter.emit('reloadAnswerDetail');
         }
     }
 
-    // componentWillUnmount() {
-    //     alert("移除监听");
-    //     DeviceEventEmitter.removeListener('reloadVideoList');
-    //     DeviceEventEmitter.removeListener('reloadHomework');
-    //     if (Platform.OS === 'android') {
-    //         BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
-    //     }
-    // }
 
     render() {
         return (

@@ -42,7 +42,7 @@ class HomeScreen extends Component {
         });
     }
     componentWillUnmount(){
-        DeviceEventEmitter.removeListener('reloadVideoList');
+        DeviceEventEmitter.removeAllListeners('reloadVideoList');
     }
 
     // reloadListAndCheckCommon(have){

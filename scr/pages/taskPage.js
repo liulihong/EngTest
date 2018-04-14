@@ -40,7 +40,7 @@ class TaskScreen extends Component {
         });
     }
     componentWillUnmount(){
-        DeviceEventEmitter.removeListener('reloadHomework');
+        DeviceEventEmitter.removeAllListeners('reloadHomework');
     }
 
     GetPaperList(isShowFinsh) {

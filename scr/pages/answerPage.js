@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, ImageBackground ,Alert } from 'react-native';
+import { DeviceEventEmitter, ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, ImageBackground ,Alert } from 'react-native';
 import { downFaild, GetCommon, getMovieList, saveDownUrl, startDown } from "../store/actions";
 import { connect } from "react-redux";
 import AnswerCom from '../components/answerCom';
@@ -8,10 +8,9 @@ import { getExamLog } from "../request/requestUrl";
 import { fetchPost } from "../request/fetch";
 import ProgressButton from "../components/progressButton";
 import utils from '../utils';
-
 const typeEnum = { 1: '听后选择', 2: '听后回答', 3: '听后记录', 4: '转述信息', 5: '短文朗读', 10: '听后选图' };
 
-let getScoreTnterval;
+// let getScoreTnterval;
 
 class AnswerScreen extends Component {
 
@@ -29,14 +28,15 @@ class AnswerScreen extends Component {
     }
 
     componentDidMount(){
-        if(this.state.serverAnswer==={}||this.state.scoreFinish===false){
-            getScoreTnterval=setInterval(()=>{
+        DeviceEventEmitter.addListener("reloadAnswerDetail",()=>{
+            if(this.state.scoreFinish===false){
                 this.getExamAnserInfo();
-            },1000*60)
-        }
+            }
+        });
+
     }
     componentWillUnmount(){
-        clearInterval(getScoreTnterval);
+        DeviceEventEmitter.removeAllListeners("reloadAnswerDetail");
     }
 
     getExamAnserInfo() {
