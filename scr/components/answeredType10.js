@@ -66,7 +66,7 @@ export default class AnsweredType10 extends Component {
                     {
                         groupObj.ImgList.map((img, i) => {
                             let picPath = utils.findPicturePath(img, this.props.examPath);
-                            return <View style={{padding: 5, margin: 5 ,borderColor: "#dddddd", borderWidth: 1,}}> 
+                            return <View key={i} style={{padding: 5, margin: 5 ,borderColor: "#dddddd", borderWidth: 1,}}> 
                                 <Image
                                     style={{ resizeMode: "contain", width: 80,  height: 80 }}
                                     source={{ uri: picPath }} />

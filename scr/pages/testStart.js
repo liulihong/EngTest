@@ -122,7 +122,12 @@ class TestStart extends Component {
             if (isExit === true) {
                 RNFS.readFile(jsonPath).then((result) => {
                     let anserDic = JSON.parse(result);
-                    this.props.saveAnswerInfo(anserDic);
+                    if (anserDic.UserID === this.props.UserID) {
+                        this.props.saveAnswerInfo(anserDic);
+                    } else {
+                        RNFS.unlink(anserDic.lastPath);
+                    }
+
                 })
             }
         });
@@ -170,10 +175,11 @@ class TestStart extends Component {
         if (this.props.navigation.state.params.isFinish === true)
             Alert.alert("", "作业已完成，现在为模拟练习");
 
+        let UserID = this.props.UserID;
         let taskId = (this.props.navigation.state.params.isFinish === true) ? "" : this.props.taskId;
         let params = {
             "PaperID": this.props.navigation.state.params.ID,
-            "UserID": this.props.UserID,
+            "UserID": UserID,
             "Total": totalScore,
             "TaskID": taskId,
         }
@@ -182,8 +188,9 @@ class TestStart extends Component {
             //result  LogID,TaskLogID
             let ishome = this.props.navigation.state.params.ishome == true && this.props.navigation.state.params.isFinish === false;
             let taskId = this.props.taskId;
+            let isSubmit = false;//是否提交到服务器
 
-            let examInfo = { ...result, taskId, ishome }
+            let examInfo = { ...result, taskId, ishome, isSubmit, UserID }
             callBack(examInfo);
         }, (error) => {
             Alert.alert("", error);
@@ -261,7 +268,7 @@ class TestStart extends Component {
                     this.props.navigation.navigate('AnswerScreen');
                 })
             } else {
-                Alert.alert("","亲，您上次交了白卷哦！")
+                Alert.alert("", "亲，您上次交了白卷哦！")
             }
         })
     }
@@ -271,21 +278,23 @@ class TestStart extends Component {
 
         if (anserDic === undefined) {//为开始考试 考试标题
             return <View style={styles.whiteView}>
-                <Text style={styles.scoreText}>{this.props.examContent && this.props.examContent.PriTitle}</Text>
+                <View><Text style={styles.scoreText}>{this.props.examContent && this.props.examContent.PriTitle}</Text></View>
 
                 <TouchableOpacity
                     style={styles.button}
                     onPress={this.startTest}
                 >
-                    <Text style={styles.buttonText}>开始考试</Text>
+                    <Text style={styles.buttonText}>{"开始考试"}</Text>
                 </TouchableOpacity>
             </View>
         } else if (anserDic.finish === true) {//当前考试已完成  显示 重新考试 查看最近成绩
             return <View style={styles.whiteView}>
 
-                <TouchableOpacity onPress={() => { this.showBlowInfo() }}>
-                    <Text style={styles.scoreText}>{"查看考试记录 > "}</Text>
-                </TouchableOpacity>
+                {
+                    (this.props.answerRecord.isSubmit === true) ? <TouchableOpacity onPress={() => { this.showBlowInfo() }}>
+                        <Text style={styles.scoreText}>{"查看考试记录 > "}</Text>
+                    </TouchableOpacity> : <View><Text style={styles.scoreText}>{this.props.examContent && this.props.examContent.PriTitle}</Text></View>
+                }
 
                 <TouchableOpacity
                     style={styles.button}

@@ -177,7 +177,6 @@ class AudioSoundConCom extends Component {
                     this.submitExamFinish();
                 }
             } else {//提交音频
-                // alert("提交音频");
                 let topicObj = topObj.TopicInfoList[0];//小题数据信息
                 let topicObjAnswer = answer[topicObj.UniqueID];//小题答案
                 if (topicObjAnswer !== undefined) {
@@ -240,6 +239,9 @@ class AudioSoundConCom extends Component {
             let LogID = this.props.answerRecord.LogID;
             let TaskLogID = this.props.answerRecord.TaskLogID;
             fetchPost(endExam, { LogID, TaskLogID }).then((res) => {
+                let answerDic = this.props.answerRecord;
+                answerDic.isSubmit = true;
+                this.props.saveAnswerInfo(answerDic);
                 this.props.navigation.goBack();
                 // alert("考试完成，静待考试结果吧");
             }, (error) => {
@@ -254,12 +256,27 @@ class AudioSoundConCom extends Component {
             tempData: nextProps.dataSource,//新数据源
         });
         if (nextProps.dataSource.topicInfo.currLevel === "finished") {
-            this.submitToServer(nextProps, this.props, false);//提交答案到服务器
             this.clearInteval();
             this.stopPlayAndRecord();
             this.saveAnsweRecord(nextProps.dataSource);
-            this.haveSubmit=true;
-            this.submitExamFinish();//提交答案到服务器   
+            this.submitToServer(nextProps, this.props, false);//提交答案到服务器
+            if (this.props.dataSource.topicInfo.currLevel !== "finished") {
+                Alert.alert('确定交卷吗?', '如果本次答题不满意可以再答一次哦!',
+                    [
+                        {
+                            text: "再答一次", onPress: () => {
+                                this.props.navigation.goBack();
+                            }
+                        },
+                        {
+                            text: "确定交卷", onPress: () => {
+                                this.haveSubmit = true;
+                                this.submitExamFinish();//提交答案到服务器 
+                            }
+                        },
+                    ],  { cancelable: false } 
+                );
+            }
         } else if (nextProps.dataSource.topicInfo !== this.props.dataSource.topicInfo) {
             this.submitToServer(nextProps, this.props, false);//提交答案到服务器
             this.saveAnsweRecord(nextProps.dataSource);
@@ -685,7 +702,7 @@ class AudioSoundConCom extends Component {
                             <Text style={styles.conBtnText}>下一题</Text>
                         </TouchableOpacity>
                 }
-                <TouchableOpacity style={styles.conBtn2} onPress={this.props.commitExam}>
+                <TouchableOpacity style={styles.conBtn2} onPress={() => this.props.commitExam()}>
                     <Text style={styles.conBtnText}>交卷</Text>
                 </TouchableOpacity>
             </View>
@@ -783,6 +800,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch(setReportingTip(currTopic, examDetail, currGropObj, currTopObj, type));
         },
         commitExam: () => {
+            // dispatch(commintCurrExam());
             Alert.alert('提示', '确定交卷？',
                 [
                     { text: "取消", onPress: () => { } },

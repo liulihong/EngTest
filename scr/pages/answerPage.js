@@ -33,7 +33,6 @@ class AnswerScreen extends Component {
                 this.getExamAnserInfo();
             }
         });
-
     }
     componentWillUnmount(){
         DeviceEventEmitter.removeAllListeners("reloadAnswerDetail");

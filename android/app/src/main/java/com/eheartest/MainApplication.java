@@ -3,7 +3,7 @@ package com.eheartest;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.rnim.rn.audio.ReactNativeAudioPackage;
+import com.eheartest.ReactNativeAudioPackage;
 import com.zmxv.RNSound.RNSoundPackage;
 import com.rnfs.RNFSPackage;
 import com.mehcode.reactnative.splashscreen.SplashScreenPackage;
