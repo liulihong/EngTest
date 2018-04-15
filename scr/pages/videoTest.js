@@ -16,6 +16,8 @@ import AnswerCom from '../components/answerCom';
 import RNFS from "react-native-fs";
 import { detail } from "../store/reducer";
 
+import RNIdle from 'react-native-idle'//屏保常亮
+
 let Sound1 = new MySound;
 
 
@@ -64,6 +66,13 @@ class VideoTest extends Component {
             let path = this.props.answerRecord.currPath + '/answer.json';
             RNFS.writeFile(path, JSON.stringify(nextProps.answers), 'utf8').then(() => { });
         }
+    }
+
+    componentDidMount(){
+        RNIdle.disableIdleTimer()    //保持屏幕常亮
+    }
+    componentWillUnmount(){
+        RNIdle.enableIdleTimer()     //退出屏幕常亮
     }
 
     getComponent() {

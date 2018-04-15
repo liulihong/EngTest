@@ -39,6 +39,7 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		A9CB395091F844C6897CFAE4 /* libRCTSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F88B16AFC95544A6AA3FC44C /* libRCTSplashScreen.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		AFE97142965E472DB6ACD05D /* libRNIdle.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65CA0FCF74E948338C285042 /* libRNIdle.a */; };
 		BC95C4CF203B1FD4007ED732 /* libRCTZip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC95C4CE203B1FA8007ED732 /* libRCTZip.a */; };
 		BC95C4D0203B1FED007ED732 /* libRCTCordova.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC95C4C8203B1F92007ED732 /* libRCTCordova.a */; };
 		C21612E82074A4E6003F6BF0 /* IQNSArray+Sort.m in Sources */ = {isa = PBXBuildFile; fileRef = C21612992074A4E5003F6BF0 /* IQNSArray+Sort.m */; };
@@ -382,6 +383,13 @@
 			remoteGlobalIDString = 42F559BA1CFC90C400DC3F84;
 			remoteInfo = RNAudio;
 		};
+		C2C39EE82082F0EA00357753 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B51B7E2F139C492BA1A22D63 /* RNIdle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6FB6F0D91D8CE22100D9AE37;
+			remoteInfo = RNIdle;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -409,6 +417,7 @@
 		2D02E4901E0B4A5D006451C7 /* EHearTest-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "EHearTest-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		65CA0FCF74E948338C285042 /* libRNIdle.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNIdle.a; sourceTree = "<group>"; };
 		69BA0419E7C14678B7396452 /* libRNSound.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSound.a; sourceTree = "<group>"; };
 		76BEA33BC5DE4EFF84F1CA94 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -416,6 +425,7 @@
 		8D02A2D8DD06452D8C6C03AF /* RNSound.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
 		8F16E5BC37F24E7F83086619 /* libRNAudio.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNAudio.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
+		B51B7E2F139C492BA1A22D63 /* RNIdle.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNIdle.xcodeproj; path = "../node_modules/react-native-idle/ios/RNIdle.xcodeproj"; sourceTree = "<group>"; };
 		BC95C4C3203B1F92007ED732 /* RCTCordova.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCordova.xcodeproj; path = "../node_modules/@remobile/react-native-cordova/ios/RCTCordova.xcodeproj"; sourceTree = "<group>"; };
 		BC95C4C9203B1FA8007ED732 /* RCTZip.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTZip.xcodeproj; path = "../node_modules/@remobile/react-native-zip/ios/RCTZip.xcodeproj"; sourceTree = "<group>"; };
 		C21612982074A4E5003F6BF0 /* IQNSArray+Sort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IQNSArray+Sort.h"; sourceTree = "<group>"; };
@@ -487,6 +497,7 @@
 				420426EA18F949C393CBADFF /* libRNFS.a in Frameworks */,
 				F1021498D7B84ED7B48DB8F0 /* libRNSound.a in Frameworks */,
 				51182BF942B24723ABEFC216 /* libRNAudio.a in Frameworks */,
+				AFE97142965E472DB6ACD05D /* libRNIdle.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -678,6 +689,7 @@
 				76BEA33BC5DE4EFF84F1CA94 /* RNFS.xcodeproj */,
 				8D02A2D8DD06452D8C6C03AF /* RNSound.xcodeproj */,
 				E013338BA0F4481AB2FC2651 /* RNAudio.xcodeproj */,
+				B51B7E2F139C492BA1A22D63 /* RNIdle.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -838,6 +850,7 @@
 				69BA0419E7C14678B7396452 /* libRNSound.a */,
 				8F16E5BC37F24E7F83086619 /* libRNAudio.a */,
 				0D1F866A40744176A792F92F /* libRNFileSystem.a */,
+				65CA0FCF74E948338C285042 /* libRNIdle.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -862,6 +875,14 @@
 			isa = PBXGroup;
 			children = (
 				C2BC69EE2044F261002D2BDD /* libRNAudio.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C2C39EE52082F0EA00357753 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C2C39EE92082F0EA00357753 /* libRNIdle.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1051,6 +1072,10 @@
 				{
 					ProductGroup = BC95C4BB203AED25007ED732 /* Products */;
 					ProjectRef = 76BEA33BC5DE4EFF84F1CA94 /* RNFS.xcodeproj */;
+				},
+				{
+					ProductGroup = C2C39EE52082F0EA00357753 /* Products */;
+					ProjectRef = B51B7E2F139C492BA1A22D63 /* RNIdle.xcodeproj */;
 				},
 				{
 					ProductGroup = C2BC69E52044F256002D2BDD /* Products */;
@@ -1376,6 +1401,13 @@
 			remoteRef = C2BC69ED2044F261002D2BDD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		C2C39EE92082F0EA00357753 /* libRNIdle.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNIdle.a;
+			remoteRef = C2C39EE82082F0EA00357753 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1524,12 +1556,14 @@
 					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-filesystem/ios/RNFileSystem",
+					"$(SRCROOT)/../node_modules/react-native-idle/ios/RNIdle",
 				);
 				INFOPLIST_FILE = EHearTestTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1558,12 +1592,14 @@
 					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-filesystem/ios/RNFileSystem",
+					"$(SRCROOT)/../node_modules/react-native-idle/ios/RNIdle",
 				);
 				INFOPLIST_FILE = EHearTestTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1598,6 +1634,7 @@
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-filesystem/ios/RNFileSystem",
 					"$(SRCROOT)/IQKeyboardManager",
+					"$(SRCROOT)/../node_modules/react-native-idle/ios/RNIdle",
 				);
 				INFOPLIST_FILE = EHearTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1634,6 +1671,7 @@
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-filesystem/ios/RNFileSystem",
 					"$(SRCROOT)/IQKeyboardManager",
+					"$(SRCROOT)/../node_modules/react-native-idle/ios/RNIdle",
 				);
 				INFOPLIST_FILE = EHearTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1672,11 +1710,13 @@
 					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-filesystem/ios/RNFileSystem",
+					"$(SRCROOT)/../node_modules/react-native-idle/ios/RNIdle",
 				);
 				INFOPLIST_FILE = "EHearTest-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1715,11 +1755,13 @@
 					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-filesystem/ios/RNFileSystem",
+					"$(SRCROOT)/../node_modules/react-native-idle/ios/RNIdle",
 				);
 				INFOPLIST_FILE = "EHearTest-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1759,6 +1801,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.EHearTest-tvOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1784,6 +1827,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1927,6 +1971,7 @@
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-filesystem/ios/RNFileSystem",
 					"$(SRCROOT)/IQKeyboardManager",
+					"$(SRCROOT)/../node_modules/react-native-idle/ios/RNIdle",
 				);
 				INFOPLIST_FILE = EHearTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1958,12 +2003,14 @@
 					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-filesystem/ios/RNFileSystem",
+					"$(SRCROOT)/../node_modules/react-native-idle/ios/RNIdle",
 				);
 				INFOPLIST_FILE = EHearTestTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1999,11 +2046,13 @@
 					"$(SRCROOT)/../node_modules/react-native-sound/RNSound",
 					"$(SRCROOT)/../node_modules/react-native-audio/ios",
 					"$(SRCROOT)/../node_modules/react-native-filesystem/ios/RNFileSystem",
+					"$(SRCROOT)/../node_modules/react-native-idle/ios/RNIdle",
 				);
 				INFOPLIST_FILE = "EHearTest-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2038,6 +2087,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",

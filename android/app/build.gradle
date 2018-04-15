@@ -146,6 +146,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-idle')
     compile project(':react-native-audio')
     compile project(':react-native-sound')
     compile project(':react-native-fs')
