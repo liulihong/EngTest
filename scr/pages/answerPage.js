@@ -33,9 +33,16 @@ class AnswerScreen extends Component {
                 this.getExamAnserInfo();
             }
         });
+        this.timeInteval=setInterval(()=>{
+            if(this.state.scoreFinish===false){
+                this.getExamAnserInfo();
+            }else
+                clearInterval(this.timeInteval);
+        },5*1000);
     }
     componentWillUnmount(){
         DeviceEventEmitter.removeAllListeners("reloadAnswerDetail");
+        clearInterval(this.timeInteval);
     }
 
     getExamAnserInfo() {

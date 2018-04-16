@@ -115,6 +115,23 @@ const findErrorInfo = (err)=> {
     return "未定义的错误，ErrorCode="+err.ErrorCode;
 }
 
+
+let isCalled = false, timer;  
+/** 
+ * @param functionTobeCalled 被包装的方法 
+ * @param interval 时间间隔，可省略，默认600毫秒 
+ */  
+const callOnceInInterval = (functionTobeCalled, interval = 600) => {  
+    if (!isCalled) {  
+        isCalled = true;  
+        clearTimeout(timer);  
+        timer = setTimeout(() => {  
+            isCalled = false;  
+        }, interval);  
+        return functionTobeCalled();  
+    }  
+};
+
 module.exports = {
     SCREENWIDTH: deviceW,
     SCREENHEIGHT: deviceH,
@@ -127,4 +144,5 @@ module.exports = {
     findPlayPath,
     findPicturePath,
     findErrorInfo,
+    callOnceInInterval,
 }

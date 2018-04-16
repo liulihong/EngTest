@@ -535,6 +535,9 @@ class AudioSoundConCom extends Component {
         //检查是否有答题时间
         if (answerTime <= 0) {
             answerTime = tempData.topObj.AnswerTime;
+            if(tempData.gropObj.Type===3){
+                answerTime = tempData.topObj.AnswerTime+10;
+            }
         }
 
         if (answerTime > 0) {//如果有答题时间
@@ -543,10 +546,20 @@ class AudioSoundConCom extends Component {
                 this.audioAnswerRecord();
                 timeProgress = "录音倒计时: ";
             }
-            this.props.reloadCurrTime(timeProgress + answerTime);
+            
+
             timeInteval3 = setInterval(() => {//读题时间计时器
                 answerTime--;
-                this.props.reloadCurrTime(timeProgress + answerTime);
+                if(tempData.gropObj.Type===3 ){//倒计时进度
+                    if(answerTime>10){
+                        this.props.reloadCurrTime(timeProgress + (answerTime-10));
+                    }else{
+                        this.props.reloadCurrTime("延时倒计时：" + answerTime);
+                    }
+                }else{
+                    this.props.reloadCurrTime(timeProgress + answerTime);
+                }
+                // this.props.reloadCurrTime(timeProgress + answerTime);
                 if (answerTime <= 0) {
                     clearInterval(timeInteval3);
                     if (isRecord) {
@@ -566,7 +579,8 @@ class AudioSoundConCom extends Component {
 
         let name = tempData.topObj.ID;
         let lastname = (utils.PLATNAME === "IOS") ? '.wav' : '';
-        let path = this.props.answerRecord.currPath + '/' + name + lastname;
+        let currAnPath=this.props.examPath + "/answer" + this.props.answerRecord.version ;
+        let path = currAnPath + '/' + name + lastname;
         this.setState({
             isPlaying: false,//开始录音 播放设置为否
         });
@@ -575,7 +589,7 @@ class AudioSoundConCom extends Component {
         let type = tempData.gropObj.Type;
         let id = tempData.topObj.TopicInfoList[0].UniqueID;
         let num = tempData.topObj.TopicInfoList[0].ID;
-        let lastPath = this.props.answerRecord.currPath + '/' + name + '.wav';
+        let lastPath = currAnPath + '/' + name + '.wav';
         this.props.saveAnswer(type, id, num, lastPath);
     }
 

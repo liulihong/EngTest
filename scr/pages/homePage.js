@@ -22,6 +22,7 @@ class HomeScreen extends Component {
             isLoading: false,
         }
         this.props.GetPaperList();//获取试题列表
+        this.props.getCommon();//获取下载共用音频URL
     }
 
     //组件加载完成

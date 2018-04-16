@@ -126,6 +126,7 @@ class TestStart extends Component {
                         this.props.saveAnswerInfo(anserDic);
                     } else {
                         RNFS.unlink(anserDic.lastPath);
+                        RNFS.unlink(this.props.path+anserDic.lastPath);
                     }
 
                 })
@@ -136,8 +137,9 @@ class TestStart extends Component {
     //开始考试
     startTest() {
         this.newStartExamLog((LogInfo) => {
-            RNFS.mkdir(this.props.path + "/answer1").then(() => {
-                let anserDic = { "version": 1, "lastPath": null, "examPath": this.props.path, "currPath": this.props.path + "/answer1", "finish": false, ...LogInfo };
+            let currPath=this.props.path + "/answer1";
+            RNFS.mkdir(currPath).then(() => {
+                let anserDic = { "version": 1, "lastPath": null, "examPath": this.props.path, currPath, "finish": false, ...LogInfo };
                 this.props.getTopicInfo(this.props.examContent);
                 this.props.saveAnswerInfo(anserDic);
                 this.props.navigation.navigate('VideoTest');
@@ -151,14 +153,14 @@ class TestStart extends Component {
             let anserDic = this.props.answerRecord;
             let version = anserDic.version + 1;
             let lastPath = anserDic.currPath;
-            let examPath = anserDic.examPath;
-            let currPath = this.props.path + '/answer' + version;
+            let examPath = this.props.path;
+            let currPath =  this.props.path + '/answer' + version;
             let finish = false;
             RNFS.mkdir(currPath).then(() => {
                 this.props.getTopicInfo(this.props.examContent);
                 this.props.saveAnswerInfo({ version, lastPath, examPath, currPath, finish, ...LogInfo });
                 this.props.navigation.navigate('VideoTest');
-                RNFS.unlink(anserDic.lastPath);
+                RNFS.unlink(this.props.path+anserDic.lastPath);
             })
         });
     }
@@ -237,8 +239,7 @@ class TestStart extends Component {
     //继续考试
     continueTest() {
         let anserDic = this.props.answerRecord;
-
-        let jsonPath = anserDic.currPath + "/answer.json";
+        let jsonPath = this.props.path + "/answer" + anserDic.version + "/answer.json";
         RNFS.exists(jsonPath).then((isExit) => {
             if (isExit === true) {
                 RNFS.readFile(jsonPath).then((result) => {
@@ -258,7 +259,10 @@ class TestStart extends Component {
     //显示上次答题
     showBlowInfo() {
         let anserDic = this.props.answerRecord;
-        let jsonPath = anserDic.currPath + "/answer.json";
+        let version = anserDic.version;
+        let jsonPath = this.props.path + '/answer' + version + "/answer.json";
+        // alert(jsonPath);
+        debugger
         RNFS.exists(jsonPath).then((isExit) => {
             if (isExit === true) {
                 RNFS.readFile(jsonPath).then((result) => {

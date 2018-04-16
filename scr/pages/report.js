@@ -25,10 +25,10 @@ export default class Report extends Component {
             Content:this.state.text,
             UserID:this.props.navigation.state.params.UserID
         };
+        this.setState({text:"",});
         fetchPost(report,paramts).then((result)=>{
             if(result.success===true){
                 Alert.alert("","意见已提交,你还可以继续提交哦!");
-                this.setState({text:"",});
             }else{
                 Alert.alert("",utils.findErrorInfo(result));
             }

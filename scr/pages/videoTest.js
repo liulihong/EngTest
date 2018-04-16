@@ -63,7 +63,7 @@ class VideoTest extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.answers !== this.props.answers) {
-            let path = this.props.answerRecord.currPath + '/answer.json';
+            let path = this.props.examPath + "/answer" + this.props.answerRecord.version + '/answer.json';
             RNFS.writeFile(path, JSON.stringify(nextProps.answers), 'utf8').then(() => { });
         }
     }

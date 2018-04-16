@@ -21,6 +21,7 @@ export default (store, callback) => {
                     Alert.alert("",utils.findErrorInfo(res));
                 }
 
+                // alert(JSON.stringify(res));
                 if ((res.LastClientVersion > version)) {
                     Alert.alert('有新版本', '更新说明：' + res.LastClientText,
                         [

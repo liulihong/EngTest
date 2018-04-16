@@ -27,7 +27,7 @@ class VideoCard extends Component {
         if (this.state.clickCardID === docName) return;//如果已经点击过下载就返回
 
         //如果正在下载其他的试题包
-        if (this.props.downLoadInfo && this.props.downLoadInfo !== undefined && this.props.downLoadInfo.status === "downloading") {
+        if (this.props.downLoadInfo && this.props.downLoadInfo !== undefined && (this.props.downLoadInfo.status === "downloading"||this.props.downLoadInfo.status === "prePare")) {
             Alert.alert("", "下载中请稍后");
             return;
         }
@@ -51,17 +51,20 @@ class VideoCard extends Component {
     }
 
     downLoad() {
-        let docName=this.props.cardDic.ID;
+        // if(this.props.downLoadInfo){//如果有下载的话  直接不响应
+        //     return;
+        // }
+        let docName = this.props.cardDic.ID;
         //加入下载列表
         this.setState({
             clickCardID: docName
         });
-        this.props.saveDownInfo({"path":"","docName":docName,"status":"prePare","progress":"..."});
-        
+        this.props.saveDownInfo({ "path": "", "docName": docName, "status": "prePare", "progress": "..." });
+
         //获取试卷下载地址
         fetchPost(examPackage, { EnumDownType: 0, ID: this.props.cardDic.ID }).then((result) => {
-            if(result.Url&&result.Url!==undefined){//获取地址成功
-                let path=result.Url;
+            if (result.Url && result.Url !== undefined) {//获取地址成功
+                let path = result.Url;
                 download(path, docName, (obj) => {
                     this.props.saveDownInfo(obj);
                     if (obj.status === "success" && obj.unzip === "success") {
@@ -78,7 +81,7 @@ class VideoCard extends Component {
                         });
                     }
                 }).download();
-            }else{
+            } else {
                 Alert.alert("", result.ErrorMessage);
                 // this.props.downFaild();
                 // this.props.saveDownInfo(obj);
@@ -90,7 +93,6 @@ class VideoCard extends Component {
     }
 
     cardClick() {
-
         if (this.props.isDown) {
             let taskId = this.props.cardDic.TaskID;
             let url = utils.DOWNLOADDOCUMENTPATH + "/" + this.props.cardDic.ID;
@@ -123,7 +125,12 @@ class VideoCard extends Component {
                             onPress={() => this.prepareDown()}
                         >
                             {
-                                (this.state.clickCardID === this.props.cardDic.ID) ? <Text style={styles1.loading}>{this.props.downLoadInfo && this.props.downLoadInfo !== undefined && this.props.downLoadInfo.progress}</Text> : <ImageBackground style={styles1.xzImg} source={require("../imgs/testIcon/ks_xz_icon.png")} />
+                                (this.state.clickCardID === this.props.cardDic.ID) ?
+                                    <Text style={styles1.loading}>
+                                        {(this.props.downLoadInfo && this.props.downLoadInfo !== undefined)? this.props.downLoadInfo.progress:""}
+                                    </Text>
+                                    : <ImageBackground style={styles1.xzImg}
+                                        source={require("../imgs/testIcon/ks_xz_icon.png")} />
                             }
                         </TouchableOpacity> : <View style={styles1.button} />
                     }
