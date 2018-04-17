@@ -69,7 +69,6 @@ class mineCell extends Component {
                                         alert("打不开下载地址哦！");
                                     }
                                 })
-                                // Linking.openURL(result.DownloadUrl);
                             }
                         },
                     ]
@@ -122,8 +121,8 @@ const styles = StyleSheet.create({
     },
     title2: {
         marginLeft: 20,
-        color: utils.COLORS.theme1,
-        fontSize: 16,
+        color: "#999999",
+        fontSize: 14,
         width: "18%",
         textAlign:"center",
     },

@@ -115,6 +115,9 @@ class TestStart extends Component {
             // this.props.saveAnswerRecord();
         });
     }
+    componentWillUnmount(){
+        DeviceEventEmitter.removeAllListeners("ChangeUI");
+    }
 
     //获取答题总记录
     getLastRecord() {
@@ -123,12 +126,12 @@ class TestStart extends Component {
             if (isExit === true) {
                 RNFS.readFile(jsonPath).then((result) => {
                     let anserDic = JSON.parse(result);
-                    if (anserDic.UserID===null || anserDic.UserID === this.props.UserID) {
+                    if (anserDic.UserID===undefined || anserDic.UserID === this.props.UserID) {
                         anserDic.examPath=this.props.path;
                         this.props.saveAnswerInfo(anserDic);
                     } else {
-                        // RNFS.unlink(anserDic.lastPath);
-                        RNFS.unlink(this.props.path+"/answer"+anserDic.version);
+                        // 如果切换账号 删除弹丸文件夹
+                        // RNFS.unlink(this.props.path+"/answer"+anserDic.version);
                     }
 
                 })
@@ -297,7 +300,7 @@ class TestStart extends Component {
             return <View style={styles.whiteView}>
 
                 {
-                    (this.props.answerRecord.isSubmit === true) ? <TouchableOpacity onPress={() => { this.showBlowInfo() }}>
+                    (this.props.answerRecord.isSubmit === undefined || this.props.answerRecord.isSubmit === true ) ? <TouchableOpacity onPress={() => { this.showBlowInfo() }}>
                         <Text style={styles.scoreText}>{"查看考试记录 > "}</Text>
                     </TouchableOpacity> : <View><Text style={styles.scoreText}>{this.props.examContent && this.props.examContent.PriTitle}</Text></View>
                 }
