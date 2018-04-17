@@ -60,7 +60,6 @@ module.exports = (path, docName, callback) => {// 参数写一下
     // 是不是这个文件报的错啊 对  我点下载试题报的错
     return {
         download() {
-            debugger
             const progress = data => {
                 const percentage = ((100 * data.bytesWritten) / data.contentLength) || 0;
                 const text = `Progress ${percentage}%`;
@@ -68,7 +67,6 @@ module.exports = (path, docName, callback) => {// 参数写一下
                 console.log(text);
             };
             const begin = res => {
-                debugger
                 callback({ "path": path, "docName": docName, "status": "start", "progress": "0%" });
                 console.log('Download has begun');
             };
@@ -93,7 +91,7 @@ module.exports = (path, docName, callback) => {// 参数写一下
                 this.unzipNewCourse(docName);
 
             }).catch(err => {
-
+                debugger
                 callback({ "path": path, "docName": docName, "status": "faild", "progress": "0%" });
                 console.log(err)
                 jobId = -1;
@@ -105,6 +103,7 @@ module.exports = (path, docName, callback) => {// 参数写一下
             const newPath = downloadDest + "/" + docName;
             Zip.unzip(oriPath, newPath, (err) => {
                 if (err) {
+                    debugger
                     callback({ "path": path, "docName": docName, "status": "success", "progress": "0%", unzip: "faild" });
                     // 解压失败
                     console.log('error')

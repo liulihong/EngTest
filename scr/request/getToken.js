@@ -7,7 +7,7 @@ import SplashScreen from "rn-splash-screen";
 
 
 export default (store, callback) => {
-    let version=(utils.PLATNAME==="IOS") ? utils.version_ios : utils.version_android;
+    let version=utils.CurrVersion;
     const func = (token) => {
         store.dispatch({
             promise: fetchPost(getCookie, {

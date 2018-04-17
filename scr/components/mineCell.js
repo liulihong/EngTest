@@ -50,7 +50,7 @@ class mineCell extends Component {
 
     // 版本检查
     CheckVersion() {
-        let version = (utils.PLATNAME === "IOS") ? utils.version_ios : utils.version_android;
+        let version=utils.CurrVersion;
         let paramts = { ClientName: utils.PLATNAME, ClientVersion: version };
         fetchPost(CheckVersion, paramts).then((result) => {
             // alert(JSON.stringify(result));
@@ -80,7 +80,7 @@ class mineCell extends Component {
     }
 
     render() {
-        let version = (utils.PLATNAME === "IOS") ? utils.version_ios : utils.version_android;
+        let version=utils.CurrVersion;
         return (
             <TouchableOpacity style={styles.container} onPress={() => { this.btnClick() }}>
                 <Image style={styles.image} source={this.props.imgurl} />

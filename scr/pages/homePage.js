@@ -27,8 +27,9 @@ class HomeScreen extends Component {
 
     //组件加载完成
     componentDidMount() {
+        
         DeviceEventEmitter.addListener('reloadVideoList', (obj) => {
-            // alert(JSON.stringify(obj));
+            utils.showDevInfo(JSON.stringify(obj));
             //检查网络
             if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
                 Alert.alert("", "请检查网络！");
