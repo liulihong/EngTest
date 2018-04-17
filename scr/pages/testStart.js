@@ -112,6 +112,7 @@ class TestStart extends Component {
         DeviceEventEmitter.addListener('ChangeUI', () => {
             //接收到详情页发送的通知，刷新首页的数据，改变按钮颜色和文字，刷新UI
             this.getLastRecord();
+            // this.props.saveAnswerRecord();
         });
     }
 
@@ -122,11 +123,12 @@ class TestStart extends Component {
             if (isExit === true) {
                 RNFS.readFile(jsonPath).then((result) => {
                     let anserDic = JSON.parse(result);
-                    if (anserDic.UserID === this.props.UserID) {
+                    if (anserDic.UserID===null || anserDic.UserID === this.props.UserID) {
+                        anserDic.examPath=this.props.path;
                         this.props.saveAnswerInfo(anserDic);
                     } else {
-                        RNFS.unlink(anserDic.lastPath);
-                        RNFS.unlink(this.props.path+anserDic.lastPath);
+                        // RNFS.unlink(anserDic.lastPath);
+                        RNFS.unlink(this.props.path+"/answer"+anserDic.version);
                     }
 
                 })

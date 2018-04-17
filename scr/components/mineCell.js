@@ -29,22 +29,22 @@ class mineCell extends Component {
     btnClick() {
         if (this.props.title === "退出登录") {
             this.props.logOut(() => {
-                DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
+                DeviceEventEmitter.emit('replaceRoute', { isLogin: false });
                 // this.props.navigation.navigate('Login');
             });
         } else if (this.props.title === "版本检查") {
             this.CheckVersion();
         } else if (this.props.title === "我的班级") {
-            if(this.props.store.userInfo.logResult.Name===null)
-                Alert.alert("","请先编辑姓名！");
+            if (this.props.store.userInfo.logResult.Name === null)
+                Alert.alert("", "请先编辑姓名！");
             else
                 this.props.navigation.navigate('JoinClass', { UserID: this.props.store.userInfo.logResult.ID });
         } else if (this.props.title === "意见建议") {
-            this.props.navigation.navigate('Report',{ UserID: this.props.store.userInfo.logResult.ID });
+            this.props.navigation.navigate('Report', { UserID: this.props.store.userInfo.logResult.ID });
         } else if (this.props.title === "修改资料") {
-            this.props.navigation.navigate('MineInfo',{ Name: this.props.store.userInfo.logResult.Name });
-        }else {
-            Alert.alert("","功能暂未开通");
+            this.props.navigation.navigate('MineInfo', { Name: this.props.store.userInfo.logResult.Name });
+        } else {
+            Alert.alert("", "功能暂未开通");
         }
     }
 
@@ -75,16 +75,20 @@ class mineCell extends Component {
                     ]
                 );
             } else {
-                Alert.alert("","当前为最新版本");
+                Alert.alert("", "当前为最新版本");
             }
         })
     }
 
     render() {
+        let version = (utils.PLATNAME === "IOS") ? utils.version_ios : utils.version_android;
         return (
             <TouchableOpacity style={styles.container} onPress={() => { this.btnClick() }}>
                 <Image style={styles.image} source={this.props.imgurl} />
                 <Text style={styles.title}>{this.props.title}</Text>
+                {
+                    (this.props.title === "版本检查") ? <Text style={styles.title2}>{"1.0."+version}</Text> : <Text style={styles.title2} />
+                }
                 <Image style={styles.arrow} source={require("../imgs/cusIcon/icon_enter.png")} />
             </TouchableOpacity>
         )
@@ -114,7 +118,14 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         color: utils.COLORS.theme1,
         fontSize: 16,
-        width: "75%",
+        width: "50%",
+    },
+    title2: {
+        marginLeft: 20,
+        color: utils.COLORS.theme1,
+        fontSize: 16,
+        width: "18%",
+        textAlign:"center",
     },
     arrow: {
         width: 18,

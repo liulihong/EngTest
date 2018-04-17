@@ -139,7 +139,7 @@ module.exports = {
     COLORS:colors,
     DOWNLOADDOCUMENTPATH:downloadDest,
     version_ios:2,//苹果当前版本
-    version_android:3,//安卓当前版本
+    version_android:4,//安卓当前版本
     isLastIndex,
     findPlayPath,
     findPicturePath,

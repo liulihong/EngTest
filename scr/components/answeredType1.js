@@ -121,7 +121,9 @@ export default class AnsweredType1 extends Component {
                                                 <Text style={styles.minTitle}>
                                                     {minObj.Title}
                                                     <Text style={isCorrect?styles.correctScore:styles.errorScore}>{scoreStr}</Text>
-                                                    {/* <Text style={{color:"rgba(0,0,0,0)"}}>{"答 "}</Text> */}
+                                                    {
+                                                        (utils.PLATNAME==="ios")?<Text/>:<Text style={{color:"rgba(0,0,0,0)"}}>{"答 "}</Text>
+                                                    }
                                                 </Text>
                                                 {
                                                     minObj.Answers.map((selObj,k) => {

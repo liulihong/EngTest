@@ -111,7 +111,7 @@ export default class AnsweredType5 extends Component {
                                                         isCorrect = answerInfo.Total === answerInfo.Score;
                                                         scoreStr = "(得分：" + answerInfo.Score + "分 / " + answerInfo.Total + "分)"
                                                     } else if (answerInfo.Status === 2) {
-                                                        scoreStr = "(抱歉，计分失败了)";
+                                                        scoreStr = "(音频上传失败,请检查网络)";
                                                     } else if (answerInfo.Status === 0) {
                                                         scoreStr = "(正在阅卷中...)";
                                                     } else {
