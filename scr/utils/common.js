@@ -17,7 +17,7 @@ const findPlayPath=(path,examPath)=>{
     let contentPath;
     let isCommon=oriPath.indexOf("common/");
     if(isCommon===0){//如果是共用音频
-        contentPath=downloadDest + '/'+ oriPath;
+        contentPath= define.downloadDest + '/'+ oriPath;
     }else {
         contentPath=examPath + '/' + oriPath;
     }
@@ -45,3 +45,10 @@ const callOnceInInterval = (functionTobeCalled, interval = 600) => {
         return functionTobeCalled();  
     }  
 };
+
+module.exports={
+    isLastIndex,
+    findPlayPath,
+    findPicturePath,
+    callOnceInInterval,
+}

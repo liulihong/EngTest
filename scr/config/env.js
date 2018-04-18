@@ -2,7 +2,7 @@ const DEV = "development";//开发
 const TEST = "test";//测试
 const DIS = "distribute";//发布
 
-const Environmental = DEV;
+const Environmental = DIS;
 
 
 // const hostUrl = 'http://139.196.111.38:8084';
@@ -19,7 +19,7 @@ switch (Environmental) {
         hostUrl = 'http://192.168.12.150:28071';//小英电脑
         break;
     case TEST:
-        hostUrl = 'http://tsk.eqd.17work.cn:17000';//测试
+        hostUrl = 'http://39.107.247.196:17900';//测试
         break;
     case DIS:
         hostUrl = 'http://39.107.247.196:17800';//发布
@@ -31,7 +31,7 @@ switch (Environmental) {
 //开发环境提示信息
 const showDevInfo = (devInfo)=>{
     // debugger
-    if(Environmental===DEV && process.env.NODE_ENV==="development"){
+    if(process.env.NODE_ENV==="development"){
         alert(devInfo);
     }
 }
