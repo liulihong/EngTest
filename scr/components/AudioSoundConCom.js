@@ -60,7 +60,7 @@ class AudioSoundConCom extends Component {
             currPath: '',
             tempData: {},
         }
-        
+
     }
 
     //组件加载完成
@@ -69,8 +69,8 @@ class AudioSoundConCom extends Component {
         this.startPlay(this.props.soundPath);//开始播放
 
         let LogID = this.props.answerRecord.LogID;
-        this.submitModel=new SubmitAnswer(this.submitExamFinish,LogID);
-        this.submitModel.haveSubmit=false;
+        this.submitModel = new SubmitAnswer(this.submitExamFinish, LogID);
+        this.submitModel.haveSubmit = false;
     }
 
     componentWillMount() {
@@ -129,7 +129,7 @@ class AudioSoundConCom extends Component {
 
 
         if (answer !== undefined && topObj.TopicInfoList !== undefined) {//如果有答案记录
-            this.submitModel.addSubmitTask(gropObj,answer,topObj);
+            this.submitModel.addSubmitTask(gropObj, answer, topObj);
         }
     }
 
@@ -175,7 +175,7 @@ class AudioSoundConCom extends Component {
                                 this.submitExamFinish();//提交答案到服务器 
                             }
                         },
-                    ],  { cancelable: false } 
+                    ], { cancelable: false }
                 );
             }
         } else if (nextProps.dataSource.topicInfo !== this.props.dataSource.topicInfo) {
@@ -436,8 +436,8 @@ class AudioSoundConCom extends Component {
         //检查是否有答题时间
         if (answerTime <= 0) {
             answerTime = tempData.topObj.AnswerTime;
-            if(tempData.gropObj.Type===3){
-                answerTime = tempData.topObj.AnswerTime+10;
+            if (tempData.gropObj.Type === 3) {
+                answerTime = tempData.topObj.AnswerTime + 10;
             }
         }
 
@@ -447,17 +447,17 @@ class AudioSoundConCom extends Component {
                 this.audioAnswerRecord();
                 timeProgress = "录音倒计时: ";
             }
-            
+
 
             timeInteval3 = setInterval(() => {//读题时间计时器
                 answerTime--;
-                if(tempData.gropObj.Type===3 ){//倒计时进度
-                    if(answerTime>10){
-                        this.props.reloadCurrTime(timeProgress + (answerTime-10));
-                    }else{
+                if (tempData.gropObj.Type === 3) {//倒计时进度
+                    if (answerTime > 10) {
+                        this.props.reloadCurrTime(timeProgress + (answerTime - 10));
+                    } else {
                         this.props.reloadCurrTime("延时倒计时：" + answerTime);
                     }
-                }else{
+                } else {
                     this.props.reloadCurrTime(timeProgress + answerTime);
                 }
                 // this.props.reloadCurrTime(timeProgress + answerTime);
@@ -480,7 +480,7 @@ class AudioSoundConCom extends Component {
 
         let name = tempData.topObj.ID;
         let lastname = (utils.PLATNAME === "IOS") ? '.wav' : '';
-        let currAnPath=this.props.examPath + "/answer" + this.props.answerRecord.version ;
+        let currAnPath = this.props.examPath + "/answer" + this.props.answerRecord.version;
         let path = currAnPath + '/' + name + lastname;
         this.setState({
             isPlaying: false,//开始录音 播放设置为否
@@ -608,16 +608,18 @@ class AudioSoundConCom extends Component {
     getConBtn() {
         if (this.props.dataSource.topicInfo.currLevel !== "finished") {
             return <View style={styles.conBtnView}>
-                <TouchableOpacity style={styles.conBtn1} onPress={() => this.nextStep(this.props.dataSource)}>
+                <TouchableOpacity style={styles.conBtn1}
+                    onPress={()=>utils.callOnceInInterval(()=>this.nextStep(this.props.dataSource),1000)}>
                     <Text style={styles.conBtnText}>下一步</Text>
                 </TouchableOpacity>
                 {
                     this.props.dataSource.isLast === true ? null :
-                        <TouchableOpacity style={styles.conBtn1} onPress={this.nextGroup}>
+                        <TouchableOpacity style={styles.conBtn1}
+                            onPress={() => utils.callOnceInInterval(this.nextGroup,1000)}>
                             <Text style={styles.conBtnText}>下一题</Text>
                         </TouchableOpacity>
                 }
-                <TouchableOpacity style={styles.conBtn2} onPress={() => this.props.commitExam()}>
+                <TouchableOpacity style={styles.conBtn2} onPress={() => utils.callOnceInInterval(this.props.commitExam)}>
                     <Text style={styles.conBtnText}>交卷</Text>
                 </TouchableOpacity>
             </View>

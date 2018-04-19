@@ -291,7 +291,7 @@ class TestStart extends Component {
 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={this.startTest}
+                    onPress={()=>utils.callOnceInInterval(this.startTest,2000)}
                 >
                     <Text style={styles.buttonText}>{"开始考试"}</Text>
                 </TouchableOpacity>
@@ -300,14 +300,15 @@ class TestStart extends Component {
             return <View style={styles.whiteView}>
 
                 {
-                    (this.props.answerRecord.isSubmit === undefined || this.props.answerRecord.isSubmit === true ) ? <TouchableOpacity onPress={() => { this.showBlowInfo() }}>
+                    (this.props.answerRecord.isSubmit === undefined || this.props.answerRecord.isSubmit === true ) ? 
+                    <TouchableOpacity onPress={() => utils.callOnceInInterval(this.showBlowInfo,2000)}>
                         <Text style={styles.scoreText}>{"查看考试记录 > "}</Text>
                     </TouchableOpacity> : <View><Text style={styles.scoreText}>{this.props.examContent && this.props.examContent.PriTitle}</Text></View>
                 }
 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={this.againTest}
+                    onPress={()=>utils.callOnceInInterval(this.againTest,2000)}
                 >
                     <Text style={styles.buttonText}>{"重新考试"}</Text>
                 </TouchableOpacity>
@@ -316,14 +317,14 @@ class TestStart extends Component {
             return <View style={styles.whiteView}>
                 <TouchableOpacity
                     style={styles.button2}
-                    onPress={this.againTest}
+                    onPress={()=>utils.callOnceInInterval(this.againTest,2000)}
                 >
                     <Text style={styles.buttonText}>{"重新考试"}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     style={styles.button2}
-                    onPress={this.prepareContinue}
+                    onPress={()=>utils.callOnceInInterval(this.prepareContinue,2000)}
                 >
                     <Text style={styles.buttonText}>{"继续考试"}</Text>
                 </TouchableOpacity>

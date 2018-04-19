@@ -82,7 +82,7 @@ class mineCell extends Component {
     render() {
         let version=utils.CurrVersion;
         return (
-            <TouchableOpacity style={styles.container} onPress={() => { this.btnClick() }}>
+            <TouchableOpacity style={styles.container} onPress={() => utils.callOnceInInterval(this.btnClick,1000)}>
                 <Image style={styles.image} source={this.props.imgurl} />
                 <Text style={styles.title}>{this.props.title}</Text>
                 {

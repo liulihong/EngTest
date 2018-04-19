@@ -116,14 +116,14 @@ class VideoCard extends Component {
         // let scoreRecord=this.props.isDown?"":"未下载";
         // let scoreRecord="";
         return (
-            <TouchableOpacity style={styles1.contain1} onPress={() => this.cardClick()}>
+            <TouchableOpacity style={styles1.contain1} onPress={() => utils.callOnceInInterval(this.cardClick,1000)}>
                 <ImageBackground style={styles1.backImg} source={BackImg} >
                     {/* <Text style={styles1.scoreText}>{scoreRecord}</Text> */}
                     <Text style={styles1.titleText}>{this.props.cardDic.PriTitle + "\n" + this.props.cardDic.SecTitle + "\n" + this.props.cardDic.Title}</Text>
                     {
                         (this.props.isDown === undefined || this.props.isDown === false) ? <TouchableOpacity
                             style={styles1.button}
-                            onPress={() => this.prepareDown()}
+                            onPress={() => utils.callOnceInInterval(this.prepareDown,1000)}
                         >
                             {
                                 (this.state.clickCardID === this.props.cardDic.ID) ?
