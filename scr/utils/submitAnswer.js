@@ -43,7 +43,7 @@ class TaskProgress{
             }
 
             if (paraArr.length) {
-                let LogID = LogID;
+
                 let paramts = {
                     LogID,
                     Type: gropObj.Type,
@@ -58,14 +58,15 @@ class TaskProgress{
                     this.submitFaild(error);
                 });
             } else {
-                // this.submitNum--;
-                // this.submitExamFinish();
+
                 this.submitSuccess();//如果没有需要提交的  按照成功处理
             }
         } else {//提交音频
             let topicObj = topObj.TopicInfoList[0];//小题数据信息
             let topicObjAnswer = answer[topicObj.UniqueID];//小题答案
             if (topicObjAnswer !== undefined) {
+                
+                // debugger
                 RNFS.readFile(topicObjAnswer.answer, "base64")
                     .then((result) => {
                         // alert("转字符串成功" + result);
@@ -78,46 +79,39 @@ class TaskProgress{
                         paraArr.push(paraObj);
 
                         if (paraArr.length) {
-                            let LogID = LogID;
+
                             let paramts = {
                                 LogID,
                                 Type: gropObj.Type,
                                 Items: paraArr,
                             }
-
                             fetchPost(submitExamTopic, paramts).then((result) => {
                                 if (result.ErrorCode !== undefined) {
                                     // alert("音频提交失败" + utils.findErrorInfo(error));
-                                    // this.submitNum--;
-                                    // this.submitExamFinish();
+
                                     this.submitFaild(result);
                                 } else {
                                     // alert("音频提交成功" + JSON.stringify(result));
-                                    // this.submitNum--;
-                                    // this.submitExamFinish();
+  
                                     this.submitSuccess();
                                 }
                             }, (error) => {
                                 // alert("音频提交失败" + utils.findErrorInfo(error));
-                                // this.submitNum--;
-                                // this.submitExamFinish();
+
                                 this.submitFaild(error);
                             });
                         } else {
-                            // this.submitNum--;
-                            // this.submitExamFinish();
+
                             this.submitSuccess();//如果没有需要提交的  按照成功处理
                         }
                     })
                     .catch((err) => {
-                        // this.submitNum--;
-                        // this.submitExamFinish();
+
                         // alert("转字符串失败：" + err);
                         this.submitFaild({errorMsg:"base64"});//转base64字符串失败
                     });
             } else {
-                // this.submitNum--;
-                // this.submitExamFinish();
+
                 this.submitSuccess();//如果没有需要提交的  按照成功处理
             }
         }
@@ -152,25 +146,22 @@ export default class SubmitAnswerTask{
     addSubmitTask(gropObj,answer,topObj){
         this.taskNum++;
         // utils.showDevInfo("收到任务"+this.taskNum);
-        let task = new TaskProgress((result)=>this.endSubmitTask());
+        let task = new TaskProgress((result)=>this.endSubmitTask(result));
         task.initTask(gropObj,answer,topObj,this.LogID);
     }
 
 
     //一个任务结束
     endSubmitTask(result){
-        
         this.taskNum--;
         // utils.showDevInfo("任务结束" + this.taskNum);
-        if(this.taskNum<=0){
-            // utils.showDevInfo("没有任务了");
-            this.callBack;
+        if(this.taskNum<=0 && this.haveSubmit===true ){
+            utils.showDevInfo("可以交卷了");
+            this.callBack();
         }
             
 
-        if(result.status===true){//提交成功
-
-        }else{//提交失败
+        if(result.status===false){//提交失败 处理
 
         }
     }

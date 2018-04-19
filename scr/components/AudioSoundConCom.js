@@ -60,9 +60,7 @@ class AudioSoundConCom extends Component {
             currPath: '',
             tempData: {},
         }
-        // isSubmited = false;
-        this.submitNum = 0;
-        this.haveSubmit = false;
+        
     }
 
     //组件加载完成
@@ -70,10 +68,9 @@ class AudioSoundConCom extends Component {
         Audio1.getPermission(audioPath);//检查录音权限
         this.startPlay(this.props.soundPath);//开始播放
 
-        this.submitNum = 0;
-        this.haveSubmit = false;
         let LogID = this.props.answerRecord.LogID;
         this.submitModel=new SubmitAnswer(this.submitExamFinish,LogID);
+        this.submitModel.haveSubmit=false;
     }
 
     componentWillMount() {
@@ -112,13 +109,6 @@ class AudioSoundConCom extends Component {
         }
     }
 
-    // //组件将要更新
-    // componentDidUpdate(nextProps){
-    //     this.setState({
-    //         tempData: nextProps.dataSource,//新数据源
-    //     });
-    // }
-
     //提交答案到服务器
     submitToServer(nextProps, currProps, isFinish) {
 
@@ -138,112 +128,15 @@ class AudioSoundConCom extends Component {
         let topObj = copy.cloneDeep(topObj1);
 
 
-        // let submitNum=this.state.submitNum;
         if (answer !== undefined && topObj.TopicInfoList !== undefined) {//如果有答案记录
-
             this.submitModel.addSubmitTask(gropObj,answer,topObj);
-
-            // this.submitNum++;
-            // let paraArr = [];
-            // if (gropObj.Type === 1 || gropObj.Type === 10 || gropObj.Type === 3) {
-
-            //     let arr = topObj.TopicInfoList;
-            //     for (let i = 0; i < arr.length; i++) {
-            //         let topicObj = topObj.TopicInfoList[i];//小题数据信息
-            //         let topicObjAnswer = answer[topicObj.UniqueID];//小题答案
-            //         if (topicObjAnswer !== undefined) {
-            //             let paraObj = {
-            //                 TopicID: topicObj.UniqueID,
-            //                 TopicNO: topicObj.ID,
-            //                 UserAnswer: JSON.stringify(topicObjAnswer.answer),
-            //                 Total: topicObj.Score,
-            //             }
-            //             paraArr.push(paraObj);
-            //         }
-            //     }
-
-            //     if (paraArr.length) {
-            //         let LogID = currProps.answerRecord.LogID;
-            //         let paramts = {
-            //             LogID,
-            //             Type: gropObj.Type,
-            //             Items: paraArr,
-            //         }
-
-            //         fetchPost(submitExamTopic, paramts).then((result) => {
-            //             // alert("非音频提交成功" + JSON.stringify(result));
-            //             this.submitNum--;
-            //             this.submitExamFinish();
-            //         }, (error) => {
-            //             alert("非音频提交失败" + utils.findErrorInfo(error));
-            //             this.submitNum--;
-            //             this.submitExamFinish();
-            //         });
-            //     } else {
-            //         this.submitNum--;
-            //         this.submitExamFinish();
-            //     }
-            // } else {//提交音频
-            //     let topicObj = topObj.TopicInfoList[0];//小题数据信息
-            //     let topicObjAnswer = answer[topicObj.UniqueID];//小题答案
-            //     if (topicObjAnswer !== undefined) {
-            //         RNFS.readFile(topicObjAnswer.answer, "base64")
-            //             .then((result) => {
-            //                 // alert("转字符串成功" + result);
-            //                 let paraObj = {
-            //                     TopicID: topicObj.UniqueID,
-            //                     TopicNO: topicObj.ID,
-            //                     UserAnswer: result,
-            //                     Total: topicObj.Score,
-            //                 }
-            //                 paraArr.push(paraObj);
-
-            //                 if (paraArr.length) {
-            //                     let LogID = currProps.answerRecord.LogID;
-            //                     let paramts = {
-            //                         LogID,
-            //                         Type: gropObj.Type,
-            //                         Items: paraArr,
-            //                     }
-
-            //                     fetchPost(submitExamTopic, paramts).then((result) => {
-            //                         if (result.ErrorCode !== undefined) {
-            //                             alert("音频提交失败" + utils.findErrorInfo(error));
-            //                             this.submitNum--;
-            //                             this.submitExamFinish();
-            //                         } else {
-            //                             // alert("音频提交成功" + JSON.stringify(result));
-            //                             this.submitNum--;
-            //                             this.submitExamFinish();
-            //                         }
-            //                     }, (error) => {
-            //                         alert("音频提交失败" + utils.findErrorInfo(error));
-            //                         this.submitNum--;
-            //                         this.submitExamFinish();
-            //                     });
-            //                 } else {
-            //                     this.submitNum--;
-            //                     this.submitExamFinish();
-            //                 }
-            //             })
-            //             .catch((err) => {
-            //                 this.submitNum--;
-            //                 this.submitExamFinish();
-            //                 alert("转字符串失败：" + err);
-            //             });
-            //     } else {
-            //         this.submitNum--;
-            //         this.submitExamFinish();
-            //     }
-            // }
         }
     }
 
     //服务器交卷
     submitExamFinish() {
-        // utils.showDevInfo(this.submitModel.taskNum);
-        if (this.submitModel.taskNum <= 0 && this.haveSubmit === true) {
-            this.haveSubmit === false;
+        if (this.submitModel.taskNum <= 0 && this.submitModel.haveSubmit === true) {
+            this.submitModel.haveSubmit === false;
             let LogID = this.props.answerRecord.LogID;
             let TaskLogID = this.props.answerRecord.TaskLogID;
             fetchPost(endExam, { LogID, TaskLogID }).then((res) => {
@@ -278,7 +171,7 @@ class AudioSoundConCom extends Component {
                         },
                         {
                             text: "确定交卷", onPress: () => {
-                                this.haveSubmit = true;
+                                this.submitModel.haveSubmit = true;
                                 this.submitExamFinish();//提交答案到服务器 
                             }
                         },
@@ -730,8 +623,6 @@ class AudioSoundConCom extends Component {
             </View>
         }
     }
-
-
 
     render() {
         return (

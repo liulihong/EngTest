@@ -61,11 +61,12 @@ class VideoCard extends Component {
         });
         this.props.saveDownInfo({ "path": "", "docName": docName, "status": "prePare", "progress": "..." });
 
+        const _this = this;
         //获取试卷下载地址
         fetchPost(examPackage, { EnumDownType: 0, ID: this.props.cardDic.ID }).then((result) => {
             if (result.Url && result.Url !== undefined) {//获取地址成功
                 let path = result.Url;
-                download(path, docName, (obj) => {
+                _this.downLoadObj = download(path, docName, (obj) => {
                     this.props.saveDownInfo(obj);
                     if (obj.status === "success" && obj.unzip === "success") {
                         this.props.saveUrl(obj);
@@ -75,7 +76,7 @@ class VideoCard extends Component {
                     } else if (obj.status === "faild" || obj.unzip === "faild") {
                         Alert.alert("", this.props.cardDic.SecTitle + "下载失败！");
                         // this.props.downFaild();
-                        // this.props.saveDownInfo(obj);
+                        // this.props.saveDownInfo(obj);//找一下文档  看看暂停跟继续
                         this.setState({
                             clickCardID: ""
                         });

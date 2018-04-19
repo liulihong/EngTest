@@ -267,7 +267,7 @@ class TestStart extends Component {
         let version = anserDic.version;
         let jsonPath = this.props.path + '/answer' + version + "/answer.json";
         // alert(jsonPath);
-        debugger
+
         RNFS.exists(jsonPath).then((isExit) => {
             if (isExit === true) {
                 RNFS.readFile(jsonPath).then((result) => {

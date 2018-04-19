@@ -16,7 +16,7 @@ const Environmental = DIS;
 let hostUrl = "";
 switch (Environmental) {
     case DEV:
-        hostUrl = 'http://192.168.12.150:28071';//小英电脑
+        hostUrl = 'http://192.168.12.153:2382';//小英电脑
         break;
     case TEST:
         hostUrl = 'http://39.107.247.196:17900';//测试
