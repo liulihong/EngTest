@@ -142,6 +142,8 @@ class AnswerScreen extends Component {
                     })
                 }
 
+                <View style={{width:"100%",height:20}} />
+
                 {/* <TouchableOpacity style={{ padding: 20 }} onPress={() => {
                     this.props.navigation.navigate("AnsweredDetail", { answers: this.props.answers });
                 }} >

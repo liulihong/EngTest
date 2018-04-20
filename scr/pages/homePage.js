@@ -97,13 +97,13 @@ class HomeScreen extends Component {
         //得到的URL去下载共用音频
         download(getCommenUrl, "common", (obj) => {
 
-            if (obj.status === "success") {
+            if (obj.status === "success" && obj.unzip === "success") {
                 DeviceEventEmitter.emit('endDownloadSound');
                 this.props.saveUrl(obj);
                 this.setState({
                     isLoading: false,
                 });
-            } else if (obj.status === "faild") {
+            } else if (obj.status === "faild" || obj.unzip === "faild") {
                 DeviceEventEmitter.emit('endDownloadSound');
                 this.setState({
                     isLoading: false,

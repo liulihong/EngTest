@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
         height: utils.SCREENHEIGHT - 100,
         padding: 2,
         borderRadius: 8,
+        marginBottom:20,
     },
     scrStyle: {
         padding: 2,

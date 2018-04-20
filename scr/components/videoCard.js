@@ -67,17 +67,17 @@ class VideoCard extends Component {
             if (result.Url && result.Url !== undefined) {//获取地址成功
                 let path = result.Url;
                 _this.downLoadObj = download(path, docName, (obj) => {
-                    this.props.saveDownInfo(obj);
+                    _this.props.saveDownInfo(obj);
                     if (obj.status === "success" && obj.unzip === "success") {
-                        this.props.saveUrl(obj);
-                        this.setState({
+                        _this.props.saveUrl(obj);
+                        _this.setState({
                             clickCardID: "",
                         });
                     } else if (obj.status === "faild" || obj.unzip === "faild") {
-                        Alert.alert("", this.props.cardDic.SecTitle + "下载失败！");
+                        Alert.alert("", _this.props.cardDic.SecTitle + "下载失败！");
                         // this.props.downFaild();
                         // this.props.saveDownInfo(obj);//找一下文档  看看暂停跟继续
-                        this.setState({
+                        _this.setState({
                             clickCardID: ""
                         });
                     }
@@ -86,7 +86,7 @@ class VideoCard extends Component {
                 Alert.alert("", result.ErrorMessage);
                 // this.props.downFaild();
                 // this.props.saveDownInfo(obj);
-                this.setState({
+                _this.setState({
                     clickCardID: ""
                 });
             }

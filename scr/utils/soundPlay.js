@@ -19,6 +19,7 @@ module.exports = class MySound{
         sound = new Sound(path, '', (error) => {
             if (error) {
                 console.log('failed to load the sound', error);
+                // debugger
             }
         });
     }
@@ -30,6 +31,8 @@ module.exports = class MySound{
                 clearInterval(timeInteval);
                 sound.play((success) => {
                     if (success) {
+                        console.log(path);
+                        // debugger
                         console.log('successfully finished playing');
                     } else {
                         console.log('playback failed due to audio decoding errors ');
