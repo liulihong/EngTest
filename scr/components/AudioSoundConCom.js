@@ -514,6 +514,7 @@ class AudioSoundConCom extends Component {
 
     //下一步点击事件
     nextStep() {
+        // alert('click next step');
         let tempData = this.state.tempData;
         if (readTime > 0) {//如果是读题时间    跳过读题时间      去读内容
             readTime = 0;
@@ -535,6 +536,7 @@ class AudioSoundConCom extends Component {
             clearInterval(timeInteval3);
 
             if (this.state.isPlaying === false) {//如果是正在录音
+                // alert('录音下一步');
                 this.stopRecord();
             } else {
                 let tempData1 = this.props.dataSource;

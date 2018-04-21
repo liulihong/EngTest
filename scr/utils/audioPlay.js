@@ -89,7 +89,7 @@ module.exports = {
         }
     },
 
-    async stopRecord() {
+    stopRecord() {
         // 如果没有在录音
         if (!recording) {
             // alert('没有录音, 无需停止!');
@@ -100,7 +100,7 @@ module.exports = {
         recording=false;
 
         try {
-            const filePath = await AudioRecorder.stopRecording();
+            const filePath = AudioRecorder.stopRecording();
 
             if (Platform.OS === 'android') {
                 this.finishRecording(true, filePath);
