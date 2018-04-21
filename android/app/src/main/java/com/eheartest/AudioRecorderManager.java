@@ -134,7 +134,10 @@ class AudioRecorderManager extends ReactContextBaseJavaModule {
     try {
       basePath=recordingPath;
       createFile();//创建文件
-      recorder = new AudioRecord(audioSource,audioRate,audioChannel,audioFormat,bufferSize);
+      if(recorder==null){
+          recorder = new AudioRecord(audioSource,audioRate,audioChannel,audioFormat,bufferSize);
+      }
+          
     }
     catch(final Exception e) {
       logAndRejectPromise(promise, "COULDNT_CONFIGURE_MEDIA_RECORDER" , "Make sure you've added RECORD_AUDIO permission to your AndroidManifest.xml file "+e.getMessage());

@@ -58,7 +58,7 @@ class HomeScreen extends Component {
     prepareDown(nextProps) {
         let isDown = false;
         if (nextProps.videoData.downedUrls && nextProps.videoData.downedUrls.length > 0) {
-            isDown = nextProps.videoData.downedUrls.some((v) => { return v.path === nextProps.videoData.getCommenUrl });
+            isDown = nextProps.videoData.downedUrls.some((v) => { return v.CityID === nextProps.logResult.CityID});
             if (isDown) {//如果已经下载过的话  当前下载地址和下一个下载地址是否一样 不一样的话应该重新下载
                 isDown = nextProps.videoData.getCommenUrl === this.props.videoData.getCommenUrl;
             }
@@ -99,6 +99,7 @@ class HomeScreen extends Component {
 
             if (obj.status === "success" && obj.unzip === "success") {
                 DeviceEventEmitter.emit('endDownloadSound');
+                obj.CityID = this.props.logResult.CityID;
                 this.props.saveUrl(obj);
                 this.setState({
                     isLoading: false,
@@ -115,7 +116,7 @@ class HomeScreen extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.videoData.getCommenUrl) {//共用音频下载
+        if (nextProps.logResult && nextProps.videoData && nextProps.videoData.getCommenUrl) {//共用音频下载
             this.prepareDown(nextProps);
         }
     }

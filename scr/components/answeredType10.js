@@ -238,6 +238,7 @@ const styles = StyleSheet.create({
         margin: 10,
         marginBottom: 10,
         marginTop: 0,
+        width:"100%",
     },
     correctScore: {//小题正确打分记录
         color: "#44bb55",
