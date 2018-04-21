@@ -490,19 +490,19 @@ class AudioSoundConCom extends Component {
             isPlaying: false,//开始录音 播放设置为否
         },()=>{
             Audio1.startRecord(path);
-            //录音之后  保存答案
-            let type = tempData.gropObj.Type;
-            let id = tempData.topObj.TopicInfoList[0].UniqueID;
-            let num = tempData.topObj.TopicInfoList[0].ID;
-            let lastPath = currAnPath + '/' + name + '.wav';
-            this.props.saveAnswer(type, id, num, lastPath);
         });
+        //录音之后  保存答案
+        let type = tempData.gropObj.Type;
+        let id = tempData.topObj.TopicInfoList[0].UniqueID;
+        let num = tempData.topObj.TopicInfoList[0].ID;
+        let lastPath = currAnPath + '/' + name + '.wav';
+        this.props.saveAnswer(type, id, num, lastPath);
     }
 
     //停止录音
-    stopRecord() {
+    async stopRecord() {
         answerTime = 0;
-        Audio1.stopRecord();
+        await Audio1.stopRecord();
         this.clearInteval(timeInteval3);
         this.setState({
             isPlaying: true,

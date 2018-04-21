@@ -314,6 +314,7 @@ class AudioRecorderManager extends ReactContextBaseJavaModule {
     new Thread(new WriteThread()).start();
 
     startTimer();
+    promise.resolve("success");
   }
 
   @ReactMethod
@@ -339,7 +340,7 @@ class AudioRecorderManager extends ReactContextBaseJavaModule {
     finally {
       recorder = null;
     }
-
+    promise.resolve("success");
     sendEvent("recordingFinished", null);
   }
 
