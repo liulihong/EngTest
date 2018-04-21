@@ -127,10 +127,7 @@ export const videoList = (state = { downedUrls: [] }, action) => {
             return {
                 ...state,
                 // downLoading: false,
-                downedUrls: [
-                    ...downUrls,
-                    action.result
-                ],
+                downedUrls: [...downUrls].filter(v => v.docName !== 'common').concat(action.result),
                 downLoadInfo: null,
             }
         // case DOWNFAILD:
