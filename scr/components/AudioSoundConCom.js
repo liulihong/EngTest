@@ -254,7 +254,7 @@ class AudioSoundConCom extends Component {
             isPlaying: true,
             isPaused: false,
         }, () => {
-            Sound1.soundContinue();
+            Sound1.soundContinue(this.state.currPath);
             this.reloadData();
         })
     }
@@ -272,7 +272,7 @@ class AudioSoundConCom extends Component {
                         this.props.reloadCurrTime("播放中 " + currTime);
 
                         if (time <= 0 && isPlaying === true) {
-                            alert("又停止啦====");
+                            // alert("又停止啦====");
                             this.startPlay(this.state.currPath);
 
                         } else if (isPlaying === false && time > 0) {

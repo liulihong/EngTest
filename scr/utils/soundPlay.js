@@ -53,6 +53,7 @@ module.exports = class MySound {
     }
     //开始播放
     startPlay(path) {
+        // debugger
         this.soundInit(path);
         this.soundPlay(path);
     }
@@ -64,8 +65,11 @@ module.exports = class MySound {
         sound.pause();
     }
     //继续播放
-    soundContinue() {
-        this.soundPlay();
+    soundContinue(path) {
+        // debugger
+        this.startPlay(path);
+        // sound.setCurrentTime
+        // sound
     }
     //停止播放
     soundStop() {//这个是播放停止之后 relese
@@ -98,7 +102,7 @@ module.exports = class MySound {
     }
     //判断是否正在播放
     isPlay() {
-        return sound.isPlaying();// 这个方法是判断是否播放
+        return sound.isPlaying();// 这个方法是判断是否播放吗 恩
     }
 
     isPaused() {
