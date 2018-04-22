@@ -3,19 +3,22 @@ import utils from './index';
 import Sound from "react-native-sound";
 import { Alert } from "react-native";
 
-let sound=null;
+let sound = null;
+let isRealse = false;
 
-module.exports = class MySound{
+module.exports = class MySound {
     constructor() {
         this.soundContinue = this.soundContinue.bind(this);
     }
     //初始化
-    soundInit(path){
+    soundInit(path) {
         // noinspection JSAnnotator
-        if(sound!==null){
-            // sound.release();
+        if (sound !== null) {
+            if(isRealse===false)
+                sound.release();
             sound = null;
         }
+        isRealse=false;
         sound = new Sound(path, '', (error) => {
             if (error) {
                 console.log('failed to load the sound', error);
@@ -24,10 +27,10 @@ module.exports = class MySound{
         });
     }
     //播放
-    soundPlay(path){
-        let loadedTime=0;//加载次数
+    soundPlay(path) {
+        let loadedTime = 0;//加载次数
         let timeInteval = setInterval(() => {
-            if(sound.isLoaded()===true){
+            if (sound.isLoaded() === true) {
                 clearInterval(timeInteval);
                 sound.play((success) => {
                     if (success) {
@@ -39,59 +42,66 @@ module.exports = class MySound{
                         sound.reset();
                     }
                 });
-            }else {
+            } else {
                 loadedTime++;
-                if(loadedTime>200){
+                if (loadedTime > 200) {
                     clearInterval(timeInteval);
-                    Alert.alert("","加载音频文件失败" + path);
+                    Alert.alert("", "加载音频文件失败" + path);
                 }
             }
         }, 10);
     }
     //开始播放
-    startPlay(path){
+    startPlay(path) {
         this.soundInit(path);
         this.soundPlay(path);
     }
-    soundIsLoaded(){
+    soundIsLoaded() {
         return sound.isLoaded();
     }
     //暂停播放
-    soundPause(){
+    soundPause() {
         sound.pause();
     }
     //继续播放
-    soundContinue(){
+    soundContinue() {
         this.soundPlay();
     }
     //停止播放
-    soundStop(){//这个是播放停止之后 relese
-        if(sound!==null)
+    soundStop() {//这个是播放停止之后 relese
+        if (sound !== null) {
             sound.stop();
+            sound.release();
+            // sound=null;
+            isRealse=true;
+        }
     }
     //释放
-    soundRelease(){
+    soundRelease() {
         // sound.release();
     }
     //设置播放进度
-    soundSetCurrentTime(time){
+    soundSetCurrentTime(time) {
         sound.setCurrentTime(time);
     }
     //获取播放时间点 完了
-    soundGetCurrentTime(callback){
+    soundGetCurrentTime(callback) {
 
         sound.getCurrentTime(callback);
     }
     //获取音频时长
-    soundDuring(){
-        return sound.getDuration();
+    soundDuring() {
+        if(sound!==null){
+            return sound.getDuration();
+        }
+        return 0;
     }
     //判断是否正在播放
-    isPlay(){
-        return sound.isPlaying();// 这个方法是判断是否播放吗 恩
+    isPlay() {
+        return sound.isPlaying();// 这个方法是判断是否播放
     }
 
-    isPaused(){
+    isPaused() {
         return sound.isPaused;
     }
 }

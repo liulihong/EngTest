@@ -134,9 +134,9 @@ class AudioRecorderManager extends ReactContextBaseJavaModule {
     try {
       basePath=recordingPath;
       createFile();//创建文件
-      if(recorder==null){
-          recorder = new AudioRecord(audioSource,audioRate,audioChannel,audioFormat,bufferSize);
-      }
+      recorder = null;
+      recorder = new AudioRecord(audioSource,audioRate,audioChannel,audioFormat,bufferSize);
+      
           
     }
     catch(final Exception e) {

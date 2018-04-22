@@ -227,10 +227,13 @@ class AudioSoundConCom extends Component {
             isPlaying: true,
             isPaused: false,
             currPath: path,
-        },()=>{
-            Sound1.startPlay(path);
+        })
+        Sound1.startPlay(path);
+        clearInterval(timeInteval);
+        setTimeout(() => {
             this.reloadData();
         })
+
     }
 
     //暂停
@@ -240,10 +243,9 @@ class AudioSoundConCom extends Component {
         this.setState({
             isPlaying: true,
             isPaused: true,
-        },()=>{
+        }, () => {
             Sound1.soundPause();
         })
-
     }
 
     //继续
@@ -251,7 +253,7 @@ class AudioSoundConCom extends Component {
         this.setState({
             isPlaying: true,
             isPaused: false,
-        },()=>{
+        }, () => {
             Sound1.soundContinue();
             this.reloadData();
         })
@@ -260,18 +262,26 @@ class AudioSoundConCom extends Component {
     //刷新页面播放进度 播放完毕寻找下一步
     reloadData() {
         timeInteval = setInterval(() => {
-            let isLoaded = Sound1.soundIsLoaded();
-            if (isLoaded) {
-                Sound1.soundGetCurrentTime((time, isPlaying) => {
-                    let time1 = time.toFixed(0)
-                    let time2 = Sound1.soundDuring().toFixed(0);
-                    let currTime = time1 + ' / ' + time2;
-                    this.props.reloadCurrTime("播放中 " + currTime);
+            if (Sound1 !== null) {
+                let isLoaded = Sound1.soundIsLoaded();
+                if (isLoaded) {
+                    Sound1.soundGetCurrentTime((time, isPlaying) => {
+                        let time1 = time.toFixed(0)
+                        let time2 = Sound1.soundDuring().toFixed(0);
+                        let currTime = time1 + ' / ' + time2;
+                        this.props.reloadCurrTime("播放中 " + currTime);
 
-                    if (isPlaying === false) {
-                        this.findProgress(timeInteval);
-                    }
-                });
+                        if (time <= 0 && isPlaying === true) {
+                            alert("又停止啦====");
+                            this.startPlay(this.state.currPath);
+
+                        } else if (isPlaying === false && time > 0) {
+
+                            this.findProgress(timeInteval);
+
+                        }
+                    });
+                }
             }
         }, 1000);
     }
@@ -286,8 +296,7 @@ class AudioSoundConCom extends Component {
         if (this.state.isPaused)//判断是否是暂停
             return;
 
-        let tempData = this.state.tempData;
-
+        let tempData = this.props.dataSource;
         if (tempData.topicInfo.currLevel !== "topObj") {//如果当前读的不是小题 直接找下一步
             //找下一步
             this.props.getNextStep(tempData.topicInfo, tempData.examContent, tempData.gropObj, tempData.topObj);
@@ -321,12 +330,14 @@ class AudioSoundConCom extends Component {
 
     //当前播放是提示语
     currPlayIsTip() {
-        let tempData = this.state.tempData;
+        let tempData = this.props.dataSource;
 
         let stopPath = utils.findPlayPath("common/stop.mp3", this.props.examPath);
         if (this.state.currPath === stopPath) {//如果是停止录音提示语
+
             //找下一步
             this.props.getNextStep(tempData.topicInfo, tempData.examContent, tempData.gropObj, tempData.topObj);
+
             return true;
         }
         let startPath = utils.findPlayPath("common/start.mp3", this.props.examPath);
@@ -488,7 +499,7 @@ class AudioSoundConCom extends Component {
         // let path = currAnPath + '/' + name + lastname;
         this.setState({
             isPlaying: false,//开始录音 播放设置为否
-        },()=>{
+        }, () => {
             Audio1.startRecord(path);
         });
         //录音之后  保存答案
@@ -500,16 +511,17 @@ class AudioSoundConCom extends Component {
     }
 
     //停止录音
-    async stopRecord() {
+    stopRecord() {
         answerTime = 0;
-        await Audio1.stopRecord();
         this.clearInteval(timeInteval3);
+
+        Audio1.stopRecord();
+
         this.setState({
             isPlaying: true,
-        }, () => {
-            let stopPath = utils.findPlayPath("common/stop.mp3", this.props.examPath);
-            this.startPlay(stopPath);
         })
+        let stopPath = utils.findPlayPath("common/stop.mp3", this.props.examPath);
+        this.startPlay(stopPath);
     }
 
     //下一步点击事件
@@ -554,31 +566,44 @@ class AudioSoundConCom extends Component {
                 this.goAnswer();//去答题
             }
         } else {
-            if (this.state.isPlaying && this.state.isPaused) {//如果是暂停
-                this.continue();
-            }
             Sound1.soundStop();
+
+            if (this.state.isPlaying && this.state.isPaused) {//如果是暂停
+                this.setState({
+                    isPaused: false,
+                }, () => {
+                    this.findProgress(timeInteval);
+                })
+            } else {
+                this.findProgress(timeInteval);
+            }
+
         }
     }
 
     //下一题点击事件
     nextGroup() {
-        if (this.state.isPlaying === false) {//如果是录音 停止录音
-            this.stopRecord();
-        }
+        // if (this.state.isPlaying === false) {//如果是录音 停止录音
+        //     this.stopRecord();
+        // }
+
+        this.getDefaultTime();//恢复默认时间
+        this.clearInteval();//取消所有计时器
+        this.stopPlayAndRecord();//停止播放停止录音
+
+
         this.setState({//播放暂停状态恢复默认
             isPlaying: true,
             isPaused: false,
-        },()=>{
-            this.getDefaultTime();
-            this.clearInteval();
-            this.stopPlayAndRecord();
-    
-            let tempData = this.props.dataSource;
-            //找下一步
-            this.props.getNextStep(tempData.topicInfo, tempData.examContent, tempData.gropObj, tempData.topObj);
-            // this.props.getNextGroup(tempData.topicInfo, tempData.examContent, tempData.gropObj);
-        })    
+        })
+
+
+        let tempData = this.props.dataSource;
+        //找下一步
+        this.props.getNextStep(tempData.topicInfo, tempData.examContent, tempData.gropObj, tempData.topObj);
+        // this.props.getNextGroup(tempData.topicInfo, tempData.examContent, tempData.gropObj);
+
+
     }
 
     //加载录音播放按钮

@@ -37,7 +37,7 @@ module.exports = {
             if (!hasPermission) return;
 
 
-            //this.prepareRecordingPath(audioPath);
+            // this.prepareRecordingPath(audioPath);
 
             stoppedRecording=true;
 
