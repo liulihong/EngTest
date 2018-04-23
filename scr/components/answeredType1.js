@@ -10,6 +10,7 @@ export default class AnsweredType1 extends Component {
     constructor() {
         super();
         this.startPlay=this.startPlay.bind(this);
+        this.stopPlay=this.stopPlay.bind(this);
         this.state={
             currentScore:0.00,
             palyPath:"",
@@ -46,6 +47,13 @@ export default class AnsweredType1 extends Component {
         }, 1000);
     }
 
+    stopPlay(){
+        Sound1.soundStop();
+        this.setState({
+            palyPath: "",
+        })
+    }
+
     render() {
         let groupObj = this.props.groupObj;
         let localAnswer = this.props.localAnswer;
@@ -72,7 +80,7 @@ export default class AnsweredType1 extends Component {
                                 {/* 小标题 */}
                                 <TouchableOpacity  style={styles.audioInfo} onPress={() => {
                                     if(isPlay){
-                                        Sound1.soundStop();
+                                        this.stopPlay();
                                     }else{
                                         this.startPlay(path);
                                     }

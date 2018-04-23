@@ -5,6 +5,7 @@ import { Alert } from "react-native";
 
 let sound = null;
 let isRealse = false;
+let currTime = 0;
 
 module.exports = class MySound {
     constructor() {
@@ -32,6 +33,7 @@ module.exports = class MySound {
         let timeInteval = setInterval(() => {
             if (sound.isLoaded() === true) {
                 clearInterval(timeInteval);
+                this.soundSetCurrentTime();//设置播放进度
                 sound.play((success) => {
                     if (success) {
                         console.log(path);
@@ -54,6 +56,7 @@ module.exports = class MySound {
     //开始播放
     startPlay(path) {
         // debugger
+        currTime=0;
         this.soundInit(path);
         this.soundPlay(path);
     }
@@ -66,10 +69,14 @@ module.exports = class MySound {
     }
     //继续播放
     soundContinue(path) {
-        // debugger
-        this.startPlay(path);
-        // sound.setCurrentTime
-        // sound
+
+        if(utils.PLANTNAME === "IOS"){
+            this.soundPlay(path);
+        }else{
+            this.soundInit(path);
+            this.soundPlay(path);
+        }
+
     }
     //停止播放
     soundStop() {//这个是播放停止之后 relese
@@ -85,13 +92,16 @@ module.exports = class MySound {
         // sound.release();
     }
     //设置播放进度
-    soundSetCurrentTime(time) {
-        sound.setCurrentTime(time);
+    soundSetCurrentTime() {
+        sound.setCurrentTime(currTime);
     }
     //获取播放时间点 完了
     soundGetCurrentTime(callback) {
-
-        sound.getCurrentTime(callback);
+        // sound.getCurrentTime(callback);
+        sound.getCurrentTime((time, isPlaying)=>{
+            currTime=time;
+            callback(time,isPlaying);
+        });
     }
     //获取音频时长
     soundDuring() {

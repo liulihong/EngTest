@@ -133,7 +133,14 @@ class AnswerScreen extends Component {
                                         tempScore += sObj.Score;
                                     })
                                 })
-                                this.props.navigation.navigate("AnsweredDetail", { localAnswer: this.props.answers, serverAnswer: sResetAnswer, title, content: element, examPath, totalScore: tempScore });
+                                this.props.navigation.navigate("AnsweredDetail",
+                                    {   localAnswer: this.props.answers,
+                                        answerVersion: this.props.answerRecord.version,
+                                        serverAnswer: sResetAnswer, 
+                                        title: title, 
+                                        content: element,
+                                        examPath: examPath, 
+                                        totalScore: tempScore });
                             }} >
                                 <ProgressButton isSelect={isSelect} num={num} title={newTitle} />
                             </TouchableOpacity>

@@ -41,9 +41,11 @@ export default class App extends Component {
                 });
             }
         });
+        store.dispatch({ type: NETINFO, result: null });
     }
     componentWillUnmount() {
         DeviceEventEmitter.removeListener('replaceRoute');
+        
     }
     setToken(obj) {
         this.setState({

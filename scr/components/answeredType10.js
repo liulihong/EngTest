@@ -10,6 +10,7 @@ export default class AnsweredType10 extends Component {
     constructor() {
         super();
         this.startPlay = this.startPlay.bind(this);
+        this.stopPlay = this.stopPlay.bind(this);
         this.state = {
             currentScore: 0.00,
             palyPath: "",
@@ -44,6 +45,13 @@ export default class AnsweredType10 extends Component {
                 });
             }
         }, 1000);
+    }
+
+    stopPlay(){
+        Sound1.soundStop();
+        this.setState({
+            palyPath: "",
+        })
     }
 
     render() {
@@ -94,7 +102,7 @@ export default class AnsweredType10 extends Component {
                                 {/* 听力原文按钮 */}
                                 <TouchableOpacity style={styles.audioInfo} onPress={() => {
                                     if (isPlay) {
-                                        Sound1.soundStop();
+                                        this.stopPlay();
                                     } else {
                                         this.startPlay(path);
                                     }

@@ -271,14 +271,8 @@ class AudioSoundConCom extends Component {
                         let currTime = time1 + ' / ' + time2;
                         this.props.reloadCurrTime("播放中 " + currTime);
 
-                        if (time <= 0 && isPlaying === true) {
-                            // alert("又停止啦====");
-                            this.startPlay(this.state.currPath);
-
-                        } else if (isPlaying === false && time > 0) {
-
+                        if (isPlaying === false && time > 0) {
                             this.findProgress(timeInteval);
-
                         }
                     });
                 }

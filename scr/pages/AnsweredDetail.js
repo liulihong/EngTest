@@ -28,18 +28,20 @@ export default class AnsweredDetail extends Component {
         let serverAnswer=this.props.navigation.state.params.serverAnswer;
         let examPath =this.props.navigation.state.params.examPath;
         let totalScore =this.props.navigation.state.params.totalScore;
+        let answerVersion = this.props.navigation.state.params.answerVersion;
+ 
         return (
             <View style={styles.contain}>
                 <NavBar navtitle={title} isBack={true} navgation={this.props.navigation} />
                 <View style={styles.content}>
                     <ScrollView style={styles.scrStyle}>
                         {
-                            groupObj.Type === 10 ? <AnswerType10 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} totalScore={totalScore} /> :
-                            groupObj.Type === 1 ? <AnswerType1 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} totalScore={totalScore} /> :
-                            groupObj.Type === 2 ? <AnswerType2 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} totalScore={totalScore} /> :
-                            groupObj.Type === 3 ? <AnswerType3 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} totalScore={totalScore} /> :
-                            groupObj.Type === 4 ? <AnswerType4 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} totalScore={totalScore} /> : 
-                            groupObj.Type === 5 ? <AnswerType5 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} totalScore={totalScore} /> :
+                            groupObj.Type === 10 ? <AnswerType10 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} totalScore={totalScore} answerVersion={answerVersion} /> :
+                            groupObj.Type === 1 ? <AnswerType1 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} totalScore={totalScore} answerVersion={answerVersion} /> :
+                            groupObj.Type === 2 ? <AnswerType2 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} totalScore={totalScore} answerVersion={answerVersion} /> :
+                            groupObj.Type === 3 ? <AnswerType3 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} totalScore={totalScore} answerVersion={answerVersion} /> :
+                            groupObj.Type === 4 ? <AnswerType4 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} totalScore={totalScore} answerVersion={answerVersion} /> : 
+                            groupObj.Type === 5 ? <AnswerType5 groupObj={groupObj} localAnswer={localAnswer} serverAnswer={serverAnswer} examPath={examPath} totalScore={totalScore} answerVersion={answerVersion} /> :
                              <Text>{"未定义类型"}</Text>
                         }
                         
