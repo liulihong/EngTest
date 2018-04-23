@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import utils from './index';
 import { saveDownUrl } from '../store/actions';
 import { connect } from "react-redux";
+import RNFS from 'react-native-fs';
 
 var Zip = require('@remobile/react-native-zip');
 const downloadDest = utils.DOWNLOADDOCUMENTPATH; //下载之后保存的目录
@@ -127,21 +128,36 @@ module.exports = (path, docName, callback) => {// 参数写一下
         unzipNewCourse(docName) {
             const oriPath = downloadDest + "/" + docName + ".zip";
             const newPath = downloadDest + "/" + docName;
-            Zip.unzip(oriPath, newPath, (err) => {
-                if (err) {
-                    callback({ "path": path, "docName": docName, "status": "success", "progress": "0%", unzip: "faild" });
-                    // 解压失败
-                    console.log('error')
-                }
-                else {
-                    // //解压成功，将zip删除
-                    RNFS.unlink(oriPath).then(() => {
-                        callback({ "path": path, "docName": docName, "status": "success", "progress": "100%", unzip: "success" });
-                    });
 
-                    console.log('success__newPath==' + newPath);
-                }
-            });
+            //如果原来存在目录  删掉原来目录  
+            RNFS.unlink(newPath)
+            .then(()=>{
+                console.log('删除成功');
+            })
+            .catch((err)=>{
+                console.log(err.message);
+            })
+
+            setTimeout(()=>{
+                Zip.unzip(oriPath, newPath, (err) => {
+                    if (err) {
+                        callback({ "path": path, "docName": docName, "status": "success", "progress": "0%", unzip: "faild" });
+                        // 解压失败
+                        console.log('error')
+                    }
+                    else {
+                        // //解压成功，将zip删除
+                        RNFS.unlink(oriPath).then(() => {
+                            callback({ "path": path, "docName": docName, "status": "success", "progress": "100%", unzip: "success" });
+                        });
+    
+                        console.log('success__newPath==' + newPath);
+                    }
+                },(progress)=>{
+                    console.log(progress);
+                });
+            },1000)
+            
             jobId = -1;
         }
     }

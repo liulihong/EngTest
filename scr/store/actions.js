@@ -94,7 +94,7 @@ export const getMovieList = () => {
     }
 }
 
-export const GetCommon = () => {
+export const GetCommon = (callBack) => {
     return {
         promise: fetchPost(getCommon, {}).then(res => {
             // alert(JSON.stringify(res));
@@ -104,6 +104,7 @@ export const GetCommon = () => {
                     DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
                 }
             } else {
+                callBack(res.Uri);
                 return res;
             }
             return {};

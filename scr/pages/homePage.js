@@ -22,7 +22,9 @@ class HomeScreen extends Component {
             isLoading: false,
         }
         this.props.GetPaperList();//获取试题列表
-        this.props.getCommon();//获取下载共用音频URL
+        this.props.getCommon((url)=>{
+            this.prepareDown(url);
+        });//获取下载共用音频URL
     }
 
     //组件加载完成
@@ -37,8 +39,11 @@ class HomeScreen extends Component {
             }
             // this.reloadListAndCheckCommon(obj.isCheck);
 
+            let that=this;
             if(obj.isCheck){
-                this.props.getCommon();//获取下载共用音频URL
+                that.props.getCommon((url)=>{
+                    that.prepareDown(url);
+                });//获取下载共用音频URL
             }
             this.props.GetPaperList();//获取试题列表
         });
@@ -55,17 +60,17 @@ class HomeScreen extends Component {
     //     this.props.GetPaperList();//获取试题列表
     // }
 
-    prepareDown(nextProps) {
+    prepareDown(url) {
         let isDown = false;
-        if (nextProps.videoData.downedUrls && nextProps.videoData.downedUrls.length > 0) {
-            isDown = nextProps.videoData.downedUrls.some((v) => { return v.CityID === nextProps.logResult.CityID});
-            if (isDown) {//如果已经下载过的话  当前下载地址和下一个下载地址是否一样 不一样的话应该重新下载
-                isDown = nextProps.videoData.getCommenUrl === this.props.videoData.getCommenUrl;
-            }
+        if (this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0) {
+            isDown = this.props.videoData.downedUrls.some((v) => { return v.CityID === this.props.logResult.CityID});
+            // if (isDown) {//如果已经下载过的话  当前下载地址和下一个下载地址是否一样 不一样的话应该重新下载
+            //     isDown = url === this.props.videoData.getCommenUrl;
+            // }
         }
 
         // let loading = nextProps.videoData.downLoadInfo!==null && nextProps.videoData.downLoadInfo!==undefined && nextProps.videoData.downLoadInfo.status === "downloading";
-        let getCommenUrl = nextProps.videoData.getCommenUrl;
+        let getCommenUrl = url;
 
 
         //判断是否下载过
@@ -116,9 +121,9 @@ class HomeScreen extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.logResult && nextProps.videoData && nextProps.videoData.getCommenUrl) {//共用音频下载
-            this.prepareDown(nextProps);
-        }
+        // if (nextProps.logResult && nextProps.videoData && nextProps.videoData.getCommenUrl) {//共用音频下载
+            // this.prepareDown(nextProps);
+        // }
     }
 
     render() {
@@ -207,8 +212,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         GetPaperList: () => {
             dispatch(getMovieList())
         },
-        getCommon: () => {
-            dispatch(GetCommon())
+        getCommon: (callBack) => {
+            dispatch(GetCommon(callBack))
         },
         saveUrl: (obj) => {
             dispatch(saveDownUrl(obj))
