@@ -184,6 +184,11 @@ class TestStart extends Component {
 
         let UserID = this.props.UserID;
         let taskId = (this.props.navigation.state.params.isFinish === true) ? "" : this.props.taskId;
+        
+        if(this.props.answerRecord && this.props.answerRecord.isSubmit===true && this.props.navigation.state.params.isFinish === false){//如果已经提交过
+            Alert.alert("","你已做完作业，现在为模拟练习");
+            taskId="";
+        } 
         let params = {
             "PaperID": this.props.navigation.state.params.ID,
             "UserID": UserID,
