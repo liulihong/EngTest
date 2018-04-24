@@ -26,7 +26,7 @@ export default class App extends Component {
             hasToken: false,
             isLogin: false,
         };
-        
+        store.dispatch({ type: NETINFO, result: void 0 });
     }
     componentDidMount() {
         DeviceEventEmitter.addListener('replaceRoute', (obj) => {
@@ -44,7 +44,7 @@ export default class App extends Component {
         });
     }
     componentWillUnmount() {
-        store.dispatch({ type: NETINFO, result: null });
+        // store.dispatch({ type: NETINFO, result: null });
         DeviceEventEmitter.removeListener('replaceRoute');
     }
     setToken(obj) {

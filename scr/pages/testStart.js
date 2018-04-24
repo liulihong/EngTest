@@ -154,6 +154,7 @@ class TestStart extends Component {
 
     //重新考试
     againTest() {
+
         this.newStartExamLog((LogInfo) => {
             let anserDic = this.props.answerRecord;
             let version = anserDic.version + 1;
@@ -161,6 +162,7 @@ class TestStart extends Component {
             let examPath = this.props.path;
             let currPath =  this.props.path + '/answer' + version;
             let finish = false;
+
             RNFS.mkdir(currPath).then(() => {
                 this.props.getTopicInfo(this.props.examContent);
                 this.props.saveAnswerInfo({ version, lastPath, examPath, currPath, finish, ...LogInfo });
@@ -198,12 +200,20 @@ class TestStart extends Component {
         fetchPost(startExam, params).then((result) => {
             // alert("开始考试记录:"+JSON.stringify(result));
             //result  LogID,TaskLogID
-            let ishome = this.props.navigation.state.params.ishome == true && this.props.navigation.state.params.isFinish === false;
-            let taskId = this.props.taskId;
-            let isSubmit = false;//是否提交到服务器
-
-            let examInfo = { ...result, taskId, ishome, isSubmit, UserID }
-            callBack(examInfo);
+            
+            if (result.ErrorCode !== undefined) {
+                Alert.alert("", utils.findErrorInfo(result));
+                if(result.ErrorCode===1003||result.ErrorCode===1004||result.ErrorCode===1106){
+                    DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
+                }
+            }else{
+                let ishome = this.props.navigation.state.params.ishome == true && this.props.navigation.state.params.isFinish === false;
+                let taskId = this.props.taskId;
+                let isSubmit = false;//是否提交到服务器
+    
+                let examInfo = { ...result, taskId, ishome, isSubmit, UserID };
+                callBack(examInfo);//不报错五信息  回调考试
+            }
         }, (error) => {
             Alert.alert("", error);
         })

@@ -2,7 +2,7 @@ const DEV = "development";//开发
 const TEST = "test";//测试
 const DIS = "distribute";//发布
 
-const Environmental = DIS;
+const Environmental = TEST;
 
 
 // const hostUrl = 'http://139.196.111.38:8084';
@@ -19,7 +19,8 @@ switch (Environmental) {
         hostUrl = 'http://192.168.12.153:2382';//小英电脑
         break;
     case TEST:
-        hostUrl = 'http://39.107.247.196:17900';//测试
+        // hostUrl = 'http://39.107.247.196:17900';//测试
+        hostUrl = 'http://tsk.eqd.17work.cn';//测试
         break;
     case DIS:
         hostUrl = 'http://39.107.247.196:17800';//发布

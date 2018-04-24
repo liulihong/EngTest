@@ -1,19 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.eheartest"
-    android:versionCode="1"
+    android:versionCode="4"
     android:versionName="1.0.4">
 
-    //录音
+    <!-- //录音 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
-    //安装react-native-fs
+    <!-- //安装react-native-fs -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    //请求网络信息
+    <!-- //请求网络信息 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-sdk

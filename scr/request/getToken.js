@@ -9,13 +9,15 @@ import SplashScreen from "rn-splash-screen";
 export default (store, callback) => {
     let version=utils.CurrVersion;
     const func = (token) => {
+        let paramts={
+            "ClientName": utils.PLATNAME,
+            "VersionCode": version,
+            "ProtocolVersion": 2,
+            "LastSessionID": token,
+        };
+
         store.dispatch({
-            promise: fetchPost(getCookie, {
-                "ClientName": utils.PLATNAME,
-                "VersionCode": version,
-                "ProtocolVersion": 2,
-                "LastSessionID": token,
-            }).then(res => {
+            promise: fetchPost(getCookie, paramts ).then(res => {
                 
                 if(res.ErrorCode!==undefined){
                     Alert.alert("",utils.findErrorInfo(res));
@@ -49,9 +51,11 @@ export default (store, callback) => {
                     store.dispatch({type: LOGIN, result: null})
                 }
 
-                AsyncStorage.setItem('token', res.SessionID);
-
-                setCookie(res.SessionID);
+                if(res.SessionID){//如果有sessionID存在
+                    AsyncStorage.setItem('token', res.SessionID);
+                    setCookie(res.SessionID);
+                }
+                
 
                 SplashScreen.hide();
 
