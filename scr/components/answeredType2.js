@@ -117,8 +117,11 @@ export default class AnsweredType2 extends Component {
                                         {/* 每小题 */ }
                                         let oriAns = minObj.Correct;
                                         let newAns = "";
-                                        if (localAnswer && localAnswer[minObj.UniqueID] !== undefined)
-                                            newAns = localAnswer[minObj.UniqueID].answer;
+                                        if (localAnswer && localAnswer[minObj.UniqueID] !== undefined){
+                                            // newAns = localAnswer[minObj.UniqueID].answer; //绝对路径改为相对路径
+                                            newAns=this.props.examPath + "/answer" + this.props.answerVersion + "/" + topObj.ID + ".wav";
+                                        }
+                                            
                                         // if (localAnswer && localAnswer[minObj.UniqueID] !== undefined)//修改为动态地址
                                         //     newAns = this.props.examPath + "/answer" + this.props.answerVersion + "/" + localAnswer[minObj.UniqueID].num + ".wav";
 

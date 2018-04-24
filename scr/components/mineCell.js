@@ -86,7 +86,11 @@ class mineCell extends Component {
                 <Image style={styles.image} source={this.props.imgurl} />
                 <Text style={styles.title}>{this.props.title}</Text>
                 {
-                    (this.props.title === "版本检查") ? <Text style={styles.title2}>{"1.0."+version}</Text> : <Text style={styles.title2} />
+                    (this.props.title === "版本检查") ? <Text style={styles.title2}>{"1.0."+version}
+                        {
+                            (utils.Environmental!==utils.DIS)?utils.Environmental:""
+                        }
+                    </Text> : <Text style={styles.title2} />
                 }
                 <Image style={styles.arrow} source={require("../imgs/cusIcon/icon_enter.png")} />
             </TouchableOpacity>
@@ -123,7 +127,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         color: "#999999",
         fontSize: 14,
-        width: "18%",
+        width: "20%",
         textAlign:"center",
     },
     arrow: {

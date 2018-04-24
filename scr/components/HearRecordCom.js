@@ -27,15 +27,22 @@ class HearRecord extends Component {
         })
 
 
-        if (this.props.answers !== undefined && this.props.answers[3] !== undefined) {
-            debugger
-            let currAnswer = this.props.answers[3];
-            let unitID = this.props.contentData[0].UniqueID;
-            if (currAnswer[unitID] !== undefined && currAnswer[unitID].answer !== undefined) {
-                let answer = currAnswer[unitID].answer;
-                this.setState({
-                    answer: answer,
-                });
+        if(this.props.type===3){
+            if (this.props.answers !== undefined && this.props.answers[3] !== undefined) {
+                let currAnswer = this.props.answers[3];
+                let unitID = this.props.contentData[0].UniqueID;
+                if (currAnswer[unitID] !== undefined && currAnswer[unitID].answer !== undefined) {
+                    let answer = currAnswer[unitID].answer;
+                    this.setState({
+                        answer: answer,
+                    });
+                } else {
+                    let n = this.props.contentData[0].ExampleAnswer.length;
+                    let arr = new Array(n).fill("");
+                    this.setState({
+                        answer: arr,
+                    });
+                }
             } else {
                 let n = this.props.contentData[0].ExampleAnswer.length;
                 let arr = new Array(n).fill("");
@@ -43,13 +50,8 @@ class HearRecord extends Component {
                     answer: arr,
                 });
             }
-        } else {
-            let n = this.props.contentData[0].ExampleAnswer.length;
-            let arr = new Array(n).fill("");
-            this.setState({
-                answer: arr,
-            });
         }
+        
 
         // if (this.props.type === 3) {
         //     this.keyboardShow = Platform.OS === 'ios' ?

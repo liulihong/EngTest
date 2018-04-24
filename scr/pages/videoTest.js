@@ -95,7 +95,7 @@ class VideoTest extends Component {
 
     //如果不是读标题  内容展示区
     getContent() {
-        if (this.props.topInfo.currLevel === "finished") {
+        if (this.props.topInfo && this.props.topInfo.currLevel === "finished") {
             // this.props.navigation.goBack();
             // this.props.navigation.navigate('AnswerScreen');
             // if(this.props.answers===undefined){
@@ -124,7 +124,7 @@ class VideoTest extends Component {
                 </View>
             );
         } else {
-            return <Text style={styles.title}>{this.props.topInfo.showTitle}</Text>
+            return <Text style={styles.title}>{this.props.topInfo?this.props.topInfo.showTitle:""}</Text>
         }
     }
 

@@ -1,8 +1,9 @@
 const DEV = "development";//开发
-const TEST = "test";//测试
+const TEST1 = "test_n";//内网测试
+const TEST2 = "test_w";//外网测试
 const DIS = "distribute";//发布
 
-const Environmental = TEST;
+const Environmental = TEST1;
 
 
 // const hostUrl = 'http://139.196.111.38:8084';
@@ -18,9 +19,11 @@ switch (Environmental) {
     case DEV:
         hostUrl = 'http://192.168.12.153:2382';//小英电脑
         break;
-    case TEST:
-        // hostUrl = 'http://39.107.247.196:17900';//测试
-        hostUrl = 'http://tsk.eqd.17work.cn';//测试
+    case TEST1:
+        hostUrl = 'http://tsk.eqd.17work.cn';//内网测试
+        break;
+    case TEST2:
+        hostUrl = 'http://39.107.247.196:17900';//外网测试
         break;
     case DIS:
         hostUrl = 'http://39.107.247.196:17800';//发布
@@ -30,9 +33,9 @@ switch (Environmental) {
 }
 
 //开发环境提示信息
-const showDevInfo = (devInfo)=>{
+const showDevInfo = (devInfo) => {
     // debugger
-    if(process.env.NODE_ENV==="development"){
+    if (process.env.NODE_ENV === "development") {
         alert(devInfo);
     }
 }
@@ -40,7 +43,8 @@ const showDevInfo = (devInfo)=>{
 
 module.exports = {
     DEV,
-    TEST,
+    TEST1,
+    TEST2,
     DIS,
     Environmental,
     hostUrl,

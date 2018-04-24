@@ -43,7 +43,6 @@ class TaskProgress{
             }
 
             if (paraArr.length) {
-
                 let paramts = {
                     LogID,
                     Type: gropObj.Type,

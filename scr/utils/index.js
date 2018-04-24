@@ -17,4 +17,6 @@ module.exports = {
     callOnceInInterval: common.callOnceInInterval,
     
     showDevInfo: env.showDevInfo,
+    Environmental: env.Environmental,
+    DIS: env.DIS,
 }
