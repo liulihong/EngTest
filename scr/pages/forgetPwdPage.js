@@ -134,10 +134,10 @@ class PwdScreen extends Component{
                         }}
                     />
                     <TouchableOpacity
-                        style={{backgroundColor:utils.COLORS.theme,borderRadius:3,position:'absolute',right:28,top:8}}
+                        style={{backgroundColor:utils.COLORS.theme,borderRadius:3*utils.SCREENRATE,position:'absolute',right:28*utils.SCREENRATE,top:8*utils.SCREENRATE}}
                         onPress={this.getVerCode}
                     >
-                        <Text style={{color:'white',margin:10,fontSize:14,fontWeight:'600'}}>{"获取验证码"}</Text>
+                        <Text style={{color:'white',margin:10*utils.SCREENRATE,fontSize:14*utils.SCREENRATE,fontWeight:'600'}}>{"获取验证码"}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -188,17 +188,17 @@ const styles = StyleSheet.create({
         backgroundColor:"#ffffff"
     },
     button: {
-        height: 45,
+        height: 45*utils.SCREENRATE,
         width: utils.SCREENWIDTH*0.85,
-        borderRadius: 6,
+        borderRadius: 6*utils.SCREENRATE,
         backgroundColor: utils.COLORS.theme,
         justifyContent: 'center',
-        marginTop: 30,
+        marginTop: 30*utils.SCREENRATE,
     },
     buttonText: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 18
+        fontSize: 18*utils.SCREENRATE
     },
 
 });

@@ -84,8 +84,8 @@ const styles=StyleSheet.create({
         // backgroundColor: "#eeeeee",
         width:"100%",
         height:'auto',
-        marginTop:10,
-        marginBottom:10,
+        marginTop:10*utils.SCREENRATE,
+        marginBottom:10*utils.SCREENRATE,
         // borderWidth:0.7,
         // borderColor:utils.COLORS.background1
     },
@@ -96,7 +96,7 @@ const styles=StyleSheet.create({
     },
     title:{
         color:utils.COLORS.theme1,
-        fontSize:16,
+        fontSize:16*utils.SCREENRATE,
         textAlign:"left",
     },
     selectView:{
@@ -105,13 +105,13 @@ const styles=StyleSheet.create({
         alignSelf: 'flex-start',
     },
     selectItem:{
-        marginTop:3,
+        marginTop:3*utils.SCREENRATE,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
         // backgroundColor:"red",
-        paddingTop:5,
-        paddingBottom:5,
+        paddingTop:5*utils.SCREENRATE,
+        paddingBottom:5*utils.SCREENRATE,
     },
     img:{
         // width:"5%",
@@ -119,8 +119,8 @@ const styles=StyleSheet.create({
     },
     text:{
         color:utils.COLORS.theme1,
-        fontSize:15,
+        fontSize:15*utils.SCREENRATE,
         width:'95%',
-        paddingLeft:8,
+        paddingLeft:8*utils.SCREENRATE,
     }
 });

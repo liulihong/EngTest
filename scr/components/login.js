@@ -122,25 +122,25 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10
+        marginTop: 10*utils.SCREENRATE,
     },
     button: {
-        height: 45,
+        height: 45*utils.SCREENRATE,
         width: utils.SCREENWIDTH * 0.85,
-        borderRadius: 6,
+        borderRadius: 6*utils.SCREENRATE,
         backgroundColor: utils.COLORS.theme,
         justifyContent: 'center',
-        marginTop: 20,
+        marginTop: 20*utils.SCREENRATE,
     },
     buttonText: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 18
+        fontSize: 18*utils.SCREENRATE,
     },
     btnView: {
-        height: 45,
+        height: 45*utils.SCREENRATE,
         width: utils.SCREENWIDTH,
-        marginTop: 3,
+        marginTop: 3*utils.SCREENRATE,
         flexDirection: 'row'
     },
     button2: {
@@ -151,13 +151,13 @@ const styles = StyleSheet.create({
     btntxt1: {
         marginLeft: utils.SCREENWIDTH * 0.075,
         color: '#666666',
-        fontSize: 14,
+        fontSize: 14*utils.SCREENRATE,
     },
     btntxt2: {
         marginRight: utils.SCREENWIDTH * 0.075,
         textAlign: 'right',
         color: '#666666',
-        fontSize: 14,
+        fontSize: 14*utils.SCREENRATE,
     },
 });
 

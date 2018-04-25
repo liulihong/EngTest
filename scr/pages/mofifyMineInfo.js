@@ -126,12 +126,12 @@ class MineInfo extends Component {
                             return <TouchableOpacity key={i} style={styles.cellView} onPress={() => this.btnClick(i)}>
                                 <View style={styles.titleView}>
                                     <Text
-                                        style={[{ color: utils.COLORS.theme1, fontSize: 16, }]}>{title}
+                                        style={[{ color: utils.COLORS.theme1, fontSize: utils.SCREENRATE*16, }]}>{title}
                                     </Text>
                                 </View>
                                 <View style={styles.valueView}>
                                     <Text
-                                        style={[{ color: "#999999", textAlign: "right", fontSize: 16, }]}>{valueArr[i]}
+                                        style={[{ color: "#999999", textAlign: "right", fontSize: utils.SCREENRATE*16, }]}>{valueArr[i]}
                                     </Text>
                                 </View>
                                 <View style={styles.ImageView}>
@@ -189,36 +189,36 @@ const styles = StyleSheet.create({
     },
     cellView: {
         width: utils.SCREENWIDTH,
-        height: 50,
+        height: utils.SCREENRATE*50,
         flexDirection: "row",
         backgroundColor: "#eeeeee",
     },
     titleView: {
-        width: 100,
-        height: 49,
+        width: utils.SCREENRATE*100,
+        height: utils.SCREENRATE*49,
         backgroundColor: "white",
         flexDirection: "row",
         alignItems: "center",
-        paddingLeft: 10,
+        paddingLeft: utils.SCREENRATE*10,
     },
     valueView: {
-        width: utils.SCREENWIDTH - 135,
-        height: 49,
+        width: utils.SCREENWIDTH - utils.SCREENRATE*135,
+        height: utils.SCREENRATE*49,
         backgroundColor: "white",
         flexDirection: "row",
         justifyContent: "flex-end",
         alignItems: "center",
-        paddingRight: 6,
+        paddingRight: utils.SCREENRATE*6,
     },
     ImageView: {
-        width: 35,
-        height: 49,
+        width: utils.SCREENRATE*35,
+        height: utils.SCREENRATE*49,
         backgroundColor: "white",
         flexDirection: "row",
         alignItems: "center",
     },
     arrow: {
-        width: 18,
-        height: 18
+        width: utils.SCREENRATE*18,
+        height: utils.SCREENRATE*18
     },
 });

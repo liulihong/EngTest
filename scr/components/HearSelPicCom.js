@@ -19,7 +19,7 @@ class HearSelPicCom extends Component {
         this.props.imgList.map((spath, i) => {
             let path = utils.findPicturePath(spath, this.props.examPath);
             Image.getSize(path, (width, height1) => {
-                let newheight = ((utils.SCREENWIDTH-60) * 0.46 - 37) / width * height1; //按照屏幕宽度进行等比缩放
+                let newheight = ((utils.SCREENWIDTH-60) * 0.46 - 37*utils.SCREENRATE) / width * height1; //按照屏幕宽度进行等比缩放
                 this.setState({
                     imgSizes: {
                         ...this.state.imgSizes,
@@ -66,8 +66,8 @@ class HearSelPicCom extends Component {
                                 let path = utils.findPicturePath(spath, this.props.examPath);
                                 return <TouchableOpacity key={i} style={styles.selectItem} onPress={() => this.selectBtn(element.UniqueID, element.ID, (i + 1))}>
                                     <View style={{
-                                        width: 20,
-                                        marginLeft: 5,
+                                        width: 20*utils.SCREENRATE,
+                                        marginLeft: 5*utils.SCREENRATE,
                                     }}>
                                         <Text style={{
                                             textAlign: "center"
@@ -75,7 +75,7 @@ class HearSelPicCom extends Component {
                                         <Image style={styles.img} source={source} />
                                     </View>
                                     <ImageBackground
-                                        style={{ width: (utils.SCREENWIDTH-60) * 0.46 - 37, margin: 6, height: (utils.SCREENWIDTH-60)*0.3}}
+                                        style={{ width: (utils.SCREENWIDTH-60) * 0.46 - 37*utils.SCREENRATE, margin: 6*utils.SCREENRATE, height: (utils.SCREENWIDTH-60)*0.3}}
                                         resizeMode={"contain"}
                                         source={{ uri: path }} />
                                 </TouchableOpacity>
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
         // backgroundColor: "#eeeeee",
         width: "100%",
         height: 'auto',
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop: 10*utils.SCREENRATE,
+        marginBottom: 10*utils.SCREENRATE,
         // borderWidth:0.7,
         // borderColor:utils.COLORS.background1
     },
@@ -123,9 +123,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: utils.COLORS.theme,
-        width: 50,
-        height: 50,
-        borderRadius: 25,
+        width: 50*utils.SCREENRATE,
+        height: 50*utils.SCREENRATE,
+        borderRadius: 25*utils.SCREENRATE,
     },
     title: {
         color: utils.COLORS.theme1,
@@ -152,14 +152,14 @@ const styles = StyleSheet.create({
         // padding:5,
     },
     img: {
-        width: 20,
-        height: 20,
+        width: 20*utils.SCREENRATE,
+        height: 20*utils.SCREENRATE,
         // margin: 2
     },
     text: {
         color: utils.COLORS.theme1,
-        fontSize: 14,
+        fontSize: 14*utils.SCREENRATE,
         width: '95%',
-        paddingLeft: 8,
+        paddingLeft: 8*utils.SCREENRATE,
     }
 });

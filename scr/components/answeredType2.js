@@ -85,7 +85,7 @@ export default class AnsweredType2 extends Component {
                         return (
                             <View key={i} style={[styles.topObj,(isContain===true?{marginBottom: 0}:{marginBottom: 0})]}>
                                 {
-                                    (isContain === false) ? <View style={i>0?{marginTop:30,}:{marginTop:10,}}>
+                                    (isContain === false) ? <View style={i>0?{marginTop:30*utils.SCREENRATE,}:{marginTop:10*utils.SCREENRATE,}}>
                                         {/* 小标题 */}
                                         <TouchableOpacity style={styles.audioInfo} onPress={() => {
                                             if (isPlay) {
@@ -200,31 +200,31 @@ export default class AnsweredType2 extends Component {
 
 const styles = StyleSheet.create({
     contain: {
-        marginBottom:20,
+        marginBottom:20*utils.SCREENRATE,
         //    backgroundColor:"#eeeeee",  
     },
     totalScore: {
-        padding: 10,
+        padding: 10*utils.SCREENRATE,
         color: "#ff6169",
         textAlign: "center",
-        fontSize: 18,
+        fontSize: 18*utils.SCREENRATE,
     },
     maxTitle: {
-        padding: 10,
+        padding: 10*utils.SCREENRATE,
         color: "#333333",
-        fontSize: 18,
+        fontSize: 18*utils.SCREENRATE,
         fontWeight: "600",
     },
     topObj: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
-        marginBottom: 30,
+        marginBottom: 30*utils.SCREENRATE,
         // backgroundColor:"#eeeeee",  
     },
     audioInfo: {//音频对应文本描述
         // margin:10,
-        padding: 10,
+        padding: 10*utils.SCREENRATE,
         // paddingBottom:0,
         // paddingTop:0,
         flexDirection: 'row',
@@ -236,42 +236,42 @@ const styles = StyleSheet.create({
     minTitle: {//小标题
         // margin:10,
         color: "#333333",
-        fontSize: 16,
+        fontSize: 16*utils.SCREENRATE,
         fontWeight: "600",
-        lineHeight: 26,
+        lineHeight: 26*utils.SCREENRATE,
         textAlign: "justify",
-        marginBottom:10,
+        marginBottom:10*utils.SCREENRATE,
     },
     audioBtn: {//原音频播放按钮
-        width: utils.PLATNAME === "IOS" ? 16 : 32,
-        height: utils.PLATNAME === "IOS" ? 16 : 32,
+        width: utils.PLATNAME === "IOS" ? 16*utils.SCREENRATE : 32*utils.SCREENRATE,
+        height: utils.PLATNAME === "IOS" ? 16*utils.SCREENRATE : 32*utils.SCREENRATE,
         resizeMode: "contain",
         alignItems: "center",
         position: "absolute",
-        top: 8,
-        bottom: 8,
+        top: 8*utils.SCREENRATE,
+        bottom: 8*utils.SCREENRATE,
     },
     articleTxt: {
-        padding: 10,
+        padding: 10*utils.SCREENRATE,
         paddingTop: 0,
         paddingBottom: 0,
         color: "#333333",
-        fontSize: 15,
+        fontSize: 15*utils.SCREENRATE,
         fontWeight: "400",
-        lineHeight: 26,
+        lineHeight: 26*utils.SCREENRATE,
     },
     specialTxt: {//文字图片混排
         color: "#333333",
-        fontSize: 16,
+        fontSize: 16*utils.SCREENRATE,
         fontWeight: "400",
-        lineHeight: 26,
+        lineHeight: 26*utils.SCREENRATE,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: "flex-start",
     },
     contentSty: {//每个小题
-        margin: 10,
+        margin: 10*utils.SCREENRATE,
         marginBottom: 0,
         marginTop: 0,
     },
@@ -282,8 +282,8 @@ const styles = StyleSheet.create({
         color: "#ee6666",
     },
     resultBtn: {//正确、错误 图标
-        width: utils.PLATNAME === "IOS" ? 18 : 32,
-        height: utils.PLATNAME === "IOS" ? 12 : 24,
+        width: utils.PLATNAME === "IOS" ? 18*utils.SCREENRATE : 32*utils.SCREENRATE,
+        height: utils.PLATNAME === "IOS" ? 12*utils.SCREENRATE : 24*utils.SCREENRATE,
         resizeMode: "contain",
         // position:"absolute",
     }

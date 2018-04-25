@@ -200,10 +200,10 @@ class RegistView extends Component {
                             }}
                         />
                         <TouchableOpacity
-                            style={{ backgroundColor: utils.COLORS.theme, borderRadius: 3, position: 'absolute', right: 28, top: 8 }}
+                            style={{ backgroundColor: utils.COLORS.theme, borderRadius: 3*utils.SCREENRATE, position: 'absolute', right: 28*utils.SCREENRATE, top: 8*utils.SCREENRATE }}
                             onPress={this.getVerCode}
                         >
-                            <Text style={{ color: 'white', margin: 10, fontSize: 14, fontWeight: '600' }}>{"获取验证码"}</Text>
+                            <Text style={{ color: 'white', margin: 10*utils.SCREENRATE, fontSize: 14*utils.SCREENRATE, fontWeight: '600' }}>{"获取验证码"}</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -253,13 +253,13 @@ class RegistView extends Component {
                     </TouchableOpacity>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: "center" }}>
-                        <TouchableOpacity style={{ padding: 12 }} onPress={() => this.userProtocal(1)}>
+                        <TouchableOpacity style={{ padding: 12*utils.SCREENRATE }} onPress={() => this.userProtocal(1)}>
                             <Image source={proImg} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={{ padding: 12, paddingLeft: 0 }} onPress={() => this.userProtocal(2)}>
-                            <Text style={{ fontSize: 14, color: "#777777" }}>{"我已经阅读并接受"}
-                                <Text style={{ fontSize: 14, color: utils.COLORS.theme }}>{"《用户协议》"}</Text>
+                        <TouchableOpacity style={{ padding: 12*utils.SCREENRATE, paddingLeft: 0 }} onPress={() => this.userProtocal(2)}>
+                            <Text style={{ fontSize: 14*utils.SCREENRATE, color: "#777777" }}>{"我已经阅读并接受"}
+                                <Text style={{ fontSize: 14*utils.SCREENRATE, color: utils.COLORS.theme }}>{"《用户协议》"}</Text>
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -284,20 +284,20 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10
+        marginTop: 10*utils.SCREENRATE,
     },
     button: {
-        height: 45,
+        height: 45*utils.SCREENRATE,
         width: utils.SCREENWIDTH * 0.85,
-        borderRadius: 6,
+        borderRadius: 6*utils.SCREENRATE,
         backgroundColor: utils.COLORS.theme,
         justifyContent: 'center',
-        marginTop: 30,
+        marginTop: 30*utils.SCREENRATE,
     },
     buttonText: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 18
+        fontSize: 18*utils.SCREENRATE,
     },
 
 });

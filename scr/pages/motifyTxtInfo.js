@@ -133,36 +133,36 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff"
     },
     txtView: {
-        marginTop: 10,
+        marginTop: utils.SCREENRATE*10,
         // padding:10,
         backgroundColor: "#cccccc",
-        width: utils.SCREENWIDTH - 20,
-        height: 50,
+        width: utils.SCREENWIDTH - utils.SCREENRATE*20,
+        height: utils.SCREENRATE*50,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
     },
     txtInput: {
         margin: 1,
-        padding: 10,
-        width: utils.SCREENWIDTH - 22,
-        height: 48,
+        padding: utils.SCREENRATE*10,
+        width: utils.SCREENWIDTH - utils.SCREENRATE*22,
+        height: utils.SCREENRATE*48,
         backgroundColor: "#ffffff",
         // lineHeight: 48,
         alignSelf: "center",
         // textAlign:"center",
     },
     button: {
-        height: 45,
+        height: utils.SCREENRATE*45,
         width: utils.SCREENWIDTH * 0.85,
-        borderRadius: 6,
+        borderRadius: utils.SCREENRATE*6,
         backgroundColor: utils.COLORS.theme,
         justifyContent: 'center',
-        marginTop: 30,
+        marginTop: utils.SCREENRATE*30,
     },
     buttonText: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 18
+        fontSize: utils.SCREENRATE*18
     },
 });

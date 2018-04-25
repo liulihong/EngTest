@@ -57,7 +57,7 @@ const styles=StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: 'center',
         width:utils.SCREENWIDTH,
-        height:utils.SCREENWIDTH/375*64,
+        height:64,
         backgroundColor:'red',
         // position:"relative",
         // top:0,

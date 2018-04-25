@@ -35,18 +35,18 @@ const styles = StyleSheet.create({
     },
     title: {
         color: utils.COLORS.theme1,
-        fontSize: 17,
+        fontSize: 17*utils.SCREENRATE,
         // textAlign:"auto",
-        lineHeight: 25,
-        marginBottom: 10,
+        lineHeight: 25*utils.SCREENRATE,
+        marginBottom: 10*utils.SCREENRATE,
     },
     content: {
-        marginTop: 15,
+        marginTop: 15*utils.SCREENRATE,
         backgroundColor: "#ffffff",
-        width: utils.SCREENWIDTH - 30,
-        height: utils.SCREENHEIGHT - 200,
-        padding: 10,
-        borderRadius: 8,
+        width: utils.SCREENWIDTH - 30*utils.SCREENRATE,
+        height: utils.SCREENHEIGHT - 100*utils.SCREENRATE -100,
+        padding: 10*utils.SCREENRATE,
+        borderRadius: 8*utils.SCREENRATE,
     },
     contentScr: {
         // display:'flex',
@@ -108,14 +108,14 @@ class VideoTest extends Component {
                 animating={true}
                 style={[{alignItems: 'center',
                 justifyContent: 'center',
-                padding: 8,}, { height: utils.SCREENHEIGHT/3 }]}
+                padding: 8*utils.SCREENRATE,}, { height: utils.SCREENHEIGHT/3 }]}
                 size="large"
             />
             <Text style={{textAlign:"center"}}>{"正在交卷中..."}</Text>
             </View>
         } else if (this.props.isHaveContent) {
             return (
-                <View style={{ padding: 5 }}>
+                <View style={{ padding: 5*utils.SCREENRATE }}>
                     <Text style={styles.title}>{this.props.topObj.Title}</Text>
                     <Text style={styles.title}>{this.props.topInfo.showTitle}</Text>
                     {

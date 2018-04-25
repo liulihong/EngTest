@@ -38,14 +38,14 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        marginTop: 30,
-        height: utils.PLATNAME === "IOS" ? utils.SCREENHEIGHT - 240 : utils.SCREENHEIGHT - 220,
+        marginTop: 30*utils.SCREENRATE,
+        height: utils.PLATNAME === "IOS" ? utils.SCREENHEIGHT - 240*utils.SCREENRATE : utils.SCREENHEIGHT - 220*utils.SCREENRATE,
         // backgroundColor:"red",
     },
     whiteView: {
         backgroundColor: "white",
         width: "100%",
-        height: 140,
+        height: 140*utils.SCREENRATE,
         position: "absolute",
         bottom: 0,
         flexDirection: 'row',
@@ -55,14 +55,14 @@ const styles = StyleSheet.create({
     },
     scoreText: {
         color: utils.COLORS.theme1,
-        fontSize: 16,
-        margin: 7,
-        padding: 10,
+        fontSize: 16*utils.SCREENRATE,
+        margin: 7*utils.SCREENRATE,
+        padding: 10*utils.SCREENRATE,
     },
     button: {
-        height: 45,
+        height: 45*utils.SCREENRATE,
         width: utils.SCREENWIDTH * 670 / 750,
-        borderRadius: 6,
+        borderRadius: 6*utils.SCREENRATE,
         backgroundColor: utils.COLORS.theme,
         justifyContent: 'center',
         // marginTop: 10,
@@ -71,16 +71,16 @@ const styles = StyleSheet.create({
     buttonText: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 18
+        fontSize: 18*utils.SCREENRATE
     },
     button2: {
-        height: 45,
+        height: 45*utils.SCREENRATE,
         width: '35%',
-        borderRadius: 6,
+        borderRadius: 6*utils.SCREENRATE,
         backgroundColor: utils.COLORS.theme,
         justifyContent: 'center',
-        margin: 15,
-        marginTop: 45,
+        margin: 15*utils.SCREENRATE,
+        marginTop: 45*utils.SCREENRATE,
     }
 });
 

@@ -689,7 +689,7 @@ class AudioSoundConCom extends Component {
                 {/*<Text>暂停播放</Text>*/}
                 {/*</TouchableOpacity>*/}
 
-                <Text style={{ marginLeft: 10 }}>{this.props.dataSource.topicInfo.currLevel === "finished" ? "" : this.props.currPlayTime}</Text>
+                <Text style={{ marginLeft: 10*utils.SCREENRATE,fontSize:15*utils.SCREENRATE }}>{this.props.dataSource.topicInfo.currLevel === "finished" ? "" : this.props.currPlayTime}</Text>
 
 
                 {
@@ -774,21 +774,21 @@ export default connect(mapStateToProps, mapDispatchToProps)(AudioSoundConCom);
 const styles = StyleSheet.create({
     audio: {
         // marginTop:10,
-        width: utils.SCREENWIDTH - 30,
-        height: 100,
+        width: utils.SCREENWIDTH - 30*utils.SCREENRATE,
+        height: 100*utils.SCREENRATE,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         flexWrap: 'wrap',
         alignItems: 'center',
         // backgroundColor:'#dddddd',
         position: "absolute",
-        bottom: utils.PLATNAME === "IOS" ? 10 : 30,
+        bottom: utils.PLATNAME === "IOS" ? 10*utils.SCREENRATE : 30*utils.SCREENRATE,
     },
     button: {
-        width: 75,
-        height: 75,
+        width: 75*utils.SCREENRATE,
+        height: 75*utils.SCREENRATE,
         // backgroundColor: "#cccccc",
-        borderRadius: 75 / 2,
+        borderRadius: 75*utils.SCREENRATE / 2,
         borderWidth: 1,
         borderColor: '#999999',
     },
@@ -796,25 +796,25 @@ const styles = StyleSheet.create({
         position: "absolute",
         // bottom:utils.PLATNAME==="IOS"?10:30,
         right: 0,
-        width: 100,
+        width: 100*utils.SCREENRATE,
         height: '100%',
     },
     conBtn1: {
         width: '100%',
-        height: 30,
+        height: 30*utils.SCREENRATE,
         backgroundColor: utils.COLORS.theme,
-        marginBottom: 5,
-        borderRadius: 3,
+        marginBottom: 5*utils.SCREENRATE,
+        borderRadius: 3*utils.SCREENRATE,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
     conBtn2: {
         width: '100%',
-        height: 30,
+        height: 30*utils.SCREENRATE,
         backgroundColor: '#ff6169',
         // marginTop:5,
-        borderRadius: 3,
+        borderRadius: 3*utils.SCREENRATE,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -822,7 +822,7 @@ const styles = StyleSheet.create({
     conBtnText: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 15,
+        fontSize: 15*utils.SCREENRATE,
         fontWeight: '600',
     }
 });

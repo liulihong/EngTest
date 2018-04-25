@@ -95,7 +95,7 @@ class HearRecord extends Component {
                                 key={newNum + i}
                                 autoCapitalize={"none"} //不自动大写
                                 underlineColorAndroid={'transparent'}
-                                style={{ height: 40, width: "70%", borderRadius: 5, fontSize: 16, textAlign: 'center', borderColor: utils.COLORS.theme, borderWidth: 1, backgroundColor: "rgba(18,183,247,.5)", marginTop: 10 }}
+                                style={{ height: 40*utils.SCREENRATE, width: "70%", borderRadius: 5*utils.SCREENRATE, fontSize: 16*utils.SCREENRATE, textAlign: 'center', borderColor: utils.COLORS.theme, borderWidth: 1, backgroundColor: "rgba(18,183,247,.5)", marginTop: 10*utils.SCREENRATE }}
                                 multiline={false}
                                 placeholder={newNum + ''}
                                 secureTextEntry={false}
@@ -115,10 +115,10 @@ class HearRecord extends Component {
                 </View>
                 {/* //其他元素  */}
                 {/* <KeyboardSpacer keyboardSpace={this.state.keyboardSpace} /> */}
-                <View style={{ height: 166 }}></View>
+                <View style={{ height: 166*utils.SCREENRATE }}></View>
             </View>
         } else if (this.props.type === 4) {
-            return <Text style={{ fontSize: 16, marginTop: 10, marginBottom: 10, padding: 10, backgroundColor: "#ffffff" }}>{this.props.contentData[0].Title}</Text>
+            return <Text style={{ fontSize: 16*utils.SCREENRATE, marginTop: 10*utils.SCREENRATE, marginBottom: 10*utils.SCREENRATE, padding: 10*utils.SCREENRATE, backgroundColor: "#ffffff" }}>{this.props.contentData[0].Title}</Text>
         }
     }
 
@@ -132,7 +132,7 @@ class HearRecord extends Component {
                     style={{
                         width: this.state.width,
                         height: this.state.height,
-                        marginTop: 10
+                        marginTop: 10*utils.SCREENRATE,
                     }} />
                 {
                     this.getShowUI()

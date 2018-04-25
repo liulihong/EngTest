@@ -217,26 +217,26 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff"
     },
     button: {
-        height: 45,
+        height: utils.SCREENRATE*45,
         width: utils.SCREENWIDTH * 0.85,
-        borderRadius: 6,
+        borderRadius: utils.SCREENRATE*6,
         backgroundColor: utils.COLORS.theme,
         justifyContent: 'center',
-        marginTop: 30,
+        marginTop: utils.SCREENRATE*30,
         alignSelf: "center",
     },
     buttonText: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 18
+        fontSize: utils.SCREENRATE*18
     },
     classInfo: {
         // padding:10,
-        marginTop: 30,
+        marginTop: utils.SCREENRATE*30,
     },
     txt: {
-        lineHeight: 26,
-        fontSize: 16,
+        lineHeight: utils.SCREENRATE*26,
+        fontSize: utils.SCREENRATE*16,
         color: utils.COLORS.theme1,
     },
 });

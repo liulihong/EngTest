@@ -27,25 +27,25 @@ export default class CusSelButton extends Component {
 const styles = StyleSheet.create({
     container: {
         width:utils.SCREENWIDTH,
-        height:50,
+        height:50*utils.SCREENRATE,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 2,
+        marginTop: 2*utils.SCREENRATE,
         position:'absolute',
         backgroundColor:"rgba(0,0,0,0.0)",
     },
     title: {
         color:'#666666',
-        fontSize:16,
+        fontSize:16*utils.SCREENRATE,
         fontWeight:"500",
         // marginLeft:60,
     },
     img: {
-        height: 10,
-        width: 18,
+        height: 10*utils.SCREENRATE,
+        width: 18*utils.SCREENRATE,
         position:'absolute',
-        right:30
+        right:30*utils.SCREENRATE,
     },
 
 });
