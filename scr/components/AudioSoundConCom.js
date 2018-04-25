@@ -584,6 +584,8 @@ class AudioSoundConCom extends Component {
     nextGroup() {
         // if (this.state.isPlaying === false) {//如果是录音 停止录音
         //     this.stopRecord();
+        // }else{
+
         // }
 
         this.getDefaultTime();//恢复默认时间

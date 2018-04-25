@@ -26,7 +26,7 @@ export default class App extends Component {
             hasToken: false,
             isLogin: false,
         };
-        store.dispatch({ type: NETINFO, result: void 0 });
+        store.dispatch({ type: NETINFO, result: undefined });
     }
     componentDidMount() {
         DeviceEventEmitter.addListener('replaceRoute', (obj) => {
