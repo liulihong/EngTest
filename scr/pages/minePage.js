@@ -5,6 +5,7 @@ import utils from "../utils";
 import MineCell from "../components/mineCell";
 import { connect } from "react-redux";
 import { downFaild, saveDownUrl, saveExamPath, startDown } from "../store/actions";
+import NavBar from '../components/navBar';
 
 class MineScreen extends Component {
 
@@ -36,7 +37,8 @@ class MineScreen extends Component {
                         source={require("../imgs/mineIcon/my_bg.png")}
                         style={styles.headerImg}
                     >
-                        <Text style={styles.navTitle}>我</Text>
+                        <NavBar navtitle="我" isBack={false} />
+                        {/* <Text style={styles.navTitle}>我</Text> */}
                         <View style={styles.headContain}>
                             <Image
                                 source={require("../imgs/mineIcon/my_icon_mr_x.png")}
@@ -46,7 +48,7 @@ class MineScreen extends Component {
                         <Text style={styles.userPhone}>{(this.props.logResult && this.props.logResult !== undefined) ? this.props.logResult.LoginName : ""}</Text>
                     </ImageBackground>
 
-                    <View style={{ marginTop: 15 }}>
+                    <View style={{ marginTop: 12*utils.SCREENRATE }}>
                         {
                             this.getArr()
                         }
@@ -98,18 +100,18 @@ const styles = StyleSheet.create({
         fontWeight: "900"
     },
     headContain: {
-        marginTop: 36,
-        width: 80,
-        height: 80,
-        borderRadius: 40,
+        marginTop: utils.SCREENRATE*30,
+        width: utils.SCREENRATE*80,
+        height: utils.SCREENRATE*80,
+        borderRadius: utils.SCREENRATE*40,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: "#fff"
     },
     userPhone: {
-        marginTop: 15,
+        marginTop: utils.SCREENRATE*15,
         color: "#fff",
-        fontSize: 18,
+        fontSize: utils.SCREENRATE*18,
         fontWeight: "400"
     }
 });

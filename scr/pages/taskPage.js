@@ -90,7 +90,7 @@ class TaskScreen extends Component {
 
                 {
                     (this.state.dataArr === null || this.state.dataArr === undefined || this.state.dataArr.length <= 0) ? <Text
-                        style={{ width: utils.SCREENWIDTH, lineHeight: 50, textAlign: "center" }}
+                        style={{ width: utils.SCREENWIDTH, fontSize:15*utils.SCREENRATE, lineHeight: 50*utils.SCREENRATE, textAlign: "center" }}
                     >{"没有相关作业哦"}</Text> :
                         <ScrollView>
                             <View style={styles.contain}>
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     },
     btnView: {
         width: '100%',
-        height: 50,
+        height: 50*utils.SCREENRATE,
         backgroundColor: 'white',
         flexDirection: "row",
     },
@@ -154,14 +154,14 @@ const styles = StyleSheet.create({
     btnTxt: {
         alignSelf: "center",
         textAlign: "center",
-        fontSize: 16,
+        fontSize: 16*utils.SCREENRATE,
     },
     line1: {
         position: "absolute",
         width: utils.SCREENWIDTH / 375,
-        height: 30,
+        height: 30*utils.SCREENRATE,
         left: utils.SCREENWIDTH / 2,
-        top: 10,
+        top: 10*utils.SCREENRATE,
         backgroundColor: "#bbbbbb",
     },
     line2: {

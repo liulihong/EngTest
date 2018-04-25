@@ -86,7 +86,7 @@ const styles=StyleSheet.create({
     },
     navTitle:{
         color:"#fff",
-        fontSize:18,
+        fontSize:18*utils.SCREENRATE,
         fontWeight:"600",
         textAlign:"center",
     },

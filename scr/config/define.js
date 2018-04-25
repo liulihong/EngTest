@@ -9,6 +9,8 @@ const instructions = Platform.select({
 //屏幕宽高
 const deviceH = Dimensions.get('window').height
 const deviceW = Dimensions.get('window').width
+//屏幕宽度与iPhone6比例
+const screenRate = deviceW/375;
 
 RNFS = require('react-native-fs');
 const downloadDest=(instructions==="IOS"?RNFS.DocumentDirectoryPath:RNFS.ExternalDirectoryPath);
@@ -34,4 +36,5 @@ module.exports = {
     COLORS:colors,
     CurrVersion : currVersion,
     downloadDest,
+    screenRate,
 }

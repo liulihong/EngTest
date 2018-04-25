@@ -133,7 +133,7 @@ class HomeScreen extends Component {
                 <ScrollView>
                     {
                         (this.props.logResult && this.props.logResult !== undefined) ? <View style={styles.whiteView}>
-                            <Text style={{ marginLeft: 10, color: "#666666" }}>{" " + this.props.logResult.CityText + " → " + this.props.logResult.GradeText + " → 模拟考试列表"}</Text>
+                            <Text style={{ marginLeft: 10, color: "#666666" , fontSize: 14*utils.SCREENRATE }}>{" " + this.props.logResult.CityText + " → " + this.props.logResult.GradeText + " → 模拟考试列表"}</Text>
                             <View style={styles.line}></View>
                         </View> : <View />
                     }
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     },
     whiteView: {
         width: '100%',
-        height: 40,
+        height: 40*utils.SCREENRATE,
         backgroundColor: 'white',
         flexDirection: "column",
         justifyContent: 'center',

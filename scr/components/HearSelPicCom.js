@@ -75,7 +75,8 @@ class HearSelPicCom extends Component {
                                         <Image style={styles.img} source={source} />
                                     </View>
                                     <ImageBackground
-                                        style={{ width: (utils.SCREENWIDTH-60) * 0.46 - 37, margin: 6, height: this.state.imgSizes[spath] || 100 }}
+                                        style={{ width: (utils.SCREENWIDTH-60) * 0.46 - 37, margin: 6, height: (utils.SCREENWIDTH-60)*0.3}}
+                                        resizeMode={"contain"}
                                         source={{ uri: path }} />
                                 </TouchableOpacity>
                             })

@@ -108,31 +108,34 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: "#ffffff",
         width: utils.SCREENWIDTH,
-        height: 48,
+        height: utils.SCREENRATE*48,
         borderWidth: 0.7,
         borderColor: utils.COLORS.background1
     },
     image: {
-        marginLeft: 20,
-        width: 18,
-        height: 18
+        marginLeft: utils.SCREENRATE*20,
+        width: utils.SCREENRATE*18,
+        height: utils.SCREENRATE*18
     },
     title: {
-        marginLeft: 20,
+        marginLeft: utils.SCREENRATE*20,
         color: utils.COLORS.theme1,
-        fontSize: 16,
+        fontSize: utils.SCREENRATE*16,
         width: "50%",
     },
     title2: {
-        marginLeft: 20,
+        // marginLeft: 20,
         color: "#999999",
-        fontSize: 14,
-        width: "20%",
-        textAlign:"center",
+        fontSize: utils.SCREENRATE*14,
+        position: "absolute",
+        right: utils.SCREENRATE*40,
+        textAlign:"right",
     },
     arrow: {
-        width: 18,
-        height: 18
+        width: utils.SCREENRATE*18,
+        height: utils.SCREENRATE*18,
+        position: "absolute",
+        right: utils.SCREENRATE*15,
     }
 });
 

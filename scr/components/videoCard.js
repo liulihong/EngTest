@@ -116,14 +116,14 @@ class VideoCard extends Component {
         // let scoreRecord=this.props.isDown?"":"未下载";
         // let scoreRecord="";
         return (
-            <TouchableOpacity style={styles1.contain1} onPress={() => utils.callOnceInInterval(this.cardClick,1000)}>
+            <TouchableOpacity style={styles1.contain1} onPress={() => utils.callOnceInInterval(this.cardClick)}>
                 <ImageBackground style={styles1.backImg} source={BackImg} >
                     {/* <Text style={styles1.scoreText}>{scoreRecord}</Text> */}
                     <Text style={styles1.titleText}>{this.props.cardDic.PriTitle + "\n" + this.props.cardDic.SecTitle + "\n" + this.props.cardDic.Title}</Text>
                     {
                         (this.props.isDown === undefined || this.props.isDown === false) ? <TouchableOpacity
                             style={styles1.button}
-                            onPress={() => utils.callOnceInInterval(this.prepareDown,1000)}
+                            onPress={() => utils.callOnceInInterval(this.prepareDown)}
                         >
                             {
                                 (this.state.clickCardID === this.props.cardDic.ID) ?
@@ -174,7 +174,7 @@ const styles1 = StyleSheet.create({
         marginTop: 10,
         color: 'white',
         fontWeight: "700",
-        fontSize: 15,
+        fontSize: utils.SCREENWIDTH/375*15,
         textAlign: "center",
     },
     button: {
@@ -188,8 +188,8 @@ const styles1 = StyleSheet.create({
     },
     xzImg: {
         marginRight: 15,
-        width: 24,
-        height: 24,
+        width: utils.SCREENWIDTH/375*24,
+        height: utils.SCREENWIDTH/375*24,
     },
     loading: {
         fontSize: 12,

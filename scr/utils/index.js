@@ -8,6 +8,7 @@ module.exports = {
     COLORS: define.COLORS,
     CurrVersion: define.CurrVersion,
     DOWNLOADDOCUMENTPATH:define.downloadDest,
+    SCREENRATE: define.screenRate,
 
     findErrorInfo:error.findErrorInfo,
 
