@@ -3,7 +3,7 @@ const TEST1 = "test_n";//内网测试
 const TEST2 = "test_w";//外网测试
 const DIS = "distribute";//发布
 
-const Environmental = TEST1;
+const Environmental = DIS;
 
 
 // const hostUrl = 'http://139.196.111.38:8084';

@@ -268,6 +268,9 @@ class AudioSoundConCom extends Component {
                     Sound1.soundGetCurrentTime((time, isPlaying) => {
                         let time1 = time.toFixed(0)
                         let time2 = Sound1.soundDuring().toFixed(0);
+                        //处理数据显示
+                        time1=(time1>0)?time1:0;
+                        time2=(time2>0)?time2:0;
                         let currTime = time1 + ' / ' + time2;
                         this.props.reloadCurrTime("播放中 " + currTime);
 
@@ -537,9 +540,9 @@ class AudioSoundConCom extends Component {
                 this.startPlay(contentPath);
             }
         } else if (answerTime > 0) {// 如果是答题时间的话     跳过答题时间     去走下一步
+            clearInterval(timeInteval3);
             answerTime = 0;
             this.props.reloadCurrTime("跳过答题时间");
-            clearInterval(timeInteval3);
 
             if (this.state.isPlaying === false) {//如果是正在录音
                 // alert('录音下一步');
@@ -560,18 +563,20 @@ class AudioSoundConCom extends Component {
                 this.goAnswer();//去答题
             }
         } else {
-            Sound1.soundStop();
-
-            if (this.state.isPlaying && this.state.isPaused) {//如果是暂停
-                this.setState({
-                    isPaused: false,
-                }, () => {
-                    this.findProgress(timeInteval);
-                })
-            } else {
-                this.findProgress(timeInteval);
+            if(this.state.isPlaying && this.state.isPaused){//如果是暂停
+                this.continue();
             }
-
+            Sound1.soundStop();
+            // if (this.state.isPlaying && this.state.isPaused) {//如果是暂停
+            //     this.setState({
+            //         isPaused: false,
+            //     }, () => {
+            //         this.findProgress(timeInteval);
+            //     })
+            // } else {
+            //     Sound1.soundStop();
+            //     this.findProgress(timeInteval);
+            // }
         }
     }
 
@@ -608,21 +613,21 @@ class AudioSoundConCom extends Component {
                 <Text>{"交卷成功，将自动返回到开始考试页，点击查看考试记录进入考试记录详情"}</Text>
             </View>
         } else if (this.state.isPlaying && this.state.isPaused === false) {//点击按钮暂停播放
-            return <TouchableOpacity style={styles.button} onPress={() => this.pause()}>
+            return <TouchableOpacity style={styles.button} onPress={() =>utils.callOnceInInterval(this.pause)}>
                 <Image
                     style={{ width: '100%', height: '100%' }}
                     source={require('../imgs/testIcon/ks_bf_icon.png')}
                 />
             </TouchableOpacity>
         } else if (this.state.isPlaying && this.state.isPaused) {//点击按钮继续播放
-            return <TouchableOpacity style={styles.button} onPress={() => this.continue()}>
+            return <TouchableOpacity style={styles.button} onPress={() =>utils.callOnceInInterval(this.continue)}>
                 <Image
                     style={{ width: '100%', height: '100%' }}
                     source={require('../imgs/testIcon/ks_zt_icon.png')}
                 />
             </TouchableOpacity>
         } else {//点击按钮停止录音
-            return <TouchableOpacity style={styles.button} onPress={() => this.stopRecord()}>
+            return <TouchableOpacity style={styles.button} onPress={() =>utils.callOnceInInterval(this.stop)}>
                 <Image
                     style={{ width: '100%', height: '100%' }}
                     source={require('../imgs/testIcon/ks_tz_icon.png')}
@@ -636,13 +641,13 @@ class AudioSoundConCom extends Component {
         if (this.props.dataSource.topicInfo.currLevel !== "finished") {
             return <View style={styles.conBtnView}>
                 <TouchableOpacity style={styles.conBtn1}
-                    onPress={() => utils.callOnceInInterval(() => this.nextStep(this.props.dataSource), 1000)}>
+                    onPress={() => utils.callOnceInInterval(() => this.nextStep())}>
                     <Text style={styles.conBtnText}>下一步</Text>
                 </TouchableOpacity>
                 {
                     this.props.dataSource.isLast === true ? null :
                         <TouchableOpacity style={styles.conBtn1}
-                            onPress={() => utils.callOnceInInterval(this.nextGroup, 1000)}>
+                            onPress={() => utils.callOnceInInterval(this.nextGroup)}>
                             <Text style={styles.conBtnText}>下一题</Text>
                         </TouchableOpacity>
                 }

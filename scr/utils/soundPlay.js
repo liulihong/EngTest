@@ -6,16 +6,22 @@ import { Alert } from "react-native";
 let sound = null;
 let isRealse = false;
 let currTime = 0;
+// let playNum=0;
 
 module.exports = class MySound {
     constructor() {
         this.soundContinue = this.soundContinue.bind(this);
     }
+
+    // getPlayNum(){
+    //     return {playNum,currTime};
+    // }
+
     //初始化
     soundInit(path) {
         // noinspection JSAnnotator
         if (sound !== null) {
-            if(isRealse===false)
+            // if(isRealse===false)
                 sound.release();
             sound = null;
         }
@@ -29,6 +35,8 @@ module.exports = class MySound {
     }
     //播放
     soundPlay(path) {
+        // playNum++;
+        
         let loadedTime = 0;//加载次数
         let timeInteval = setInterval(() => {
             if (sound.isLoaded() === true) {
@@ -82,9 +90,9 @@ module.exports = class MySound {
     soundStop() {//这个是播放停止之后 relese
         if (sound !== null) {
             sound.stop();
-            sound.release();
+            // sound.release();
             // sound=null;
-            isRealse=true;
+            // isRealse=true;
         }
     }
     //释放
