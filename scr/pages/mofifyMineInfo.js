@@ -110,7 +110,8 @@ class MineInfo extends Component {
 
     render() {
         const { navigate } = this.props.navigation;
-        let titleArr = ["姓名", "学籍号", "地区", "学校", "年级", "班级"];
+        // let titleArr = ["姓名", "学籍号", "地区", "学校", "年级", "班级"];
+        let titleArr = ["姓名", "学籍号", "地区", "学校", "年级"];
         let valueArr = [((this.props.logResult && this.props.logResult.Name) ? this.props.logResult.Name : ""),
         ((this.props.logResult && this.props.logResult.NO) ? this.props.logResult.NO : ""),
         this.state.adressObj.Title,

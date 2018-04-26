@@ -27,7 +27,7 @@ class MineTxtInfo extends Component {
         let navTitle="";
         let text="";
         if( this.props.navigation.state.params.type === "姓名" ){
-            placeholder="请输入姓名";
+            placeholder="请输入姓名(1-10个字符)";
             navTitle="编辑姓名";
             text=this.props.logResult.Name?this.props.logResult.Name:"";
         }else if( this.props.navigation.state.params.type === "学籍号" ){
@@ -83,7 +83,12 @@ class MineTxtInfo extends Component {
                         multiline={false}
                         placeholder={this.state.placeholder}
                         // placeholderTextColor={utils.COLORS.theme1}
-                        onChangeText={(text) => this.setState({ text })}
+                        onChangeText={(text) => {
+                            if(text.length>10 && this.props.navigation.state.params.type === "姓名" ){
+                                this.setState({ text:text.substring(0,10) })
+                            }else
+                                this.setState({ text })
+                        }}
                         value={this.state.text}
                     />
                 </View>
