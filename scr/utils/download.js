@@ -36,7 +36,7 @@ const downloadDest = utils.DOWNLOADDOCUMENTPATH; //下载之后保存的目录
 //             progressDivider
 //         });
 
-//         jobId = ret.jobId;
+
 
 //         ret.promise.then(res => {
 //             console.log("file download ");
@@ -50,7 +50,7 @@ const downloadDest = utils.DOWNLOADDOCUMENTPATH; //下载之后保存的目录
 
 //             callback({ "path": that.path, "docName": that.docName, "status": "faild", "progress": "0%" });
 //             console.log(err)
-//             jobId = -1;
+
 //         });
 //     }
 
@@ -73,7 +73,7 @@ const downloadDest = utils.DOWNLOADDOCUMENTPATH; //下载之后保存的目录
 //                 console.log('success__newPath==' + newPath);
 //             }
 //         });
-//         jobId = -1;
+
 //     }
 
 // }
@@ -83,33 +83,48 @@ const downloadDest = utils.DOWNLOADDOCUMENTPATH; //下载之后保存的目录
 
 
 module.exports = (path, docName, callback) => {// 参数写一下
-    let jobId = -1;
-    // 是不是这个文件报的错啊 对  我点下载试题报的错   在哪 用的这个
     return {
         download() {
-            const progress = data => {
-                const percentage = ((100 * data.bytesWritten) / data.contentLength) || 0;
-                const text = `Progress ${percentage}%`;
-                callback({ "path": path, "docName": docName, "status": "downloading", "progress": percentage.toFixed(0) + " %" });
-                console.log(text);
-            };
-            const begin = res => {
-                callback({ "path": path, "docName": docName, "status": "start", "progress": "0%" });
-                console.log('Download has begun');
-            };
+            // const progress = data => {
+            //     const percentage = ((100 * data.bytesWritten) / data.contentLength) || 0;
+            //     const text = `Progress ${percentage}%`;
+            //     callback({ "path": path, "docName": docName, "status": "downloading", "progress": percentage.toFixed(0) + " %" });
+            //     console.log(text);
+            // };
+            // const begin = res => {
+            //     callback({ "path": path, "docName": docName, "status": "start", "progress": "0%" });
+            //     console.log('Download has begun');
+            // };
             const progressDivider = 1;
 
-            const ret = RNFS.downloadFile({
+            const options = {
                 fromUrl: path,
                 toFile: downloadDest + "/" + docName + ".zip",
-                begin,
-                progress,
+                begin:(res)=>{
+                    callback({ "path": path, "docName": docName, "status": "start", "progress": "0%" });
+                    console.log('Download has begun');
+                },
+                progress:(data)=>{
+                    const percentage = ((100 * data.bytesWritten) / data.contentLength) || 0;
+                    const text = `Progress ${percentage}%`;
+                    callback({ "path": path, "docName": docName, "status": "downloading", "progress": percentage.toFixed(0) + " %" });
+                    console.log(text);
+                },
                 progressDivider,
-            });
+            }
 
-            jobId = ret.jobId;
+            // const ret = RNFS.downloadFile({
+            //     fromUrl: path,
+            //     toFile: downloadDest + "/" + docName + ".zip",
+            //     begin,
+            //     progress,
+            //     progressDivider,
+            // });
+
+            let ret;
 
             try{
+                ret = RNFS.downloadFile(options);
                 ret.promise.then(res => {
                     console.log("file download ");
                     console.log(downloadDest);
@@ -121,10 +136,10 @@ module.exports = (path, docName, callback) => {// 参数写一下
                 }).catch(err => {
                     callback({ "path": path, "docName": docName, "status": "faild", "progress": "0%" });
                     console.log(err)
-                    jobId = -1;
                 });
             }
-            catch(e){
+            catch(error){
+
                 callback({ "path": path, "docName": docName, "status": "faild", "progress": "0%" });
                 console.log(error);
             }
@@ -159,12 +174,11 @@ module.exports = (path, docName, callback) => {// 参数写一下
                         console.log('success__newPath==' + newPath);
                     }
                 },(progress)=>{
-                    callback({ "path": path, "docName": docName, "status": "success", "progress": "0%", unzip: "faild" });
+                    // callback({ "path": path, "docName": docName, "status": "success", "progress": "0%", unzip: "faild" });
                     console.log(progress);
                 });
-            },1000)
+            },500)
             
-            jobId = -1;
         }
     }
 }

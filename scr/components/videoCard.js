@@ -21,10 +21,26 @@ class VideoCard extends Component {
         }
     }
 
+    componentWillReceiveProps(nextProps){
+        if(this.state.clickCardID === this.props.cardDic.ID && this.props.downLoadInfo && this.props.downLoadInfo.progress){
+            Alert.alert("", _this.props.cardDic.SecTitle + "下载异常请重试！");
+            // this.props.downFaild();
+            // this.props.saveDownInfo(obj);
+            _this.setState({
+                clickCardID: ""
+            });
+
+            this.props.saveDownInfo({ "path": path, "docName": docName, "status": "faild", "progress": "0%" });
+        }
+        if(this.props.netInfo !== undefined && nextProps.netInfo!==this.props.netInfo){//如果切换网络的话
+            utils.showDevInfo("监测到网络切换了");
+        }
+    }
+
     prepareDown() {
         const { DownPath: path, ID: docName } = this.props.cardDic;
-
-        if (this.state.clickCardID === docName) return;//如果已经点击过下载就返回
+        
+        if (this.state.clickCardID === docName && this.props.downLoadInfo && this.props.downLoadInfo.progress ) return;//如果已经点击过下载就返回
 
         //如果正在下载其他的试题包
         if (this.props.downLoadInfo && this.props.downLoadInfo !== undefined && (this.props.downLoadInfo.status === "downloading"||this.props.downLoadInfo.status === "prePare")) {
@@ -80,7 +96,7 @@ class VideoCard extends Component {
                         _this.setState({
                             clickCardID: ""
                         });
-                    }else if(obj.progress === ""){
+                    }else if(obj.progress===""){
                         Alert.alert("", _this.props.cardDic.SecTitle + "下载失败！");
                         // this.props.downFaild();
                         // this.props.saveDownInfo(obj);//找一下文档  看看暂停跟继续
@@ -133,9 +149,9 @@ class VideoCard extends Component {
                             onPress={() => utils.callOnceInInterval(this.prepareDown)}
                         >
                             {
-                                (this.state.clickCardID === this.props.cardDic.ID) ?
+                                (this.state.clickCardID === this.props.cardDic.ID && this.props.downLoadInfo && this.props.downLoadInfo.progress) ?
                                     <Text style={styles1.loading}>
-                                        {(this.props.downLoadInfo && this.props.downLoadInfo !== undefined)? this.props.downLoadInfo.progress:""}
+                                        {this.props.downLoadInfo.progress}
                                     </Text>
                                     : <ImageBackground style={styles1.xzImg}
                                         source={require("../imgs/testIcon/ks_xz_icon.png")} />
