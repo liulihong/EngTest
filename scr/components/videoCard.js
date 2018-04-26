@@ -80,6 +80,13 @@ class VideoCard extends Component {
                         _this.setState({
                             clickCardID: ""
                         });
+                    }else if(obj.progress === ""){
+                        Alert.alert("", _this.props.cardDic.SecTitle + "下载失败！");
+                        // this.props.downFaild();
+                        // this.props.saveDownInfo(obj);//找一下文档  看看暂停跟继续
+                        _this.setState({
+                            clickCardID: ""
+                        });
                     }
                 }).download();
             } else {

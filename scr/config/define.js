@@ -15,8 +15,8 @@ const screenRate = deviceW/375;
 RNFS = require('react-native-fs');
 const downloadDest=(instructions==="IOS"?RNFS.DocumentDirectoryPath:RNFS.ExternalDirectoryPath);
 
-const version_android = 5;
-const version_ios = 3;
+const version_android = 6;
+const version_ios = 6;
 const currVersion = instructions==="IOS"?version_ios:version_android;
 
 //颜色

@@ -42,7 +42,7 @@ const downloadDest = utils.DOWNLOADDOCUMENTPATH; //下载之后保存的目录
 //             console.log("file download ");
 //             console.log(downloadDest);
 //             console.log(res);
-//             callback({ "path": that.path, "docName": that.docName, "status": "success", "progress": "解压中", unzip: "start" });
+//             callback({ "path": that.path, "docName": that.docName, "status": "success", "progress": "处理中", unzip: "start" });
 //             // 调用解压函数
 //             this.unzipNewCourse(that.docName);
 
@@ -104,24 +104,30 @@ module.exports = (path, docName, callback) => {// 参数写一下
                 toFile: downloadDest + "/" + docName + ".zip",
                 begin,
                 progress,
-                progressDivider
+                progressDivider,
             });
 
             jobId = ret.jobId;
 
-            ret.promise.then(res => {
-                console.log("file download ");
-                console.log(downloadDest);
-                console.log(res);
-                callback({ "path": path, "docName": docName, "status": "success", "progress": "解压中", unzip: "start" });
-                // 调用解压函数
-                this.unzipNewCourse(docName);
-
-            }).catch(err => {
+            try{
+                ret.promise.then(res => {
+                    console.log("file download ");
+                    console.log(downloadDest);
+                    console.log(res);
+                    callback({ "path": path, "docName": docName, "status": "success", "progress": "处理中", unzip: "start" });
+                    // 调用解压函数
+                    this.unzipNewCourse(docName);
+    
+                }).catch(err => {
+                    callback({ "path": path, "docName": docName, "status": "faild", "progress": "0%" });
+                    console.log(err)
+                    jobId = -1;
+                });
+            }
+            catch(e){
                 callback({ "path": path, "docName": docName, "status": "faild", "progress": "0%" });
-                console.log(err)
-                jobId = -1;
-            });
+                console.log(error);
+            }
             return ret;
         },
 
@@ -144,8 +150,7 @@ module.exports = (path, docName, callback) => {// 参数写一下
                         callback({ "path": path, "docName": docName, "status": "success", "progress": "0%", unzip: "faild" });
                         // 解压失败
                         console.log('error')
-                    }
-                    else {
+                    }else {
                         // //解压成功，将zip删除
                         RNFS.unlink(oriPath).then(() => {
                             callback({ "path": path, "docName": docName, "status": "success", "progress": "100%", unzip: "success" });
@@ -154,6 +159,7 @@ module.exports = (path, docName, callback) => {// 参数写一下
                         console.log('success__newPath==' + newPath);
                     }
                 },(progress)=>{
+                    callback({ "path": path, "docName": docName, "status": "success", "progress": "0%", unzip: "faild" });
                     console.log(progress);
                 });
             },1000)

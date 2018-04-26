@@ -262,7 +262,7 @@ class AudioSoundConCom extends Component {
     //刷新页面播放进度 播放完毕寻找下一步
     reloadData() {
         timeInteval = setInterval(() => {
-            if (Sound1 !== null) {
+            // if (Sound1 !== null) {
                 let isLoaded = Sound1.soundIsLoaded();
                 if (isLoaded) {
                     Sound1.soundGetCurrentTime((time, isPlaying) => {
@@ -278,7 +278,7 @@ class AudioSoundConCom extends Component {
                             this.findProgress(timeInteval);
                         }
                     });
-                }
+                // }
             }
         }, 1000);
     }
@@ -589,7 +589,9 @@ class AudioSoundConCom extends Component {
         // }
 
         this.getDefaultTime();//恢复默认时间
+        
         this.clearInteval();//取消所有计时器
+        
         this.stopPlayAndRecord();//停止播放停止录音
 
 
