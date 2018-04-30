@@ -11,7 +11,7 @@ export default class TabBarItem extends Component {
         return (
             <Image
                 source={showImage}
-                style={{ width: 22, height: 24}}
+                style={{ width: 24, height: 24}}
                 // style={{tintColor: this.props.tintColor, width: 20, height: 24}}
             />
         );

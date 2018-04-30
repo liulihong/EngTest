@@ -782,12 +782,12 @@ const styles = StyleSheet.create({
         bottom: utils.PLATNAME === "IOS" ? 10*utils.SCREENRATE : 30*utils.SCREENRATE,
     },
     button: {
-        width: 75*utils.SCREENRATE,
-        height: 75*utils.SCREENRATE,
+        width: 60*utils.SCREENRATE,
+        height: 60*utils.SCREENRATE,
         // backgroundColor: "#cccccc",
-        borderRadius: 75*utils.SCREENRATE / 2,
-        borderWidth: 1,
-        borderColor: '#999999',
+        // borderRadius: 75*utils.SCREENRATE / 2,
+        // borderWidth: 1,
+        // borderColor: '#999999',
     },
     conBtnView: {
         position: "absolute",

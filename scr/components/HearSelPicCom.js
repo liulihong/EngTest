@@ -70,7 +70,8 @@ class HearSelPicCom extends Component {
                                         marginLeft: 5*utils.SCREENRATE,
                                     }}>
                                         <Text style={{
-                                            textAlign: "center"
+                                            textAlign: "center",
+                                            fontSize:18*utils.SCREENRATE,
                                         }}>{selTitleArr[i] + "\n"}</Text>
                                         <Image style={styles.img} source={source} />
                                     </View>
@@ -123,15 +124,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: utils.COLORS.theme,
-        width: 50*utils.SCREENRATE,
-        height: 50*utils.SCREENRATE,
-        borderRadius: 25*utils.SCREENRATE,
+        width: 40*utils.SCREENRATE,
+        height: 40*utils.SCREENRATE,
+        borderRadius: 20*utils.SCREENRATE,
+        marginBottom:8*utils.SCREENRATE,
     },
     title: {
         color: utils.COLORS.theme1,
         textAlign: "left",
         color: "white",
-        fontSize: 18,
+        fontSize: 18*utils.SCREENRATE,
         fontWeight: "600"
     },
     selectView: {
@@ -152,9 +154,9 @@ const styles = StyleSheet.create({
         // padding:5,
     },
     img: {
-        width: 20*utils.SCREENRATE,
-        height: 20*utils.SCREENRATE,
-        // margin: 2
+        width: 18*utils.SCREENRATE,
+        height: 18*utils.SCREENRATE,
+        margin: utils.SCREENRATE,
     },
     text: {
         color: utils.COLORS.theme1,

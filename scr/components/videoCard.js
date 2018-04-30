@@ -173,7 +173,7 @@ const styles1 = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: "red",
         width: utils.SCREENWIDTH * 0.3,
-        height: utils.SCREENWIDTH * 0.3 / 22 * 25,
+        height: utils.SCREENWIDTH * 0.3 / 22 * 28,
         margin: utils.SCREENWIDTH * 0.01,
         borderRadius: 5,
     },
@@ -197,7 +197,8 @@ const styles1 = StyleSheet.create({
         marginTop: 10,
         color: 'white',
         fontWeight: "700",
-        fontSize: utils.SCREENWIDTH/375*15,
+        fontSize: utils.SCREENRATE*14,
+        lineHeight:utils.SCREENRATE*25,
         textAlign: "center",
     },
     button: {
@@ -210,14 +211,14 @@ const styles1 = StyleSheet.create({
         height: "40%",
     },
     xzImg: {
-        marginRight: 15,
-        width: utils.SCREENWIDTH/375*24,
-        height: utils.SCREENWIDTH/375*24,
+        marginRight: utils.SCREENRATE*15,
+        width: utils.SCREENRATE*24,
+        height: utils.SCREENRATE*24,
     },
     loading: {
-        fontSize: 12,
+        fontSize: utils.SCREENRATE*12,
         color: "white",
-        marginRight: 15,
+        marginRight: utils.SCREENRATE*15,
     }
 });
 
