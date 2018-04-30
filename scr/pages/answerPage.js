@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DeviceEventEmitter, ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, ImageBackground ,Alert } from 'react-native';
+import { DeviceEventEmitter, ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, ImageBackground, Alert } from 'react-native';
 import { downFaild, GetCommon, getMovieList, saveDownUrl, startDown } from "../store/actions";
 import { connect } from "react-redux";
 import AnswerCom from '../components/answerCom';
@@ -27,20 +27,20 @@ class AnswerScreen extends Component {
         this.getExamAnserInfo();
     }
 
-    componentDidMount(){
-        DeviceEventEmitter.addListener("reloadAnswerDetail",()=>{
-            if(this.state.scoreFinish===false){
+    componentDidMount() {
+        DeviceEventEmitter.addListener("reloadAnswerDetail", () => {
+            if (this.state.scoreFinish === false) {
                 this.getExamAnserInfo();
             }
         });
-        this.timeInteval=setInterval(()=>{
-            if(this.state.scoreFinish===false){
+        this.timeInteval = setInterval(() => {
+            if (this.state.scoreFinish === false) {
                 this.getExamAnserInfo();
-            }else
+            } else
                 clearInterval(this.timeInteval);
-        },5*1000);
+        }, 5 * 1000);
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         DeviceEventEmitter.removeAllListeners("reloadAnswerDetail");
         clearInterval(this.timeInteval);
     }
@@ -49,16 +49,16 @@ class AnswerScreen extends Component {
         let LogID = this.props.answerRecord.LogID;
         fetchPost(getExamLog, { LogID }).then((result) => {
             // alert("result: "+JSON.stringify(result));
-            if(result.LogList!==undefined){
+            if (result.LogList !== undefined) {
                 this.setState({
-                    scoreFinish:true,
+                    scoreFinish: true,
                 });
                 let tempObj = {};
                 for (let i = 0; i < result.LogList.length; i++) {
                     ansObj = result.LogList[i];
-                    if(ansObj.Status===0){//如果状态为计分中 试卷计分状态为计分中
+                    if (ansObj.Status === 0) {//如果状态为计分中 试卷计分状态为计分中
                         this.setState({
-                            scoreFinish:false,
+                            scoreFinish: false,
                         });
                     }
                     if (tempObj[ansObj.Type] === undefined)
@@ -74,10 +74,10 @@ class AnswerScreen extends Component {
                     resetAnswer: tempObj,
                 });
                 console.log(tempObj);
-            }else
-                Alert.alert("",utils.findErrorInfo(result));
+            } else
+                Alert.alert("", utils.findErrorInfo(result));
         }, (error) => {
-            Alert.alert("",utils.findErrorInfo(error));
+            Alert.alert("", utils.findErrorInfo(error));
         })
     }
 
@@ -86,30 +86,33 @@ class AnswerScreen extends Component {
         if (this.props.answers === undefined) {
             return <Text>{"亲！ 您交了白卷。。。"}</Text>
         }
-        let scoreTxt = "正在\n计分中";
-        if(this.state.scoreFinish===true){
-            if(this.state.serverAnswer!==undefined && this.state.serverAnswer.Status===2){
-                scoreTxt = "得分\n" + ((this.state.serverAnswer !== {}) ? this.state.serverAnswer.Score : 0.00) + "分";
+        let scoreTxt = "正在计分\n请稍后";
+        if (this.state.scoreFinish === true) {
+            if (this.state.serverAnswer !== undefined && this.state.serverAnswer.Status === 2) {
+                scoreTxt = "得分\n" + ((this.state.serverAnswer !== {}) ? this.state.serverAnswer.Score.toFixed(2) : 0.00) + "分";
             }
         }
-        
-        return <ImageBackground
-            source={require("../imgs/testIcon/cj_bg.png")}
-            style={styles.contain}
-        >
-            <NavBar navtitle={this.props.examContent ? this.props.examContent.SecTitle : ''} isBack={true} navgation={this.props.navigation} />
-            <ScrollView>
-                {/* <AnswerCom answers={this.props.answers} /> */}
 
+        return <View style={styles.contain}>
+            <ImageBackground
+                source={require("../imgs/testIcon/cj_bg.png")}
+                style={styles.headImg}
+            >
+                <NavBar navtitle={this.props.examContent ? this.props.examContent.SecTitle : ''} isBack={true} navgation={this.props.navigation} />
                 <ImageBackground
                     style={styles.totalScore}
                     source={require("../imgs/aswerIcon/cjzh_icon.png")}>
-                    <Text style={styles.scoreTxt}>{scoreTxt}</Text>
+                    <Text style={[styles.scoreTxt,{color:(scoreTxt === "正在计分\n请稍后")?"#e94c46":"#ffffff"}]}>{scoreTxt}</Text>
                 </ImageBackground>
+            </ImageBackground>
+            <ScrollView>
+                {/* <AnswerCom answers={this.props.answers} /> */}
+
+
 
                 {
                     this.props.examContent && this.props.examContent.Groups.map((element, i) => {
-                        const isSelect = true;
+                        const isSelect = false;
                         const num = i + 1;
                         const title = typeEnum[element.Type];
                         const totalScore = (this.state.resetAnswer[element.Type] !== undefined) ? this.state.resetAnswer[element.Type].totalScore : 0.00;
@@ -134,22 +137,24 @@ class AnswerScreen extends Component {
                                     })
                                 })
                                 this.props.navigation.navigate("AnsweredDetail",
-                                    {   localAnswer: this.props.answers,
+                                    {
+                                        localAnswer: this.props.answers,
                                         answerVersion: this.props.answerRecord.version,
-                                        serverAnswer: sResetAnswer, 
-                                        title: title, 
+                                        serverAnswer: sResetAnswer,
+                                        title: title,
                                         content: element,
-                                        examPath: examPath, 
-                                        totalScore: tempScore });
+                                        examPath: examPath,
+                                        totalScore: tempScore
+                                    });
                             }} >
-                                <ProgressButton isSelect={isSelect} num={num} title={newTitle} />
+                                <ProgressButton backStyle={{backgroundColor:utils.COLORS.theme}} isSelect={isSelect} num={num} title={newTitle} />
                             </TouchableOpacity>
 
                         )
                     })
                 }
 
-                <View style={{width:"100%",height:20}} />
+                <View style={{ width: "100%", height: 20 }} />
 
                 {/* <TouchableOpacity style={{ padding: 20 }} onPress={() => {
                     this.props.navigation.navigate("AnsweredDetail", { answers: this.props.answers });
@@ -157,7 +162,8 @@ class AnswerScreen extends Component {
                     <Text>{"听后选择"}</Text>
                 </TouchableOpacity> */}
             </ScrollView>
-        </ImageBackground>
+
+        </View>
     }
 
 }
@@ -206,22 +212,27 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: 'center',
+        backgroundColor:"white",
+    },
+    headImg: {
+        width: '100%',
+        height: 645 / 2 * utils.SCREENRATE,
     },
     totalScore: {
-        width: 130*utils.SCREENRATE,
-        height: 130*utils.SCREENRATE,
-        paddingTop: 30*utils.SCREENRATE,
+        width: 165 * utils.SCREENRATE,
+        height: 165 * utils.SCREENRATE,
+        paddingTop: 40 * utils.SCREENRATE,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'flex-start',
         alignSelf: "center",
-        marginTop: 20*utils.SCREENRATE,
-        marginBottom: 30*utils.SCREENRATE,
+        marginTop: 20 * utils.SCREENRATE,
+        marginBottom: 30 * utils.SCREENRATE,
     },
     scoreTxt: {
         color: "#ffffff",
-        fontSize: 18*utils.SCREENRATE,
-        fontWeight: "600",
+        fontSize: 18 * utils.SCREENRATE,
+        fontWeight: "500",
         textAlign: "center",
     },
 

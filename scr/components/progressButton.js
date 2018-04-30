@@ -7,17 +7,19 @@ export default class ProgressButton extends Component {
     render() {
           
         return (
-            <View style={{
+            <View style={[{
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
-                backgroundColor: this.props.isSelect?'white':'#1b77aa',
+                backgroundColor:this.props.isSelect?'white':'#1b77aa',
                 width: 590/750*utils.SCREENWIDTH,
                 height:46*utils.SCREENRATE,
                 borderRadius: 46*utils.SCREENRATE/2,
                 marginBottom: 20*utils.SCREENRATE,
-            }}>
-                <View style={styles1.signNum}><Text style={styles1.num}>{this.props.num}</Text></View>
+            },this.props.backStyle?this.props.backStyle:{}]}>
+                <View style={[styles1.signNum,{backgroundColor: this.props.isSelect?utils.COLORS.theme:'white',}]}>
+                    <Text style={[styles1.num,{color: this.props.isSelect?'white':utils.COLORS.theme,}]}>{this.props.num}</Text>
+                </View>
                 <View style={styles1.titleView}><Text style={{
                     fontSize:16*utils.SCREENRATE,
                     color:this.props.isSelect?utils.COLORS.theme:"white",

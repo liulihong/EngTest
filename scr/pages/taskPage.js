@@ -1,5 +1,5 @@
 import React, { Compnents, Component } from 'react';
-import { ScrollView, StyleSheet, View, Button, Text, TouchableOpacity, Alert, DeviceEventEmitter } from 'react-native';
+import { ScrollView, StyleSheet, View, Button, Text, TouchableOpacity, Alert, DeviceEventEmitter,Image } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import VideoCard from '../components/videoCard';
 import utils from '../utils';
@@ -75,7 +75,7 @@ class TaskScreen extends Component {
 
     render() {
         return (
-            <View style={{ backgroundColor: utils.COLORS.background1 }}>
+            <View>
                 <NavBar navtitle="作业" isBack={false} />
                 <View style={styles.btnView}>
                     <TouchableOpacity style={styles.btn} onPress={() => this.GetPaperList(false)}>
@@ -89,9 +89,10 @@ class TaskScreen extends Component {
                 <View style={styles.line2} />
 
                 {
-                    (this.state.dataArr === null || this.state.dataArr === undefined || this.state.dataArr.length <= 0) ? <Text
-                        style={{ width: utils.SCREENWIDTH, fontSize:15*utils.SCREENRATE, lineHeight: 50*utils.SCREENRATE, textAlign: "center" }}
-                    >{"没有相关作业哦"}</Text> :
+                    (this.state.dataArr === null || this.state.dataArr === undefined || this.state.dataArr.length <= 0) ? <View>
+                        <Image style={styles.noZyImg} source={require("../imgs/testIcon/zy-k-iocn.png")} />
+                        <Text style={styles.noZyTxt} >{"没有相关作业哦~\n1.请在个人中心加入班级\n2.等待老师布置作业"}</Text>
+                    </View> :
                         <ScrollView>
                             <View style={styles.contain}>
                                 {
@@ -168,5 +169,19 @@ const styles = StyleSheet.create({
         width: utils.SCREENWIDTH,
         height: 1,
         backgroundColor: "#bbbbbb",
+    },
+    noZyImg: {
+        width:326/2*utils.SCREENRATE,
+        height:198/2*utils.SCREENRATE,
+        alignSelf:"center",
+        marginTop:100*utils.SCREENRATE,
+    },
+    noZyTxt: {
+        marginTop: 15*utils.SCREENRATE,
+        width: utils.SCREENWIDTH, 
+        fontSize:14*utils.SCREENRATE, 
+        lineHeight: 20*utils.SCREENRATE, 
+        textAlign: "center",
+        color:"#999999",
     }
 });

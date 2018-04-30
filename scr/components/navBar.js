@@ -14,7 +14,7 @@ export default class NavBar extends Component {
         return(
 
             <ImageBackground
-                source={require("../imgs/mineIcon/my_bg.png")}
+                source={require("../imgs/tabIcon/top_bg_z.png")}
                 style={{
                     flexDirection: 'row',
                     // alignItems: 'center',
