@@ -129,9 +129,6 @@ export default class AnsweredType1 extends Component {
                                                 <Text style={styles.minTitle}>
                                                     {minObj.Title}
                                                     <Text style={isCorrect?styles.correctScore:styles.errorScore}>{scoreStr}</Text>
-                                                    {
-                                                        (utils.PLATNAME==="ios")?<Text/>:<Text style={{color:"rgba(0,0,0,0)"}}>{"答 "}</Text>
-                                                    }
                                                 </Text>
                                                 {
                                                     minObj.Answers.map((selObj,k) => {
@@ -190,6 +187,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         marginBottom:30*utils.SCREENRATE,
+        // paddingLeft:10*utils.SCREENRATE,
+        paddingRight:10*utils.SCREENRATE,
         // backgroundColor:"#eeeeee",  
     },
     audioInfo: {//音频对应文本描述
@@ -210,9 +209,10 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         lineHeight: 26*utils.SCREENRATE,
         flexDirection: 'row',
-        // flexWrap: 'wrap',
+        flexWrap: 'wrap',
         justifyContent: 'flex-start',
-        // textAlign: "justify",
+        textAlign: "justify",
+        width:"100%",
     },
     audioBtn: {//原音频播放按钮
         width:utils.PLATNAME==="IOS" ? 16*utils.SCREENRATE : 32*utils.SCREENRATE,
@@ -241,11 +241,21 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: "flex-start",
+        textAlign: "justify",
+        width:"100%",
     },
     contentSty: {//每个小题
-        margin: 10*utils.SCREENRATE,
-        marginBottom: 10*utils.SCREENRATE,
+        // marginLeft: 10*utils.SCREENRATE,
+        
+        // marginBottom: 10*utils.SCREENRATE,
+        margin:5*utils.SCREENRATE,
         marginTop:0,
+        // marginRight:10*utils.SCREENRATE,
+        padding:5*utils.SCREENRATE,
+        paddingTop:0,
+        // paddingRight:10*utils.SCREENRATE,
+        // backgroundColor:"red",
+        width:"100%",
     },
     correctScore: {//小题正确打分记录
         color: "#44bb55",

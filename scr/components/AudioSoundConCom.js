@@ -239,7 +239,7 @@ class AudioSoundConCom extends Component {
     //暂停
     pause() {
         this.clearInteval();
-        this.stopPlayAndRecord();
+        // this.stopPlayAndRecord();
         this.setState({
             isPlaying: true,
             isPaused: true,
@@ -262,7 +262,7 @@ class AudioSoundConCom extends Component {
     //刷新页面播放进度 播放完毕寻找下一步
     reloadData() {
         timeInteval = setInterval(() => {
-            // if (Sound1 !== null) {
+            if (Sound1 !== null) {
                 let isLoaded = Sound1.soundIsLoaded();
                 if (isLoaded) {
                     Sound1.soundGetCurrentTime((time, isPlaying) => {
@@ -278,7 +278,7 @@ class AudioSoundConCom extends Component {
                             this.findProgress(timeInteval);
                         }
                     });
-                // }
+                }
             }
         }, 1000);
     }
@@ -563,6 +563,7 @@ class AudioSoundConCom extends Component {
                 this.goAnswer();//去答题
             }
         } else {
+            this.props.reloadCurrTime("查找下一步...");
             if(this.state.isPlaying && this.state.isPaused){//如果是暂停
                 this.continue();
             }
@@ -582,31 +583,23 @@ class AudioSoundConCom extends Component {
 
     //下一题点击事件
     nextGroup() {
-        // if (this.state.isPlaying === false) {//如果是录音 停止录音
-        //     this.stopRecord();
-        // }else{
 
-        // }
+        this.clearInteval();//取消所有计时器
 
         this.getDefaultTime();//恢复默认时间
         
-        this.clearInteval();//取消所有计时器
-        
-        this.stopPlayAndRecord();//停止播放停止录音
-
-
-        this.setState({//播放暂停状态恢复默认
-            isPlaying: true,
-            isPaused: false,
-        })
-
-
-        let tempData = this.props.dataSource;
-        //找下一步
-        this.props.getNextStep(tempData.topicInfo, tempData.examContent, tempData.gropObj, tempData.topObj);
-        // this.props.getNextGroup(tempData.topicInfo, tempData.examContent, tempData.gropObj);
-
-
+        this.props.reloadCurrTime("查找下一题...");
+        setTimeout(()=>{
+            this.stopPlayAndRecord();//停止播放停止录音
+            this.setState({//播放暂停状态恢复默认
+                isPlaying: true,
+                isPaused: false,
+            })
+            let tempData = this.props.dataSource;
+            //找下一步
+            this.props.getNextStep(tempData.topicInfo, tempData.examContent, tempData.gropObj, tempData.topObj);
+            // this.props.getNextGroup(tempData.topicInfo, tempData.examContent, tempData.gropObj);
+        },500)
     }
 
     //加载录音播放按钮
@@ -631,7 +624,7 @@ class AudioSoundConCom extends Component {
                 />
             </TouchableOpacity>
         } else {//点击按钮停止录音
-            return <TouchableOpacity style={styles.button} onPress={() =>utils.callOnceInInterval(this.stop)}>
+            return <TouchableOpacity style={styles.button} onPress={() =>utils.callOnceInInterval(this.stopRecord)}>
                 <Image
                     style={{ width: '100%', height: '100%' }}
                     source={require('../imgs/testIcon/ks_tz_icon.png')}
