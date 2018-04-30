@@ -185,11 +185,36 @@ export default class LoginScreen extends Component {
             </View> : <View style={styles.contain}>
                     <NavBar navtitle="我的班级" isBack={true} navgation={this.props.navigation} />
                     <View style={styles.classInfo}>
-                        <Text style={styles.txt}>{"班级名称：" + this.state.mineClassInfo.ClassName}</Text>
+                        <View style={{width:utils.SCREENWIDTH,height:47*utils.SCREENRATE,flexDirection:"row"}}>
+                            <Text style={styles.txt1}>{"班级名称："}</Text>
+                            <Text style={styles.txt2}>{this.state.mineClassInfo.ClassName}</Text>
+                            <View style={styles.line}></View>
+                        </View>
+                        <View style={{width:utils.SCREENWIDTH,height:47*utils.SCREENRATE,flexDirection:"row"}}>
+                            <Text style={styles.txt1}>{"老师名称："}</Text>
+                            <Text style={styles.txt2}>{this.state.mineClassInfo.Name}</Text>
+                            <View style={styles.line}></View>
+                        </View>
+                        <View style={{width:utils.SCREENWIDTH,height:47*utils.SCREENRATE,flexDirection:"row"}}>
+                            <Text style={styles.txt1}>{"老师手机号："}</Text>
+                            <Text style={styles.txt2}>{this.state.mineClassInfo.Phone}</Text>
+                            <View style={styles.line}></View>
+                        </View>
+                        <View style={{width:utils.SCREENWIDTH,height:47*utils.SCREENRATE,flexDirection:"row"}}>
+                            <Text style={styles.txt1}>{"老师ID："}</Text>
+                            <Text style={styles.txt2}>{this.state.mineClassInfo.TeacherID}</Text>
+                            <View style={styles.line}></View>
+                        </View>
+                        <View style={{width:utils.SCREENWIDTH,height:47*utils.SCREENRATE,flexDirection:"row"}}>
+                            <Text style={styles.txt1}>{"审核状态："}</Text>
+                            <Text style={styles.txt2}>{statusDic[this.state.mineClassInfo.Status]}</Text>
+                            <View style={styles.line}></View>
+                        </View>
+                        {/* <Text style={styles.txt}>{"班级名称：" + this.state.mineClassInfo.ClassName}</Text>
                         <Text style={styles.txt}>{"老师名称：" + this.state.mineClassInfo.Name}</Text>
                         <Text style={styles.txt}>{"老师手机号：" + this.state.mineClassInfo.Phone}</Text>
                         <Text style={styles.txt}>{"老师ID：" + this.state.mineClassInfo.TeacherID}</Text>
-                        <Text style={styles.txt}>{"审核状态：" + statusDic[this.state.mineClassInfo.Status]}</Text>
+                        <Text style={styles.txt}>{"审核状态：" + statusDic[this.state.mineClassInfo.Status]}</Text> */}
                     </View>
                     <TouchableOpacity
                         style={styles.button}
@@ -219,7 +244,7 @@ const styles = StyleSheet.create({
     button: {
         height: utils.SCREENRATE*45,
         width: utils.SCREENWIDTH * 0.85,
-        borderRadius: utils.SCREENRATE*6,
+        borderRadius: utils.SCREENRATE*5,
         backgroundColor: utils.COLORS.theme,
         justifyContent: 'center',
         marginTop: utils.SCREENRATE*30,
@@ -232,11 +257,29 @@ const styles = StyleSheet.create({
     },
     classInfo: {
         // padding:10,
-        marginTop: utils.SCREENRATE*30,
+        // marginTop: utils.SCREENRATE*30,
+        width:"100%"
     },
-    txt: {
-        lineHeight: utils.SCREENRATE*26,
+    txt1: {
+        lineHeight: utils.SCREENRATE*44,
         fontSize: utils.SCREENRATE*16,
-        color: utils.COLORS.theme1,
+        // color: utils.COLORS.theme1,
+        position:"absolute",
+        left:10*utils.SCREENRATE,
+        color:"#666666",
     },
+    txt2: {
+        lineHeight: utils.SCREENRATE*44,
+        fontSize: utils.SCREENRATE*16,
+        // color: utils.COLORS.theme1,
+        position:"absolute",
+        right:10*utils.SCREENRATE,
+        color:"#999999",
+    },
+    line: {
+        width:"100%",
+        marginTop:46*utils.SCREENRATE,
+        height:utils.SCREENRATE,
+        backgroundColor:"#e8e8e8"
+    }
 });
