@@ -130,7 +130,7 @@ class HomeScreen extends Component {
         return (
             <View style={{ backgroundColor: utils.COLORS.background1 }}>
                 <NavBar navtitle="模拟考试" isBack={false} />
-                <ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     {
                         (this.props.logResult && this.props.logResult !== undefined) ? <View style={styles.whiteView}>
                             <Text style={{ marginLeft: 10, color: "#666666" , fontSize: 14*utils.SCREENRATE }}>{" " + this.props.logResult.CityText + " → " + this.props.logResult.GradeText + " → 模拟考试列表"}</Text>
@@ -148,7 +148,6 @@ class HomeScreen extends Component {
                         }
                     </View>
                 </ScrollView>
-
             </View>
         );
     }

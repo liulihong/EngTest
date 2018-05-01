@@ -35,18 +35,20 @@ const styles = StyleSheet.create({
     },
     title: {
         color: utils.COLORS.theme1,
-        fontSize: 17*utils.SCREENRATE,
+        fontSize: 17 * utils.SCREENRATE,
         // textAlign:"auto",
-        lineHeight: 25*utils.SCREENRATE,
-        marginBottom: 10*utils.SCREENRATE,
+        lineHeight: 25 * utils.SCREENRATE,
+        marginBottom: 10 * utils.SCREENRATE,
     },
     content: {
-        marginTop: 15*utils.SCREENRATE,
+        marginTop: 15 * utils.SCREENRATE,
         backgroundColor: "#ffffff",
-        width: utils.SCREENWIDTH - 30*utils.SCREENRATE,
-        height: utils.SCREENHEIGHT - 100*utils.SCREENRATE -100,
-        padding: 10*utils.SCREENRATE,
-        borderRadius: 8*utils.SCREENRATE,
+        width: utils.SCREENWIDTH - 30 * utils.SCREENRATE,
+        height: utils.SCREENHEIGHT - 100 * utils.SCREENRATE - 100,
+        padding: 10 * utils.SCREENRATE,
+        paddingTop: 0,
+        paddingBottom: 0,
+        borderRadius: 8 * utils.SCREENRATE,
     },
     contentScr: {
         // display:'flex',
@@ -59,6 +61,8 @@ class VideoTest extends Component {
         super(props)
         this.getContent = this.getContent.bind(this);
         this.getComponent = this.getComponent.bind(this);
+        this.setScroInfo = this.setScroInfo.bind(this);
+        this.state={};
     }
 
     componentWillReceiveProps(nextProps) {
@@ -68,10 +72,10 @@ class VideoTest extends Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         RNIdle.disableIdleTimer()    //保持屏幕常亮
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         RNIdle.enableIdleTimer()     //退出屏幕常亮
     }
 
@@ -103,19 +107,21 @@ class VideoTest extends Component {
             // }
             // return <Text>{"正在交卷中。。。"}</Text>
             // return <AnswerCom answers={this.props.answers} />
-            return <View style={{width:"100%",backgroundColor:"rgba(0,0,0,0)"}}>
+            return <View style={{ width: "100%", backgroundColor: "rgba(0,0,0,0)" }}>
                 <ActivityIndicator
-                animating={true}
-                style={[{alignItems: 'center',
-                justifyContent: 'center',
-                padding: 8*utils.SCREENRATE,}, { height: utils.SCREENHEIGHT/3 }]}
-                size="large"
-            />
-            <Text style={{textAlign:"center"}}>{"正在交卷中..."}</Text>
+                    animating={true}
+                    style={[{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: 8 * utils.SCREENRATE,
+                    }, { height: utils.SCREENHEIGHT / 3 }]}
+                    size="large"
+                />
+                <Text style={{ textAlign: "center" }}>{"正在交卷中..."}</Text>
             </View>
         } else if (this.props.isHaveContent) {
             return (
-                <View style={{ padding: 5*utils.SCREENRATE }}>
+                <View style={{ padding: 5 * utils.SCREENRATE }}>
                     <Text style={styles.title}>{this.props.topObj.Title}</Text>
                     <Text style={styles.title}>{this.props.topInfo.showTitle}</Text>
                     {
@@ -124,10 +130,21 @@ class VideoTest extends Component {
                 </View>
             );
         } else {
-            return <Text style={styles.title}>{this.props.topInfo?this.props.topInfo.showTitle:""}</Text>
+            return <Text style={styles.title}>{this.props.topInfo ? this.props.topInfo.showTitle : ""}</Text>
         }
     }
 
+    setScroInfo(e){
+        this.offsetY = e.nativeEvent.contentOffset.y; //滑动距离
+        this.contentSizeHeight = e.nativeEvent.contentSize.height; //scrollView contentSize高度
+        this.oriageScrollHeight = e.nativeEvent.layoutMeasurement.height; //scrollView高度
+
+        let isTop1 = (this.offsetY <= 0);
+        let isBottom1 = (this.offsetY >= (this.contentSizeHeight - this.oriageScrollHeight));
+        // debugger
+        if(this.state.isTop===null || isTop1!==this.state.isTop) this.setState({isTop: isTop1});
+        if(this.state.isBottom===null || isBottom1!==this.state.isBottom) this.setState({isBottom: isBottom1});
+    }
 
     render() {
         return (
@@ -136,11 +153,49 @@ class VideoTest extends Component {
                 <NavBar navtitle={this.props.examContent.SecTitle} isBack={true} navgation={this.props.navigation} />
 
                 <View style={styles.content}>
-                    <ScrollView keyboardShouldPersistTaps={"handled"}>
+                    {
+                        (this.offsetY && this.offsetY > 0 && this.state.isTop === false) ? <TouchableOpacity
+                            style={{ flexDirection: "row", backgroundColor: "rgba(0,0,0,0)", width: "100%", height: 30 * utils.SCREENRATE, alignItems: "center", justifyContent: "center" }}
+                            onPress={() => {
+                                // if (this.contentSizeHeight !== undefined) {
+                                //     let showY = (this.offsetY - 20) > 0 ? this.offsetY - 20 : 0;
+                                //     this._scroll.scrollTo({ y: showY });
+                                // } else {
+                                    this._scroll.scrollTo({ y: 0 });
+                                // }
+                            }}
+                        >
+                            <Text style={{ color: "gray", fontSize: 12 * utils.SCREENRATE }}>{"回到顶部 ⇈"}</Text>
+                        </TouchableOpacity> : <TouchableOpacity style={{ flexDirection: "row", backgroundColor: "rgba(0,0,0,0)", width: "100%", height: 10 * utils.SCREENRATE, alignItems: "center", justifyContent: "center" }} />
+                    }
+                    <ScrollView
+                        ref={(scroll) => this._scroll = scroll}
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps={"handled"}
+                        onScroll={(e) => {
+                            this.setScroInfo(e);
+                        }}
+                    >
                         {
                             this.getContent()
                         }
                     </ScrollView>
+                    {
+                        (this.state.isBottom!==true)?<TouchableOpacity
+                            style={{ flexDirection: "row", width: "100%", height: 30 * utils.SCREENRATE, alignItems: "center", justifyContent: "center" }}
+                            onPress={() => {
+                                let maxOffSet = this.contentSizeHeight - this.oriageScrollHeight;
+                                if (this.contentSizeHeight !== undefined) {
+                                    let showY = (this.offsetY + 45*utils.SCREENRATE) <= maxOffSet ? (this.offsetY + 45*utils.SCREENRATE) : maxOffSet;
+                                    this._scroll.scrollTo({ y: showY });
+                                } else {
+                                    this._scroll.scrollToEnd();
+                                }
+                            }}
+                        >
+                            <Text style={{ fontSize: 12 * utils.SCREENRATE, color: "gray" }}>{"滑动查看更多 ⇊"}</Text>
+                        </TouchableOpacity>:<TouchableOpacity style={{ flexDirection: "row", backgroundColor: "rgba(0,0,0,0)", width: "100%", height: 10 * utils.SCREENRATE, alignItems: "center", justifyContent: "center" }} />
+                    }
                 </View>
 
                 <AudioSoundConCom navigation={this.props.navigation} />

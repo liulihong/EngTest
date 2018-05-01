@@ -34,37 +34,39 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
+    backImg: {
+        width: '100%',
+        height: utils.SCREENHEIGHT - 140 * utils.SCREENRATE - (utils.PLATNAME === "IOS" ? 64 : 44),
+    },
     progress: {
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        marginTop: 30*utils.SCREENRATE,
-        height: utils.PLATNAME === "IOS" ? utils.SCREENHEIGHT - 240*utils.SCREENRATE : utils.SCREENHEIGHT - 220*utils.SCREENRATE,
-        // backgroundColor:"red",
+        width: utils.SCREENWIDTH,
+        height: (utils.PLATNAME === "IOS" ? (utils.SCREENHEIGHT - 140 * utils.SCREENRATE - 64) : (utils.SCREENHEIGHT - 140 * utils.SCREENRATE - 44)) - 100 * utils.SCREENRATE,
     },
     whiteView: {
         backgroundColor: "white",
         width: "100%",
-        height: 140*utils.SCREENRATE,
+        height: 140 * utils.SCREENRATE,
         position: "absolute",
         bottom: 0,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        // alignItems: 'center',
     },
     scoreText: {
         color: utils.COLORS.theme1,
-        fontSize: 16*utils.SCREENRATE,
-        margin: 7*utils.SCREENRATE,
-        padding: 10*utils.SCREENRATE,
+        fontSize: 16 * utils.SCREENRATE,
+        margin: 7 * utils.SCREENRATE,
+        padding: 10 * utils.SCREENRATE,
         width: utils.SCREENWIDTH,
         textAlign: "center",
     },
     button: {
-        height: 45*utils.SCREENRATE,
+        height: 45 * utils.SCREENRATE,
         width: utils.SCREENWIDTH * 670 / 750,
-        borderRadius: 6*utils.SCREENRATE,
+        borderRadius: 6 * utils.SCREENRATE,
         backgroundColor: utils.COLORS.theme,
         justifyContent: 'center',
         // marginTop: 10,
@@ -73,16 +75,16 @@ const styles = StyleSheet.create({
     buttonText: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 18*utils.SCREENRATE
+        fontSize: 18 * utils.SCREENRATE
     },
     button2: {
-        height: 45*utils.SCREENRATE,
+        height: 45 * utils.SCREENRATE,
         width: '35%',
-        borderRadius: 6*utils.SCREENRATE,
+        borderRadius: 6 * utils.SCREENRATE,
         backgroundColor: utils.COLORS.theme,
         justifyContent: 'center',
-        margin: 15*utils.SCREENRATE,
-        marginTop: 45*utils.SCREENRATE,
+        margin: 15 * utils.SCREENRATE,
+        marginTop: 45 * utils.SCREENRATE,
     }
 });
 
@@ -117,7 +119,7 @@ class TestStart extends Component {
             // this.props.saveAnswerRecord();
         });
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         DeviceEventEmitter.removeAllListeners("ChangeUI");
     }
 
@@ -128,8 +130,8 @@ class TestStart extends Component {
             if (isExit === true) {
                 RNFS.readFile(jsonPath).then((result) => {
                     let anserDic = JSON.parse(result);
-                    if (anserDic.UserID===undefined || anserDic.UserID === this.props.UserID) {
-                        anserDic.examPath=this.props.path;
+                    if (anserDic.UserID === undefined || anserDic.UserID === this.props.UserID) {
+                        anserDic.examPath = this.props.path;
                         this.props.saveAnswerInfo(anserDic);
                     } else {
                         // 如果切换账号 删除弹丸文件夹
@@ -144,7 +146,7 @@ class TestStart extends Component {
     //开始考试
     startTest() {
         this.newStartExamLog((LogInfo) => {
-            let currPath=this.props.path + "/answer1";
+            let currPath = this.props.path + "/answer1";
             RNFS.mkdir(currPath).then(() => {
                 let anserDic = { "version": 1, "lastPath": null, "examPath": this.props.path, currPath, "finish": false, ...LogInfo };
                 this.props.getTopicInfo(this.props.examContent);
@@ -162,14 +164,14 @@ class TestStart extends Component {
             let version = anserDic.version + 1;
             let lastPath = anserDic.currPath;
             let examPath = this.props.path;
-            let currPath =  this.props.path + '/answer' + version;
+            let currPath = this.props.path + '/answer' + version;
             let finish = false;
 
             RNFS.mkdir(currPath).then(() => {
                 this.props.getTopicInfo(this.props.examContent);
                 this.props.saveAnswerInfo({ version, lastPath, examPath, currPath, finish, ...LogInfo });
                 this.props.navigation.navigate('VideoTest');
-                RNFS.unlink(this.props.path+anserDic.lastPath);
+                RNFS.unlink(this.props.path + anserDic.lastPath);
             })
         });
     }
@@ -188,11 +190,11 @@ class TestStart extends Component {
 
         let UserID = this.props.UserID;
         let taskId = (this.props.navigation.state.params.isFinish === true) ? "" : this.props.taskId;
-        
-        if(this.props.answerRecord && this.props.answerRecord.isSubmit===true && this.props.answerRecord.taskId===taskId && this.props.navigation.state.params.isFinish === false){//如果已经提交过
-            Alert.alert("","你已做完作业，现在为模拟练习");
-            taskId="";
-        } 
+
+        if (this.props.answerRecord && this.props.answerRecord.isSubmit === true && this.props.answerRecord.taskId === taskId && this.props.navigation.state.params.isFinish === false) {//如果已经提交过
+            Alert.alert("", "你已做完作业，现在为模拟练习");
+            taskId = "";
+        }
         let params = {
             "PaperID": this.props.navigation.state.params.ID,
             "UserID": UserID,
@@ -202,17 +204,17 @@ class TestStart extends Component {
         fetchPost(startExam, params).then((result) => {
             // alert("开始考试记录:"+JSON.stringify(result));
             //result  LogID,TaskLogID
-            
+
             if (result.ErrorCode !== undefined) {
                 Alert.alert("", utils.findErrorInfo(result));
-                if(result.ErrorCode===1003||result.ErrorCode===1004||result.ErrorCode===1106){
-                    DeviceEventEmitter.emit('replaceRoute',{isLogin:false});
+                if (result.ErrorCode === 1003 || result.ErrorCode === 1004 || result.ErrorCode === 1106) {
+                    DeviceEventEmitter.emit('replaceRoute', { isLogin: false });
                 }
-            }else{
+            } else {
                 let ishome = this.props.navigation.state.params.ishome == true && this.props.navigation.state.params.isFinish === false;
                 let taskId = this.props.taskId;
                 let isSubmit = false;//是否提交到服务器
-    
+
                 let examInfo = { ...result, taskId, ishome, isSubmit, UserID };
                 callBack(examInfo);//不报错五信息  回调考试
             }
@@ -308,7 +310,7 @@ class TestStart extends Component {
 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={()=>utils.callOnceInInterval(this.startTest,1000)}
+                    onPress={() => utils.callOnceInInterval(this.startTest, 1000)}
                 >
                     <Text style={styles.buttonText}>{"开始考试"}</Text>
                 </TouchableOpacity>
@@ -317,15 +319,15 @@ class TestStart extends Component {
             return <View style={styles.whiteView}>
 
                 {
-                    (this.props.answerRecord.isSubmit === undefined || this.props.answerRecord.isSubmit === true ) ? 
-                    <TouchableOpacity onPress={() => utils.callOnceInInterval(this.showBlowInfo,2000)}>
-                        <Text style={styles.scoreText}>{"查看考试记录 > "}</Text>
-                    </TouchableOpacity> : <View><Text style={styles.scoreText}>{this.props.examContent && this.props.examContent.PriTitle}</Text></View>
+                    (this.props.answerRecord.isSubmit === undefined || this.props.answerRecord.isSubmit === true) ?
+                        <TouchableOpacity onPress={() => utils.callOnceInInterval(this.showBlowInfo, 2000)}>
+                            <Text style={styles.scoreText}>{"查看考试记录 > "}</Text>
+                        </TouchableOpacity> : <View><Text style={styles.scoreText}>{this.props.examContent && this.props.examContent.PriTitle}</Text></View>
                 }
 
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={()=>utils.callOnceInInterval(this.againTest,1000)}
+                    onPress={() => utils.callOnceInInterval(this.againTest, 1000)}
                 >
                     <Text style={styles.buttonText}>{"重新考试"}</Text>
                 </TouchableOpacity>
@@ -334,14 +336,14 @@ class TestStart extends Component {
             return <View style={styles.whiteView}>
                 <TouchableOpacity
                     style={styles.button2}
-                    onPress={()=>utils.callOnceInInterval(this.againTest,1000)}
+                    onPress={() => utils.callOnceInInterval(this.againTest, 1000)}
                 >
                     <Text style={styles.buttonText}>{"重新考试"}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                     style={styles.button2}
-                    onPress={()=>utils.callOnceInInterval(this.prepareContinue,1000)}
+                    onPress={() => utils.callOnceInInterval(this.prepareContinue, 1000)}
                 >
                     <Text style={styles.buttonText}>{"继续考试"}</Text>
                 </TouchableOpacity>
@@ -362,38 +364,75 @@ class TestStart extends Component {
         }
         return (
 
-            <ImageBackground
-                source={require("../imgs/testIcon/cj_bg.png")}
-                style={styles.contain}
-            >
-
+            <View style={styles.contain}>
                 <NavBar navtitle={this.props.examContent ? this.props.examContent.SecTitle : ''} isBack={true} navgation={this.props.navigation} />
-
-                <View style={styles.progress}>
-                    <ScrollView>
-                        {
-                            this.props.examContent && this.props.examContent.Groups.map((element, i) => {
-                                element.ExamTopics.map((topObj, j) => {
-                                    topObj.TopicInfoList.map((sObj, k) => {
-                                        totalScore = (i === 0 && j === 0 && k === 0) ? sObj.Score : (sObj.Score + totalScore);
+                <ImageBackground
+                    source={require("../imgs/testIcon/mnks-bg.png")}
+                    style={styles.backImg}
+                >
+                    <TouchableOpacity
+                        style={{ backgroundColor: "rgba(0,0,0,0)", width: "100%", height: 40 * utils.SCREENRATE, alignItems: "center", paddingTop: (utils.PLATNAME === "IOS") ? 10 : 3 }}
+                        onPress={() => {
+                            // if(this.contentSizeHeight!==undefined){
+                            //     let showY = (this.offsetY - 20) > 0 ? this.offsetY - 20 : 0;
+                            //     this._scroll.scrollTo({ y: showY });
+                            // }else{
+                                this._scroll.scrollTo({ y: 0 });
+                            // }
+                        }}
+                    >
+                        <Text style={{ color: "white", fontSize: 18 * utils.SCREENRATE }}>{"︽"}</Text>
+                    </TouchableOpacity>
+                    <View style={styles.progress}>
+                        <View />
+                        <ScrollView
+                            style={{ backgroundColor: "rgba(0,0,0,0)" }}
+                            ref={(scroll) => this._scroll = scroll}
+                            showsVerticalScrollIndicator={false}
+                            onScrollEndDrag={(e) => {
+                                this.offsetY = e.nativeEvent.contentOffset.y; //滑动距离
+                                this.contentSizeHeight = e.nativeEvent.contentSize.height; //scrollView contentSize高度
+                                this.oriageScrollHeight = e.nativeEvent.layoutMeasurement.height; //scrollView高度
+                            }}
+                        >
+                            {
+                                this.props.examContent && this.props.examContent.Groups.map((element, i) => {
+                                    element.ExamTopics.map((topObj, j) => {
+                                        topObj.TopicInfoList.map((sObj, k) => {
+                                            totalScore = (i === 0 && j === 0 && k === 0) ? sObj.Score : (sObj.Score + totalScore);
+                                        })
                                     })
-                                })
 
-                                const isSelect = element.Type === selectType;
-                                const num = i + 1;
-                                const title = typeEnum[element.Type];
-                                return <ProgressButton key={element.Type} isSelect={isSelect} num={num} title={title} />
-                            })
-                        }
-                    </ScrollView>
-                </View>
+                                    const isSelect = element.Type === selectType;
+                                    const num = i + 1;
+                                    const title = typeEnum[element.Type];
+                                    return <ProgressButton key={element.Type} isSelect={isSelect} num={num} title={title} />
+                                })
+                            }
+                        </ScrollView>
+                    </View>
+                    <TouchableOpacity
+                        style={{ backgroundColor: "rgba(0,0,0,0)", width: "100%", height: 40 * utils.SCREENRATE, alignItems: "center", paddingTop: (utils.PLATNAME === "IOS") ? 10 : 3 }}
+                        onPress={() => {
+                            // if(this.contentSizeHeight!==undefined){
+                            //     let maxOffSet=this.contentSizeHeight-this.oriageScrollHeight;
+                            //     let showY = (this.offsetY + 20) <= maxOffSet ? (this.offsetY + 20) : maxOffSet;
+                            //     this._scroll.scrollTo({ y: showY });
+                            // }else{
+                                this._scroll.scrollToEnd();
+                            // }
+                        }}
+                    >
+                        {/* <Image style={{width:22*0.7,height:18*0.7}} source={require("../imgs/cusIcon/down_icon.png")} /> */}
+                        <Text style={{ color: "white", fontSize: 18 * utils.SCREENRATE }}>{"︾"}</Text>
+                    </TouchableOpacity>
+                </ImageBackground>
 
                 {
                     this.getWhiteView()
                 }
 
-
-            </ImageBackground>
+            </View>
         );
     }
 }

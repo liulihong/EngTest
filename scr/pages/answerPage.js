@@ -102,14 +102,33 @@ class AnswerScreen extends Component {
                 <ImageBackground
                     style={styles.totalScore}
                     source={require("../imgs/aswerIcon/cjzh_icon.png")}>
-                    <Text style={[styles.scoreTxt,{color:(scoreTxt === "正在计分\n请稍后")?"#e94c46":"#ffffff"}]}>{scoreTxt}</Text>
+                    <Text style={[styles.scoreTxt, { color: (scoreTxt === "正在计分\n请稍后") ? "#e94c46" : "#ffffff" }]}>{scoreTxt}</Text>
                 </ImageBackground>
+                <TouchableOpacity
+                    style={{ backgroundColor: "rgba(0,0,0,0)", position: "absolute", bottom: 0, width: "100%", height: 40 * utils.SCREENRATE, alignItems: "center", justifyContent: "center" }}
+                    onPress={() => {
+                        // if(this.contentSizeHeight!==undefined){
+                        //     let showY = (this.offsetY - 20) > 0 ? this.offsetY - 20 : 0;
+                        //     this._scroll.scrollTo({ y: showY });
+                        // }else{
+                            this._scroll.scrollTo({ y: 0 });
+                        // }
+                    }}
+                >
+                    <Text style={{ color: "gray", fontSize: 18 * utils.SCREENRATE }}>{"︽"}</Text>
+                </TouchableOpacity>
             </ImageBackground>
-            <ScrollView>
+            <ScrollView
+                style={styles.scrInfo}
+                ref={(scroll) => this._scroll = scroll}
+                showsVerticalScrollIndicator = {false}
+                onScrollEndDrag={(e) => {
+                    this.offsetY = e.nativeEvent.contentOffset.y; //滑动距离
+                    this.contentSizeHeight = e.nativeEvent.contentSize.height; //scrollView contentSize高度
+                    this.oriageScrollHeight = e.nativeEvent.layoutMeasurement.height; //scrollView高度
+                }}
+            >
                 {/* <AnswerCom answers={this.props.answers} /> */}
-
-
-
                 {
                     this.props.examContent && this.props.examContent.Groups.map((element, i) => {
                         const isSelect = false;
@@ -147,22 +166,27 @@ class AnswerScreen extends Component {
                                         totalScore: tempScore
                                     });
                             }} >
-                                <ProgressButton backStyle={{backgroundColor:utils.COLORS.theme}} isSelect={isSelect} num={num} title={newTitle} />
+                                <ProgressButton backStyle={{ backgroundColor: utils.COLORS.theme }} isSelect={isSelect} num={num} title={newTitle} />
                             </TouchableOpacity>
 
                         )
                     })
                 }
-
-                <View style={{ width: "100%", height: 20 }} />
-
-                {/* <TouchableOpacity style={{ padding: 20 }} onPress={() => {
-                    this.props.navigation.navigate("AnsweredDetail", { answers: this.props.answers });
-                }} >
-                    <Text>{"听后选择"}</Text>
-                </TouchableOpacity> */}
             </ScrollView>
-
+            <TouchableOpacity
+                style={{ backgroundColor: "rgba(0,0,0,0)", width: "100%", height: ((utils.PLATNAME === "IOS") ? 40 : 60) * utils.SCREENRATE, alignItems: "center", paddingTop: 10 }}
+                onPress={() => {
+                    // if(this.contentSizeHeight!==undefined){
+                    //     let maxOffSet=this.contentSizeHeight-this.oriageScrollHeight;
+                    //     let showY = (this.offsetY + 20) <= maxOffSet ? (this.offsetY + 20) : maxOffSet;
+                    //     this._scroll.scrollTo({ y: showY });
+                    // }else{
+                        this._scroll.scrollToEnd();
+                    // }
+                }}
+            >
+                <Text style={{ color: "gray", fontSize: 18 * utils.SCREENRATE }}>{"︾"}</Text>
+            </TouchableOpacity>
         </View>
     }
 
@@ -212,11 +236,18 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor:"white",
+        backgroundColor: "white",
     },
     headImg: {
         width: '100%',
         height: 645 / 2 * utils.SCREENRATE,
+    },
+    scrInfo: {
+        // width:"100%",
+        height: utils.SCREENHEIGHT - (645 / 2 * utils.SCREENRATE) - 20,
+        // height:200,
+        // backgroundColor: "red",
+        // alignItems:"center",
     },
     totalScore: {
         width: 165 * utils.SCREENRATE,

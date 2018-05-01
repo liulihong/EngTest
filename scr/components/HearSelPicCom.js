@@ -71,7 +71,7 @@ class HearSelPicCom extends Component {
                                     }}>
                                         <Text style={{
                                             textAlign: "center",
-                                            fontSize:18*utils.SCREENRATE,
+                                            fontSize:16*utils.SCREENRATE,
                                         }}>{selTitleArr[i] + "\n"}</Text>
                                         <Image style={styles.img} source={source} />
                                     </View>
