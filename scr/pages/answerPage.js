@@ -22,9 +22,14 @@ class AnswerScreen extends Component {
             serverAnswer: {},
             resetAnswer: {},
             scoreFinish: true,//计分状态为计分完成
+
+            isTop: false,
+            isBottom: false,
         }
 
         this.getExamAnserInfo();
+
+        this.scrHeight = utils.SCREENHEIGHT - (576 / 2 * utils.SCREENRATE) - (utils.PLATNAME === "IOS" ? 35 : 55);
     }
 
     componentDidMount() {
@@ -109,28 +114,24 @@ class AnswerScreen extends Component {
                     source={require("../imgs/aswerIcon/cjzh_icon.png")}>
                     <Text style={[styles.scoreTxt, { color: (scoreTxt === "正在计分\n请稍后") ? "#e94c46" : "#ffffff" }]}>{scoreTxt}</Text>
                 </ImageBackground>
-                <TouchableOpacity
-                    style={{ backgroundColor: "rgba(0,0,0,0)", position: "absolute", bottom: 0, width: "100%", height: 40 * utils.SCREENRATE, alignItems: "center", justifyContent: "center" }}
-                    onPress={() => {
-                        // if(this.contentSizeHeight!==undefined){
-                        //     let showY = (this.offsetY - 20) > 0 ? this.offsetY - 20 : 0;
-                        //     this._scroll.scrollTo({ y: showY });
-                        // }else{
-                        this._scroll.scrollTo({ y: 0 });
-                        // }
-                    }}
-                >
-                    <Text style={{ color: "gray", fontSize: 18 * utils.SCREENRATE }}>{"︽"}</Text>
-                </TouchableOpacity>
+                {
+                    this.state.isTop === false ? <TouchableOpacity style={[styles.maxBtn, { position: "absolute", bottom: 0,height:40*utils.SCREENRATE }]}
+                        onPress={() => {
+                            this._scroll.scrollTo({ y: 0 });
+                        }}
+                    >
+                        <Text style={{ color: "#cccccc", fontSize: 18 * utils.SCREENRATE }}>{"︽"}</Text>
+                    </TouchableOpacity> : <View style={[styles.maxBtn, { position: "absolute", bottom: 0 }]} />
+                }
             </ImageBackground>
             <ScrollView
                 style={styles.scrInfo}
                 ref={(scroll) => this._scroll = scroll}
                 showsVerticalScrollIndicator={false}
-                onScrollEndDrag={(e) => {
-                    this.offsetY = e.nativeEvent.contentOffset.y; //滑动距离
-                    this.contentSizeHeight = e.nativeEvent.contentSize.height; //scrollView contentSize高度
-                    this.oriageScrollHeight = e.nativeEvent.layoutMeasurement.height; //scrollView高度
+                onContentSizeChange={(contentWidth, contentHeight) => {
+                    this.contentHeight = contentHeight;
+                    let isMax = (contentHeight - 20 * utils.SCREENRATE) > this.scrHeight;
+                    this.setState({ isTop: !isMax, isBottom: !isMax });
                 }}
             >
                 {/* <AnswerCom answers={this.props.answers} /> */}
@@ -178,20 +179,13 @@ class AnswerScreen extends Component {
                     })
                 }
             </ScrollView>
-            <TouchableOpacity
-                style={{ backgroundColor: "rgba(0,0,0,0)", width: "100%", height: ((utils.PLATNAME === "IOS") ? 40 : 60) * utils.SCREENRATE, alignItems: "center", paddingTop: 10 }}
+            {this.state.isBottom===false?<TouchableOpacity style={[styles.maxBtn, { height: (utils.PLATNAME === "IOS" ? 35 : 55), paddingTop: (utils.PLATNAME === "IOS" ? 8 : 3), justifyContent: "flex-start" }]}
                 onPress={() => {
-                    // if(this.contentSizeHeight!==undefined){
-                    //     let maxOffSet=this.contentSizeHeight-this.oriageScrollHeight;
-                    //     let showY = (this.offsetY + 20) <= maxOffSet ? (this.offsetY + 20) : maxOffSet;
-                    //     this._scroll.scrollTo({ y: showY });
-                    // }else{
                     this._scroll.scrollToEnd();
-                    // }
                 }}
             >
-                <Text style={{ color: "gray", fontSize: 18 * utils.SCREENRATE }}>{"︾"}</Text>
-            </TouchableOpacity>
+                <Text style={{ color: "#cccccc", fontSize: 18 * utils.SCREENRATE }}>{"︾"}</Text>
+            </TouchableOpacity>:<View style={[styles.maxBtn, { height: (utils.PLATNAME === "IOS" ? 35 : 55), paddingTop: (utils.PLATNAME === "IOS" ? 8 : 3), justifyContent: "flex-start" }]} />}
         </View>
     }
 
@@ -247,9 +241,16 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 576 / 2 * utils.SCREENRATE,
     },
+    maxBtn: {
+        backgroundColor: "rgba(1,0,0,0)",
+        width: "100%",
+        height: 30 * utils.SCREENRATE,
+        alignItems: "center",
+        justifyContent: "center",
+    },
     scrInfo: {
         // width:"100%",
-        height: utils.SCREENHEIGHT - (576 / 2 * utils.SCREENRATE) - 20,
+        height: utils.SCREENHEIGHT - (576 / 2 * utils.SCREENRATE) - (utils.PLATNAME === "IOS" ? 35 : 55),
         // height:200,
         // backgroundColor: "red",
         // alignItems:"center",

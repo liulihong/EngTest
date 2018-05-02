@@ -40,10 +40,26 @@ const styles = StyleSheet.create({
     },
     progress: {
         flexDirection: 'column',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
+        // backgroundColor:"red",
         width: utils.SCREENWIDTH,
-        height: (utils.PLATNAME === "IOS" ? (utils.SCREENHEIGHT - 140 * utils.SCREENRATE - 64) : (utils.SCREENHEIGHT - 140 * utils.SCREENRATE - 44)) - 100 * utils.SCREENRATE,
+        height: utils.SCREENHEIGHT - 140 * utils.SCREENRATE - (utils.PLATNAME === "IOS" ? 64 : 44) - 24 * utils.SCREENRATE,
+    },
+    maxBtn:{
+        backgroundColor: "rgba(0,0,0,0)", 
+        width: "100%", 
+        height: 30 * utils.SCREENRATE, 
+        alignItems: "center", 
+        justifyContent: "center",
+    },
+    scrStyle: {
+        backgroundColor: "rgba(0,0,0,0)", 
+        width: "100%", 
+        flexDirection: "column", 
+        alignItems: "center",
+        alignSelf:"center", 
+        justifyContent: "center",
     },
     whiteView: {
         backgroundColor: "white",
@@ -103,6 +119,11 @@ class TestStart extends Component {
         this.newStartExamLog = this.newStartExamLog.bind(this);
         this.prepareContinue = this.prepareContinue.bind(this);
 
+        this.state = {
+            isTop: false,
+            isBottom: false,
+        }
+        this.scrHeight = utils.SCREENHEIGHT - 140 * utils.SCREENRATE - (utils.PLATNAME === "IOS" ? 64 : 44) - 24 * utils.SCREENRATE - 30 * utils.SCREENRATE * 2;
     }
 
     //组件加载完成
@@ -365,62 +386,64 @@ class TestStart extends Component {
         return (
 
             <View style={styles.contain}>
-                
+
                 <ImageBackground
                     source={require("../imgs/testIcon/mnks-bg.png")}
                     style={styles.backImg}
                 >
-                    <NavBar 
-                        navtitle={this.props.examContent ? this.props.examContent.SecTitle : ''} 
-                        isBack={true} 
-                        navgation={this.props.navigation} 
+                    <NavBar
+                        navtitle={this.props.examContent ? this.props.examContent.SecTitle : ''}
+                        isBack={true}
+                        navgation={this.props.navigation}
                         backClear={true}
                     />
-                    <TouchableOpacity
-                        style={{ backgroundColor: "rgba(0,0,0,0)", width: "100%", height: 40 * utils.SCREENRATE, alignItems: "center", paddingTop: (utils.PLATNAME === "IOS") ? 10 : 3 }}
-                        onPress={() => {
-                            this._scroll.scrollTo({ y: 0 });
-                        }}
-                    >
-                        <Text style={{ color: "white", fontSize: 18 * utils.SCREENRATE }}>{"︽"}</Text>
-                    </TouchableOpacity>
+
                     <View style={styles.progress}>
-                        {/* <View /> */}
+                        {
+                            this.state.isTop === false ? <TouchableOpacity style={styles.maxBtn}
+                                onPress={() => {
+                                    this._scroll.scrollTo({ y: 0 });
+                                }}
+                            >
+                                <Text style={{ color: "white", fontSize: 18 * utils.SCREENRATE }}>{"︽"}</Text>
+                            </TouchableOpacity> : <View style={styles.maxBtn} />
+                        }
                         <ScrollView
-                            contentContainerStyle={{ backgroundColor: "rgba(0,0,0,0)",alignSelf:"center"}}
+                            contentContainerStyle={[styles.scrStyle,]}
                             ref={(scroll) => this._scroll = scroll}
                             showsVerticalScrollIndicator={false}
-                            onScrollEndDrag={(e) => {
-                                this.offsetY = e.nativeEvent.contentOffset.y; //滑动距离
-                                this.contentSizeHeight = e.nativeEvent.contentSize.height; //scrollView contentSize高度
-                                this.oriageScrollHeight = e.nativeEvent.layoutMeasurement.height; //scrollView高度
+                            onContentSizeChange={(contentWidth, contentHeight) => {
+                                this.contentHeight=contentHeight;
+                                let isMax=(contentHeight-20*utils.SCREENRATE) > this.scrHeight;
+                                this.setState({ isTop: !isMax, isBottom: !isMax });
                             }}
                         >
-                            {
-                                this.props.examContent && this.props.examContent.Groups.map((element, i) => {
-                                    element.ExamTopics.map((topObj, j) => {
-                                        topObj.TopicInfoList.map((sObj, k) => {
-                                            totalScore = (i === 0 && j === 0 && k === 0) ? sObj.Score : (sObj.Score + totalScore);
+                                {
+                                    this.props.examContent && this.props.examContent.Groups.map((element, i) => {
+                                        element.ExamTopics.map((topObj, j) => {
+                                            topObj.TopicInfoList.map((sObj, k) => {
+                                                totalScore = (i === 0 && j === 0 && k === 0) ? sObj.Score : (sObj.Score + totalScore);
+                                            })
                                         })
-                                    })
 
-                                    const isSelect = element.Type === selectType;
-                                    const num = i + 1;
-                                    const title = typeEnum[element.Type];
-                                    return <ProgressButton key={element.Type} isSelect={isSelect} num={num} title={title} />
-                                })
-                            }
+                                        const isSelect = element.Type === selectType;
+                                        const num = i + 1;
+                                        const title = typeEnum[element.Type];
+                                        return <ProgressButton key={element.Type} isSelect={isSelect} num={num} title={title} />
+                                    })
+                                }
                         </ScrollView>
+                        {
+                            this.state.isBottom === false ? <TouchableOpacity style={styles.maxBtn}
+                                onPress={() => {
+                                    this._scroll.scrollToEnd();
+                                }}
+                            >
+                                <Text style={{ color: "white", fontSize: 18 * utils.SCREENRATE }}>{"︾"}</Text>
+                            </TouchableOpacity> : <View style={styles.maxBtn} />
+                        }
                     </View>
-                    <TouchableOpacity
-                        style={{ backgroundColor: "rgba(0,0,0,0)", width: "100%", height: 40 * utils.SCREENRATE, alignItems: "center", paddingTop: (utils.PLATNAME === "IOS") ? 10 : 3 }}
-                        onPress={() => {
-                            this._scroll.scrollToEnd();
-                        }}
-                    >
-                        {/* <Image style={{width:22*0.7,height:18*0.7}} source={require("../imgs/cusIcon/down_icon.png")} /> */}
-                        <Text style={{ color: "white", fontSize: 18 * utils.SCREENRATE }}>{"︾"}</Text>
-                    </TouchableOpacity>
+
                 </ImageBackground>
 
                 {
