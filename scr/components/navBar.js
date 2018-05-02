@@ -14,7 +14,7 @@ export default class NavBar extends Component {
         return(
 
             <ImageBackground
-                source={require("../imgs/tabIcon/top_bg_z.png")}
+                source={(this.props.backClear!==true)?require("../imgs/tabIcon/top_bg_z.png"):require("../imgs/aswerIcon/dt_k.png")}
                 style={{
                     flexDirection: 'row',
                     // alignItems: 'center',
@@ -22,7 +22,7 @@ export default class NavBar extends Component {
                     // flexWrap:"wrap",
                     width:utils.SCREENWIDTH,
                     height:utils.PLATNAME==="IOS"?64:44,
-                    backgroundColor:'red',
+                    // backgroundColor:'red',
                     // position:"relative",
                     // top:0,
                 }}

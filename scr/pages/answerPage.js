@@ -98,7 +98,12 @@ class AnswerScreen extends Component {
                 source={require("../imgs/testIcon/cj_bg.png")}
                 style={styles.headImg}
             >
-                <NavBar navtitle={this.props.examContent ? this.props.examContent.SecTitle : ''} isBack={true} navgation={this.props.navigation} />
+                <NavBar
+                    navtitle={this.props.examContent ? this.props.examContent.SecTitle : ''}
+                    isBack={true}
+                    navgation={this.props.navigation}
+                    backClear={true}
+                />
                 <ImageBackground
                     style={styles.totalScore}
                     source={require("../imgs/aswerIcon/cjzh_icon.png")}>
@@ -111,7 +116,7 @@ class AnswerScreen extends Component {
                         //     let showY = (this.offsetY - 20) > 0 ? this.offsetY - 20 : 0;
                         //     this._scroll.scrollTo({ y: showY });
                         // }else{
-                            this._scroll.scrollTo({ y: 0 });
+                        this._scroll.scrollTo({ y: 0 });
                         // }
                     }}
                 >
@@ -121,7 +126,7 @@ class AnswerScreen extends Component {
             <ScrollView
                 style={styles.scrInfo}
                 ref={(scroll) => this._scroll = scroll}
-                showsVerticalScrollIndicator = {false}
+                showsVerticalScrollIndicator={false}
                 onScrollEndDrag={(e) => {
                     this.offsetY = e.nativeEvent.contentOffset.y; //滑动距离
                     this.contentSizeHeight = e.nativeEvent.contentSize.height; //scrollView contentSize高度
@@ -181,7 +186,7 @@ class AnswerScreen extends Component {
                     //     let showY = (this.offsetY + 20) <= maxOffSet ? (this.offsetY + 20) : maxOffSet;
                     //     this._scroll.scrollTo({ y: showY });
                     // }else{
-                        this._scroll.scrollToEnd();
+                    this._scroll.scrollToEnd();
                     // }
                 }}
             >
@@ -240,11 +245,11 @@ const styles = StyleSheet.create({
     },
     headImg: {
         width: '100%',
-        height: 645 / 2 * utils.SCREENRATE,
+        height: 576 / 2 * utils.SCREENRATE,
     },
     scrInfo: {
         // width:"100%",
-        height: utils.SCREENHEIGHT - (645 / 2 * utils.SCREENRATE) - 20,
+        height: utils.SCREENHEIGHT - (576 / 2 * utils.SCREENRATE) - 20,
         // height:200,
         // backgroundColor: "red",
         // alignItems:"center",

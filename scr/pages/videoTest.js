@@ -62,7 +62,7 @@ class VideoTest extends Component {
         this.getContent = this.getContent.bind(this);
         this.getComponent = this.getComponent.bind(this);
         this.setScroInfo = this.setScroInfo.bind(this);
-        this.state={};
+        this.state = {};
     }
 
     componentWillReceiveProps(nextProps) {
@@ -134,7 +134,7 @@ class VideoTest extends Component {
         }
     }
 
-    setScroInfo(e){
+    setScroInfo(e) {
         this.offsetY = e.nativeEvent.contentOffset.y; //滑动距离
         this.contentSizeHeight = e.nativeEvent.contentSize.height; //scrollView contentSize高度
         this.oriageScrollHeight = e.nativeEvent.layoutMeasurement.height; //scrollView高度
@@ -142,8 +142,8 @@ class VideoTest extends Component {
         let isTop1 = (this.offsetY <= 0);
         let isBottom1 = (this.offsetY >= (this.contentSizeHeight - this.oriageScrollHeight));
         // debugger
-        if(this.state.isTop===null || isTop1!==this.state.isTop) this.setState({isTop: isTop1});
-        if(this.state.isBottom===null || isBottom1!==this.state.isBottom) this.setState({isBottom: isBottom1});
+        if (this.state.isTop === null || isTop1 !== this.state.isTop) this.setState({ isTop: isTop1 });
+        if (this.state.isBottom === null || isBottom1 !== this.state.isBottom) this.setState({ isBottom: isBottom1 });
     }
 
     render() {
@@ -161,7 +161,8 @@ class VideoTest extends Component {
                                 //     let showY = (this.offsetY - 20) > 0 ? this.offsetY - 20 : 0;
                                 //     this._scroll.scrollTo({ y: showY });
                                 // } else {
-                                    this._scroll.scrollTo({ y: 0 });
+                                this._scroll.scrollTo({ y: 0 });
+                                this.setState({ isTop: true });
                                 // }
                             }}
                         >
@@ -172,8 +173,20 @@ class VideoTest extends Component {
                         ref={(scroll) => this._scroll = scroll}
                         showsVerticalScrollIndicator={false}
                         keyboardShouldPersistTaps={"handled"}
-                        onScroll={(e) => {
+                        onMomentumScrollEnd={(e)=>{
                             this.setScroInfo(e);
+                        }}
+                        onScrollEndDrag={(e)=>{
+                            this.setScroInfo(e);
+                        }}
+                        onContentSizeChange={(contentWidth, contentHeight) => {
+                            this.contentSizeHeight = contentHeight;
+                            this.offsetY = 0; //滑动距离
+                            this.oriageScrollHeight = utils.SCREENHEIGHT - 100 * utils.SCREENRATE - 100 - 20* utils.SCREENRATE; //scrollView高度
+                            let isTop1 = (this.offsetY <= 0);
+                            let isBottom1 = (this.offsetY >= (this.contentSizeHeight - this.oriageScrollHeight));
+                            if (this.state.isTop === null || isTop1 !== this.state.isTop) this.setState({ isTop: isTop1 });
+                            if (this.state.isBottom === null || isBottom1 !== this.state.isBottom) this.setState({ isBottom: isBottom1 });
                         }}
                     >
                         {
@@ -181,20 +194,25 @@ class VideoTest extends Component {
                         }
                     </ScrollView>
                     {
-                        (this.state.isBottom!==true)?<TouchableOpacity
+                        (this.state.isBottom !== true) ? <TouchableOpacity
                             style={{ flexDirection: "row", width: "100%", height: 30 * utils.SCREENRATE, alignItems: "center", justifyContent: "center" }}
                             onPress={() => {
                                 let maxOffSet = this.contentSizeHeight - this.oriageScrollHeight;
                                 if (this.contentSizeHeight !== undefined) {
-                                    let showY = (this.offsetY + 45*utils.SCREENRATE) <= maxOffSet ? (this.offsetY + 45*utils.SCREENRATE) : maxOffSet;
+                                    let showY = (this.offsetY + 45 * utils.SCREENRATE) <= maxOffSet ? (this.offsetY + 45 * utils.SCREENRATE) : maxOffSet;
                                     this._scroll.scrollTo({ y: showY });
                                 } else {
                                     this._scroll.scrollToEnd();
                                 }
+                                if(maxOffSet<=this.offsetY){
+                                    this.setState({ isBottom: true });
+                                }
                             }}
                         >
                             <Text style={{ fontSize: 12 * utils.SCREENRATE, color: "gray" }}>{"滑动查看更多 ⇊"}</Text>
-                        </TouchableOpacity>:<TouchableOpacity style={{ flexDirection: "row", backgroundColor: "rgba(0,0,0,0)", width: "100%", height: 10 * utils.SCREENRATE, alignItems: "center", justifyContent: "center" }} />
+                        </TouchableOpacity> : <TouchableOpacity
+                                style={{ flexDirection: "row", backgroundColor: "rgba(0,0,0,0)", width: "100%", height: 10 * utils.SCREENRATE, alignItems: "center", justifyContent: "center" }}
+                        />
                     }
                 </View>
 

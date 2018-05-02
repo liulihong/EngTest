@@ -163,12 +163,12 @@ const styles = StyleSheet.create({
         height: 30*utils.SCREENRATE,
         left: utils.SCREENWIDTH / 2,
         top: 10*utils.SCREENRATE,
-        backgroundColor: "#bbbbbb",
+        backgroundColor: "#dddddd",
     },
     line2: {
         width: utils.SCREENWIDTH,
         height: 1,
-        backgroundColor: "#bbbbbb",
+        backgroundColor: "#dddddd",
     },
     noZyImg: {
         width:326/2*utils.SCREENRATE,

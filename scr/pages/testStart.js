@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     },
     backImg: {
         width: '100%',
-        height: utils.SCREENHEIGHT - 140 * utils.SCREENRATE - (utils.PLATNAME === "IOS" ? 64 : 44),
+        height: utils.SCREENHEIGHT - 140 * utils.SCREENRATE,
     },
     progress: {
         flexDirection: 'column',
@@ -365,28 +365,29 @@ class TestStart extends Component {
         return (
 
             <View style={styles.contain}>
-                <NavBar navtitle={this.props.examContent ? this.props.examContent.SecTitle : ''} isBack={true} navgation={this.props.navigation} />
+                
                 <ImageBackground
                     source={require("../imgs/testIcon/mnks-bg.png")}
                     style={styles.backImg}
                 >
+                    <NavBar 
+                        navtitle={this.props.examContent ? this.props.examContent.SecTitle : ''} 
+                        isBack={true} 
+                        navgation={this.props.navigation} 
+                        backClear={true}
+                    />
                     <TouchableOpacity
                         style={{ backgroundColor: "rgba(0,0,0,0)", width: "100%", height: 40 * utils.SCREENRATE, alignItems: "center", paddingTop: (utils.PLATNAME === "IOS") ? 10 : 3 }}
                         onPress={() => {
-                            // if(this.contentSizeHeight!==undefined){
-                            //     let showY = (this.offsetY - 20) > 0 ? this.offsetY - 20 : 0;
-                            //     this._scroll.scrollTo({ y: showY });
-                            // }else{
-                                this._scroll.scrollTo({ y: 0 });
-                            // }
+                            this._scroll.scrollTo({ y: 0 });
                         }}
                     >
                         <Text style={{ color: "white", fontSize: 18 * utils.SCREENRATE }}>{"︽"}</Text>
                     </TouchableOpacity>
                     <View style={styles.progress}>
-                        <View />
+                        {/* <View /> */}
                         <ScrollView
-                            style={{ backgroundColor: "rgba(0,0,0,0)" }}
+                            contentContainerStyle={{ backgroundColor: "rgba(0,0,0,0)",alignSelf:"center"}}
                             ref={(scroll) => this._scroll = scroll}
                             showsVerticalScrollIndicator={false}
                             onScrollEndDrag={(e) => {
@@ -414,13 +415,7 @@ class TestStart extends Component {
                     <TouchableOpacity
                         style={{ backgroundColor: "rgba(0,0,0,0)", width: "100%", height: 40 * utils.SCREENRATE, alignItems: "center", paddingTop: (utils.PLATNAME === "IOS") ? 10 : 3 }}
                         onPress={() => {
-                            // if(this.contentSizeHeight!==undefined){
-                            //     let maxOffSet=this.contentSizeHeight-this.oriageScrollHeight;
-                            //     let showY = (this.offsetY + 20) <= maxOffSet ? (this.offsetY + 20) : maxOffSet;
-                            //     this._scroll.scrollTo({ y: showY });
-                            // }else{
-                                this._scroll.scrollToEnd();
-                            // }
+                            this._scroll.scrollToEnd();
                         }}
                     >
                         {/* <Image style={{width:22*0.7,height:18*0.7}} source={require("../imgs/cusIcon/down_icon.png")} /> */}

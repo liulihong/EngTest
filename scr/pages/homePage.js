@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     line: {
         width: utils.SCREENWIDTH,
         height: 1,
-        backgroundColor: "#cccccc",
+        backgroundColor: "#dddddd",
         position: "absolute",
         bottom: 0,
     }
