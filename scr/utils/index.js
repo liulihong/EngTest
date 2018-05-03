@@ -1,5 +1,6 @@
 import {env,define,error} from "../config"
 import common from "./common"
+import CurrNetInfo from "./netInfo"
 
 module.exports = {
     SCREENWIDTH: define.SCREENWIDTH,
@@ -16,8 +17,12 @@ module.exports = {
     findPlayPath: common.findPlayPath,
     findPicturePath: common.findPicturePath,
     callOnceInInterval: common.callOnceInInterval,
+    getTimeStr: common.getTimeStr,    
+    getTimeCha: common.getTimeCha,
     
     showDevInfo: env.showDevInfo,
     Environmental: env.Environmental,
     DIS: env.DIS,
+
+    netInfo: new CurrNetInfo(),
 }

@@ -57,7 +57,8 @@ export default class App extends Component {
         return (
             <Provider store={store}>
                 <PersistGate persistor={persistor}>
-                    <NetInfoProvider
+                    <Router isLogin={this.state.isLogin} />
+                    {/* <NetInfoProvider
                         onChange={({ isConnected, connectionInfo }) => {
                             if (isConnected === false) {
                                 Alert.alert('', '网络不可用，请检查网络');
@@ -65,7 +66,7 @@ export default class App extends Component {
                             store.dispatch({ type: NETINFO, result: { isConnected, connectionInfo } })
                         }}
                         render={({ isConnected, connectionInfo }) => <Router isLogin={this.state.isLogin} />}
-                    />
+                    /> */}
                 </PersistGate>
             </Provider>
         );

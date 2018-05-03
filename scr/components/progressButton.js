@@ -32,7 +32,6 @@ export default class ProgressButton extends Component {
         );
     }
 }
-// {this.props.title}
 
 const styles1=StyleSheet.create({
     signNum:{

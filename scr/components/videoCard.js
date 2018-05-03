@@ -49,12 +49,14 @@ class VideoCard extends Component {
         }
 
         //检查网络
-        if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
+        // this.props.netInfo !== undefined && this.props.netInfo.isConnected === false
+        if (utils.netInfo.isConnected===false) {
             Alert.alert("", "请检查网络！");
             return;
         }
         //流量提醒
-        if (this.props.netInfo !== undefined && this.props.netInfo.connectionInfo.type !== "wifi") {
+        // this.props.netInfo !== undefined && this.props.netInfo.connectionInfo.type !== "wifi"
+        if (utils.netInfo.connectionInfo.type !== "wifi") {
             Alert.alert('温馨提示', '当前网络为非wifi环境确定下载？',
                 [
                     { text: "取消", onPress: () => { } },
@@ -117,6 +119,7 @@ class VideoCard extends Component {
     }
 
     cardClick() {
+        // alert("isConnected="+utils.netInfo.isConnected+"\nconnectionInfo="+JSON.stringify(utils.netInfo.connectionInfo));
         if (this.props.isDown) {
             let taskId = this.props.cardDic.TaskID;
             let url = utils.DOWNLOADDOCUMENTPATH + "/" + this.props.cardDic.ID;

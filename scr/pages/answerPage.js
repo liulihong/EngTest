@@ -29,7 +29,7 @@ class AnswerScreen extends Component {
 
         this.getExamAnserInfo();
 
-        this.scrHeight = utils.SCREENHEIGHT - (576 / 2 * utils.SCREENRATE) - (utils.PLATNAME === "IOS" ? 35 : 55);
+        this.scrHeight = utils.SCREENHEIGHT - (496 / 2 * utils.SCREENRATE) - (utils.PLATNAME === "IOS" ? 35 : 55);
     }
 
     componentDidMount() {
@@ -114,6 +114,12 @@ class AnswerScreen extends Component {
                     source={require("../imgs/aswerIcon/cjzh_icon.png")}>
                     <Text style={[styles.scoreTxt, { color: (scoreTxt === "正在计分\n请稍后") ? "#fc9141" : "#ff0000" }]}>{scoreTxt}</Text>
                 </ImageBackground>
+                <View style={styles.userInfo}>
+                    <Text style={styles.userTxt}>{"姓名："+(this.props.logResult.Name?this.props.logResult.Name:this.props.logResult.LoginName)}</Text>
+                    <Text style={styles.userTxt}>{"栏目："+(this.props.answerRecord.ishome?"家庭作业":"模拟练习")}</Text>
+                    <Text style={styles.userTxt}>{"考试时间："+((this.state.serverAnswer&&this.state.serverAnswer.StartTime)?(utils.getTimeStr(this.state.serverAnswer.StartTime,"MM-dd hh:mm")):"")}</Text>
+                    <Text style={styles.userTxt}>{"用时："+((this.state.serverAnswer&&this.state.serverAnswer.StartTime)?(utils.getTimeCha(this.state.serverAnswer.StartTime,this.state.serverAnswer.EndTime)):"")}</Text>
+                </View>
                 {
                     this.state.isTop === false ? <TouchableOpacity style={[styles.maxBtn, { position: "absolute", bottom: 0,height:40*utils.SCREENRATE }]}
                         onPress={() => {
@@ -192,15 +198,17 @@ class AnswerScreen extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const answerRecord = state.detail.answerRecord;
-    const answers = state.detail.answers;
-    const examContent = state.detail.examContent;
-    const currentExamPath = state.detail.currentExamPath;
+    let logResult = state.userInfo.logResult
+    let answerRecord = state.detail.answerRecord;
+    let answers = state.detail.answers;
+    let examContent = state.detail.examContent;
+    let currentExamPath = state.detail.currentExamPath;
     return {
         answers,
         answerRecord,
         examContent,
         currentExamPath,
+        logResult,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -239,7 +247,7 @@ const styles = StyleSheet.create({
     },
     headImg: {
         width: '100%',
-        height: 576 / 2 * utils.SCREENRATE,
+        height: 496 / 2 * utils.SCREENRATE,
     },
     maxBtn: {
         backgroundColor: "rgba(1,0,0,0)",
@@ -250,21 +258,24 @@ const styles = StyleSheet.create({
     },
     scrInfo: {
         // width:"100%",
-        height: utils.SCREENHEIGHT - (576 / 2 * utils.SCREENRATE) - (utils.PLATNAME === "IOS" ? 35 : 55),
+        height: utils.SCREENHEIGHT - (496 / 2 * utils.SCREENRATE) - (utils.PLATNAME === "IOS" ? 35 : 55),
         // height:200,
         // backgroundColor: "red",
         // alignItems:"center",
     },
     totalScore: {
-        width: 165 * utils.SCREENRATE,
-        height: 165 * utils.SCREENRATE,
+        width: 332/2 * utils.SCREENRATE,
+        height: 245/2 * utils.SCREENRATE,
         paddingTop: 40 * utils.SCREENRATE,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'flex-start',
-        alignSelf: "center",
-        marginTop: 10 * utils.SCREENRATE,
-        marginBottom: 30 * utils.SCREENRATE,
+        // alignSelf: "center",
+        // marginTop: 10 * utils.SCREENRATE,
+        // marginBottom: 30 * utils.SCREENRATE,
+        position: "absolute",
+        right: 6*utils.SCREENRATE,
+        bottom: 55*utils.SCREENRATE,
     },
     scoreTxt: {
         color: "#ffffff",
@@ -272,5 +283,20 @@ const styles = StyleSheet.create({
         fontWeight: "500",
         textAlign: "center",
     },
-
+    userInfo: {
+        marginTop:14*utils.SCREENRATE,
+        marginLeft:25*utils.SCREENRATE,
+        width:"100%",
+        // height:"40%",
+        // backgroundColor:"rgba(0,0,0,0.1)",
+        flexDirection:"column",
+    },
+    userTxt:{
+        color: "#ffffff",
+        fontSize: 16 * utils.SCREENRATE,
+        lineHeight:26 * utils.SCREENRATE,
+        fontWeight: "400",
+        textAlign: "left",
+        width:"100%",
+    },
 });
