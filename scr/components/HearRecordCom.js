@@ -27,7 +27,7 @@ class HearRecord extends Component {
         })
 
 
-        if(this.props.type===3){
+        if (this.props.type === 3) {
             if (this.props.answers !== undefined && this.props.answers[3] !== undefined) {
                 let currAnswer = this.props.answers[3];
                 let unitID = this.props.contentData[0].UniqueID;
@@ -51,7 +51,7 @@ class HearRecord extends Component {
                 });
             }
         }
-        
+
 
         // if (this.props.type === 3) {
         //     this.keyboardShow = Platform.OS === 'ios' ?
@@ -91,34 +91,36 @@ class HearRecord extends Component {
                     {
                         this.props.contentData[0].ExampleAnswer.map((element, i) => {
                             let newNum = num + i;
-                            return <TextInput
-                                key={newNum + i}
-                                autoCapitalize={"none"} //不自动大写
-                                underlineColorAndroid={'transparent'}
-                                style={{ height: 40*utils.SCREENRATE, width: "70%", borderRadius: 5*utils.SCREENRATE, fontSize: 16*utils.SCREENRATE, textAlign: 'center', borderColor: utils.COLORS.theme, borderWidth: 1, backgroundColor: "rgba(18,183,247,.5)", marginTop: 10*utils.SCREENRATE }}
-                                multiline={false}
-                                placeholder={newNum + ''}
-                                secureTextEntry={false}
-                                onChangeText={(text) => {
-                                    let tempArr = copy.cloneDeep(this.state.answer);
-                                    tempArr.splice(i, 1, text)
-                                    this.setState({
-                                        answer: tempArr
-                                    }, () => {
-                                        this.props.saveAnswer(3, this.props.contentData[0].UniqueID, this.props.contentData[0].ID, this.state.answer);
-                                    })
-                                }}
-                                value={this.state.answer[i]}
-                            />
+                            return <View key={newNum + i} style={{height: 40 * utils.SCREENRATE,width: "70%",marginTop:10*utils.SCREENRATE, borderRadius: 5 * utils.SCREENRATE, borderColor: utils.COLORS.theme, borderWidth: 1, backgroundColor: "rgba(18,183,247,.5)"}}>
+                                <TextInput
+                                    ref={"textInput"}
+                                    autoCapitalize={"none"} //不自动大写
+                                    underlineColorAndroid={'transparent'}
+                                    style={{ height:"100%",width:"100%",padding:8*utils.SCREENRATE, fontSize: 16 * utils.SCREENRATE, textAlign: 'center',}}
+                                    multiline={false}
+                                    placeholder={newNum + ''}
+                                    secureTextEntry={false}
+                                    onChangeText={(text) => {
+                                        let tempArr = copy.cloneDeep(this.state.answer);
+                                        tempArr.splice(i, 1, text)
+                                        this.setState({
+                                            answer: tempArr
+                                        }, () => {
+                                            this.props.saveAnswer(3, this.props.contentData[0].UniqueID, this.props.contentData[0].ID, this.state.answer);
+                                        })
+                                    }}
+                                    value={this.state.answer[i]}
+                                />
+                            </View>
                         })
                     }
                 </View>
                 {/* //其他元素  */}
                 {/* <KeyboardSpacer keyboardSpace={this.state.keyboardSpace} /> */}
-                <View style={{ height: 166*utils.SCREENRATE }}></View>
+                <View style={{ height: 166 * utils.SCREENRATE }}></View>
             </View>
         } else if (this.props.type === 4) {
-            return <Text style={{ fontSize: 16*utils.SCREENRATE, marginTop: 10*utils.SCREENRATE, marginBottom: 10*utils.SCREENRATE, padding: 10*utils.SCREENRATE, backgroundColor: "#ffffff" }}>{this.props.contentData[0].Title}</Text>
+            return <Text style={{ fontSize: 16 * utils.SCREENRATE, marginTop: 10 * utils.SCREENRATE, marginBottom: 10 * utils.SCREENRATE, padding: 10 * utils.SCREENRATE, backgroundColor: "#ffffff" }}>{this.props.contentData[0].Title}</Text>
         }
     }
 
@@ -132,7 +134,7 @@ class HearRecord extends Component {
                     style={{
                         width: this.state.width,
                         height: this.state.height,
-                        marginTop: 10*utils.SCREENRATE,
+                        marginTop: 10 * utils.SCREENRATE,
                     }} />
                 {
                     this.getShowUI()

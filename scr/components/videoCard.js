@@ -141,8 +141,11 @@ class VideoCard extends Component {
         return (
             <TouchableOpacity style={styles1.contain1} onPress={() => utils.callOnceInInterval(this.cardClick)}>
                 <ImageBackground style={styles1.backImg} source={BackImg} >
-                    {/* <Text style={styles1.scoreText}>{scoreRecord}</Text> */}
-                    <Text style={styles1.titleText}>{this.props.cardDic.PriTitle + "\n" + this.props.cardDic.SecTitle + "\n" + this.props.cardDic.Title}</Text>
+                    <View style={styles1.titleView}>
+                        <Text style={styles1.titleText}>{this.props.cardDic.PriTitle}</Text>
+                        <Text style={styles1.titleText}>{this.props.cardDic.SecTitle}</Text>
+                        <Text style={styles1.titleText}>{this.props.cardDic.Title}</Text>
+                    </View>
                     {
                         (this.props.isDown === undefined || this.props.isDown === false) ? <TouchableOpacity
                             style={styles1.button}
@@ -184,31 +187,36 @@ const styles1 = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: '100%',
-        // margin:utils.SCREENWIDTH*0.01,
-        // borderRadius: 3,
     },
-    scoreText: {
-        marginTop: 10,
-        color: 'white',
-        // fontWeight:"800",
-        fontSize: 12,
+    titleView: {
+        width: "100%",
+        // backgroundColor:"gray",
+        padding:utils.SCREENRATE*5,
+        paddingTop:utils.SCREENRATE*8,
+        paddingBottom:0,
+        position:"absolute",
+        top:0,
     },
     titleText: {
-        marginTop: 10,
         color: 'white',
         fontWeight: "700",
         fontSize: utils.SCREENRATE*14,
-        lineHeight:utils.SCREENRATE*25,
+        marginTop:utils.SCREENRATE*3,
+        marginBottom:utils.SCREENRATE*3,
+        lineHeight:utils.SCREENRATE*16,
         textAlign: "center",
+        width:"100%",
+        // backgroundColor:"red",
     },
     button: {
-        marginTop: 10,
-        // backgroundColor:"red",
+        // backgroundColor:"green",
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
         width: "100%",
         height: "40%",
+        position:"absolute",
+        bottom:0,
     },
     xzImg: {
         marginRight: utils.SCREENRATE*15,
@@ -235,12 +243,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveUrl: (obj) => {
             dispatch(saveDownUrl(obj))
         },
-        // startDown: () => {
-        //     dispatch(startDown({}))
-        // },
-        // downFaild: () => {
-        //     dispatch(downFaild({}))
-        // },
         saveDownInfo: (obj) => {
             dispatch(saveDownInfo(obj));
         },

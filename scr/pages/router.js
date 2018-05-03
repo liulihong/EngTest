@@ -281,12 +281,6 @@ const Navigator = StackNavigator(
                 header: null,
             },
         },
-        WebViewScreen: {
-            screen: WebViewScreen,
-            navigationOptions: {
-                header: null,
-            }
-        },
         JoinClass: {
             screen: JoinClass,
             navigationOptions: {
@@ -331,7 +325,6 @@ const LogRouter = StackNavigator(
                 gesturesEnabled: false,
             },
         },
-        
         Regist: {
             screen: Regist,
             navigationOptions: {
@@ -341,6 +334,12 @@ const LogRouter = StackNavigator(
         },
         PwdScreen: {
             screen: PwdScreen,
+            navigationOptions: {
+                header: null,
+            }
+        },
+        WebViewScreen: {
+            screen: WebViewScreen,
             navigationOptions: {
                 header: null,
             }

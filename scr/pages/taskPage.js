@@ -91,7 +91,7 @@ class TaskScreen extends Component {
                 {
                     (this.state.dataArr === null || this.state.dataArr === undefined || this.state.dataArr.length <= 0) ? <View>
                         <Image style={styles.noZyImg} source={require("../imgs/testIcon/zy-k-iocn.png")} />
-                        <Text style={styles.noZyTxt} >{"没有相关作业哦~\n1.请在个人中心加入班级\n2.等待老师布置作业"}</Text>
+                        <Text style={styles.noZyTxt} >{(this.state.isShowFinsh === true) ?"没有相关作业哦~":"没有相关作业哦~\n1.请在个人中心加入班级\n2.等待老师布置作业"}</Text>
                     </View> :
                         <ScrollView>
                             <View style={styles.contain}>

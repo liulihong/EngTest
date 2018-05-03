@@ -112,7 +112,7 @@ class AnswerScreen extends Component {
                 <ImageBackground
                     style={styles.totalScore}
                     source={require("../imgs/aswerIcon/cjzh_icon.png")}>
-                    <Text style={[styles.scoreTxt, { color: (scoreTxt === "正在计分\n请稍后") ? "#e94c46" : "#ffffff" }]}>{scoreTxt}</Text>
+                    <Text style={[styles.scoreTxt, { color: (scoreTxt === "正在计分\n请稍后") ? "#fc9141" : "#ff0000" }]}>{scoreTxt}</Text>
                 </ImageBackground>
                 {
                     this.state.isTop === false ? <TouchableOpacity style={[styles.maxBtn, { position: "absolute", bottom: 0,height:40*utils.SCREENRATE }]}
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-start',
         alignSelf: "center",
-        marginTop: 20 * utils.SCREENRATE,
+        marginTop: 10 * utils.SCREENRATE,
         marginBottom: 30 * utils.SCREENRATE,
     },
     scoreTxt: {
