@@ -178,7 +178,7 @@ const styles1 = StyleSheet.create({
         width: utils.SCREENWIDTH * 0.3,
         height: utils.SCREENWIDTH * 0.3 / 22 * 28,
         margin: utils.SCREENWIDTH * 0.01,
-        borderRadius: 5,
+        borderRadius: 5*utils.SCREENRATE,
     },
     backImg: {
         flex: 1,

@@ -24,12 +24,15 @@ export default class ProgressButton extends Component {
                     fontSize:16*utils.SCREENRATE,
                     color:this.props.isSelect?utils.COLORS.theme:"white",
                     fontWeight:"600",
+                    textAlign:"center",
+                    // backgroundColor:"red",
+                    width:"100%",
                 }}>{this.props.title}</Text></View>
             </View>
         );
     }
 }
-
+// {this.props.title}
 
 const styles1=StyleSheet.create({
     signNum:{
@@ -48,7 +51,7 @@ const styles1=StyleSheet.create({
         fontWeight:"800",
     },
     titleView:{
-        width:"74%",
+        width:"84%",
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

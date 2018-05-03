@@ -429,7 +429,7 @@ class TestStart extends Component {
                                         const isSelect = element.Type === selectType;
                                         const num = i + 1;
                                         const title = typeEnum[element.Type];
-                                        return <ProgressButton key={element.Type} isSelect={isSelect} num={num} title={title} />
+                                        return <ProgressButton key={element.Type} isSelect={isSelect} num={num} title={title+"\t"} />
                                     })
                                 }
                         </ScrollView>

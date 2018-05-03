@@ -151,7 +151,7 @@ class AnswerScreen extends Component {
                         })
                         // alert(JSON.stringify(sResetAnswer));
 
-                        let newTitle = '   ' + title + ' ( ' + totalScore.toFixed(2) + ' / ' + tempScore.toFixed(2) + ' ) ';
+                        let newTitle = title + ' ( ' + totalScore.toFixed(2) + ' / ' + tempScore.toFixed(2) + ' )';
                         let examPath = this.props.currentExamPath;
                         return (
                             <TouchableOpacity key={element.Type} onPress={() => {
