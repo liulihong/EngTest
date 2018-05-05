@@ -201,7 +201,8 @@ class TestStart extends Component {
     newStartExamLog(callBack) {
 
         //检查网络
-        if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
+        // this.props.netInfo !== undefined && this.props.netInfo.isConnected === false
+        if (utils.netInfo.isConnected===false) {
             Alert.alert("", "请检查网络！");
             return;
         }
@@ -248,7 +249,8 @@ class TestStart extends Component {
     prepareContinue() {
 
         //检查网络
-        if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
+        // this.props.netInfo !== undefined && this.props.netInfo.isConnected === false
+        if (utils.netInfo.isConnected===false) {
             Alert.alert("", "请检查网络！");
             return;
         }
@@ -461,14 +463,12 @@ const mapStateToProps = (state) => {
     const taskId = state.detail.taskId;
     const examContent = state.detail.examContent;
     let answerRecord = state.detail.answerRecord;
-    const netInfo = state.userInfo.netInfo;
     return {
         path,
         examContent,
         answerRecord,
         UserID,
         taskId,
-        netInfo,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {

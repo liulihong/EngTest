@@ -21,7 +21,7 @@ module.exports = class MySound {
     soundInit(path) {
         // noinspection JSAnnotator
         if (sound !== null) {
-            // if(isRealse===false)
+            if(isRealse===false)
                 sound.release();
             sound = null;
         }
@@ -73,7 +73,9 @@ module.exports = class MySound {
     }
     //暂停播放
     soundPause() {
-        sound.pause();
+        if (sound !== null) {
+            sound.pause();
+        }
     }
     //继续播放
     soundContinue(path) {
@@ -90,9 +92,9 @@ module.exports = class MySound {
     soundStop() {//这个是播放停止之后 relese
         if (sound !== null) {
             sound.stop();
-            // sound.release();
-            // sound=null;
-            // isRealse=true;
+            sound.release();
+            sound=null;
+            isRealse=true;
         }
     }
     //释放
@@ -106,10 +108,12 @@ module.exports = class MySound {
     //获取播放时间点 完了
     soundGetCurrentTime(callback) {
         // sound.getCurrentTime(callback);
-        sound.getCurrentTime((time, isPlaying)=>{
-            currTime=time;
-            callback(time,isPlaying);
-        });
+        if(sound!==null){
+            sound.getCurrentTime((time, isPlaying)=>{
+                currTime=time;
+                callback(time,isPlaying);
+            });
+        }
     }
     //获取音频时长
     soundDuring() {
@@ -120,10 +124,12 @@ module.exports = class MySound {
     }
     //判断是否正在播放
     isPlay() {
+        if(sound==null) return false;
         return sound.isPlaying();// 这个方法是判断是否播放吗 恩
     }
 
     isPaused() {
+        if(sound==null) return false;
         return sound.isPaused;
     }
 }

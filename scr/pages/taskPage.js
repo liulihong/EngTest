@@ -28,7 +28,7 @@ class TaskScreen extends Component {
         DeviceEventEmitter.addListener('reloadHomework', () => {
             // if (this.props.logResult && this.props.logResult !== undefined) {
             //检查网络
-            if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
+            if (utils.netInfo.isConnected===false) {
                 Alert.alert("", "请检查网络！");
                 return;
             }
@@ -114,11 +114,9 @@ class TaskScreen extends Component {
 const mapStateToProps = (state) => {
     const logResult = state.userInfo.logResult;
     const videoData = state.videoList;
-    const netInfo = state.userInfo.netInfo;
     return {
         videoData,
         logResult,
-        netInfo,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {

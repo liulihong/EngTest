@@ -22,7 +22,7 @@ class VideoCard extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        if(this.state.clickCardID === this.props.cardDic.ID && this.props.downLoadInfo && this.props.downLoadInfo.progress){
+        if(this.state.clickCardID === this.props.cardDic.ID && this.props.downLoadInfo && this.props.downLoadInfo.progress && nextProps.downLoadInfo===undefined){
             Alert.alert("", _this.props.cardDic.SecTitle + "下载异常请重试！");
             // this.props.downFaild();
             // this.props.saveDownInfo(obj);
@@ -31,9 +31,6 @@ class VideoCard extends Component {
             });
 
             this.props.saveDownInfo({ "path": path, "docName": docName, "status": "faild", "progress": "0%" });
-        }
-        if(this.props.netInfo !== undefined && nextProps.netInfo!==this.props.netInfo){//如果切换网络的话
-            utils.showDevInfo("监测到网络切换了");
         }
     }
 
@@ -49,13 +46,11 @@ class VideoCard extends Component {
         }
 
         //检查网络
-        // this.props.netInfo !== undefined && this.props.netInfo.isConnected === false
         if (utils.netInfo.isConnected===false) {
             Alert.alert("", "请检查网络！");
             return;
         }
         //流量提醒
-        // this.props.netInfo !== undefined && this.props.netInfo.connectionInfo.type !== "wifi"
         if (utils.netInfo.connectionInfo.type !== "wifi") {
             Alert.alert('温馨提示', '当前网络为非wifi环境确定下载？',
                 [
@@ -234,11 +229,9 @@ const styles1 = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const netInfo = state.userInfo.netInfo;
     const downLoadInfo = state.videoList.downLoadInfo;
     return {
         downLoadInfo,
-        netInfo,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {

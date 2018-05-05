@@ -1,5 +1,5 @@
 import React, { createElement, Component } from 'react';
-import { NetInfo, Platform } from 'react-native';
+import { NetInfo, Platform ,DeviceEventEmitter } from 'react-native';
 
 export default class NetInfos {
     constructor() {
@@ -36,9 +36,14 @@ export default class NetInfos {
             // debugger
             this.isConnected = isConnected;
             this.connectionInfo = connectionInfo;
-            if(!isConnected){
-                alert("请检查网络！");
-            }
+
+            //监测到网络切换了 发通知
+            DeviceEventEmitter.emit('netInfoChanged');
+
+            // if(!isConnected){
+            //     alert("请检查网络！");
+            // }
+
             // async function getConed(){
             //     var coned = await NetInfo.isConnected.fetch()      
             //     alert(isConnected + '----' + JSON.stringify(coned));

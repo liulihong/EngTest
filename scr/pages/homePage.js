@@ -15,8 +15,7 @@ class HomeScreen extends Component {
         super(props);
         this.prepareDown = this.prepareDown.bind(this);
         this.downLoad = this.downLoad.bind(this);
-        // this.reloadListAndCheckCommon=this.reloadListAndCheckCommon.bind();
-        // this.onBackAndroid=this.onBackAndroid.bind();
+
         //开始下载
         this.state = {
             isLoading: false,
@@ -31,13 +30,11 @@ class HomeScreen extends Component {
     componentDidMount() {
 
         DeviceEventEmitter.addListener('reloadVideoList', (obj) => {
-            // utils.showDevInfo(JSON.stringify(obj));
             //检查网络
-            if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
+            if (utils.netInfo.isConnected===false) {
                 Alert.alert("", "请检查网络！");
                 return;
             }
-            // this.reloadListAndCheckCommon(obj.isCheck);
 
             let that = this;
             if (obj.isCheck) {
@@ -47,18 +44,18 @@ class HomeScreen extends Component {
             }
             this.props.GetPaperList();//获取试题列表
         });
+
+        DeviceEventEmitter.addListener("netInfoChanged",()=>{
+            // alert("网络切换了");
+            this.props.saveDownInfo(undefined);
+        })
+
     }
     componentWillUnmount() {
         DeviceEventEmitter.removeAllListeners('reloadVideoList');
+        DeviceEventEmitter.removeAllListeners('netInfoChanged');
     }
 
-    // reloadListAndCheckCommon(have){
-    //     alert(have);
-    //     if(have){
-    //         this.props.getCommon();//获取下载共用音频URL
-    //     }
-    //     this.props.GetPaperList();//获取试题列表
-    // }
 
     prepareDown(url) {
         let isDown = false;
@@ -76,12 +73,12 @@ class HomeScreen extends Component {
         //判断是否下载过
         if (!isDown && this.state.isLoading === false) {
             //检查网络
-            if (this.props.netInfo !== undefined && this.props.netInfo.isConnected === false) {
+            if (utils.netInfo.isConnected===false) {
                 Alert.alert("", "请检查网络！");
                 return;
             }
             //流量提醒
-            if (this.props.netInfo !== undefined && this.props.netInfo.connectionInfo.type !== "wifi") {
+            if (utils.netInfo.connectionInfo.type !== "wifi") {
                 Alert.alert('温馨提示', '当前为非wifi环境确定要下载？',
                     [
                         { text: "取消", onPress: () => { } },
@@ -200,11 +197,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     const logResult = state.userInfo.logResult
-    const netInfo = state.userInfo.netInfo;
     const videoData = state.videoList;
     return {
         videoData,
-        netInfo,
         logResult
     };
 };

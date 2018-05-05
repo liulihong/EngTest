@@ -220,6 +220,9 @@ class AudioSoundConCom extends Component {
 
     //开始播放
     startPlay(path) {
+
+        if(this.state.currPath === path) return;//防止复读
+
         this.getDefaultTime();
         this.clearInteval();
         this.stopPlayAndRecord();
@@ -261,22 +264,25 @@ class AudioSoundConCom extends Component {
 
     //刷新页面播放进度 播放完毕寻找下一步
     reloadData() {
+        this.clickNext=false;
         timeInteval = setInterval(() => {
             if (Sound1 !== null) {
                 let isLoaded = Sound1.soundIsLoaded();
-                if (isLoaded) {
+                if (isLoaded&&this.clickNext===false) {
                     Sound1.soundGetCurrentTime((time, isPlaying) => {
-                        let time1 = time.toFixed(0)
-                        let time2 = Sound1.soundDuring().toFixed(0);
-                        //处理数据显示
-                        time1=(time1>0)?time1:0;
-                        time2=(time2>0)?time2:0;
-                        let currTime = time1 + ' / ' + time2;
-                        this.props.reloadCurrTime("播放中 " + currTime);
-
-                        if (isPlaying === false) {
-                            this.findProgress(timeInteval);
-                        }
+                        
+                            let time1 = time.toFixed(0)
+                            let time2 = Sound1.soundDuring().toFixed(0);
+                            //处理数据显示
+                            time1=(time1>0)?time1:0;
+                            time2=(time2>0)?time2:0;
+                            let currTime = time1 + ' / ' + time2;
+                            this.props.reloadCurrTime("播放中 " + currTime);
+    
+                            if (isPlaying === false) {
+                                this.findProgress(timeInteval);
+                            }
+                        
                     });
                 }
             }
@@ -288,7 +294,7 @@ class AudioSoundConCom extends Component {
         //清除计时器
         clearInterval(timeInteval);
         //刷新当前播放进度
-        this.props.reloadCurrTime("");
+        // this.props.reloadCurrTime("");
 
         if (this.state.isPaused)//判断是否是暂停
             return;
@@ -563,11 +569,19 @@ class AudioSoundConCom extends Component {
                 this.goAnswer();//去答题
             }
         } else {
+            
+            // if(this.state.isPlaying && this.state.isPaused){//如果是暂停
+            //     this.continue();
+            // }
+            // Sound1.soundStop();
             this.props.reloadCurrTime("查找下一步...");
-            if(this.state.isPlaying && this.state.isPaused){//如果是暂停
-                this.continue();
-            }
+            this.clickNext=true;
+            this.setState({
+                isPaused: false,
+            });
             Sound1.soundStop();
+            this.findProgress(timeInteval);
+
             // if (this.state.isPlaying && this.state.isPaused) {//如果是暂停
             //     this.setState({
             //         isPaused: false,
@@ -578,6 +592,7 @@ class AudioSoundConCom extends Component {
             //     Sound1.soundStop();
             //     this.findProgress(timeInteval);
             // }
+            // this.props.reloadCurrTime("查找下一步...");
         }
     }
 
@@ -588,18 +603,22 @@ class AudioSoundConCom extends Component {
 
         this.getDefaultTime();//恢复默认时间
         
-        this.props.reloadCurrTime("查找下一题...");
-        setTimeout(()=>{
+        
+        // setTimeout(()=>{
+            this.clickNext=true;
             this.stopPlayAndRecord();//停止播放停止录音
             this.setState({//播放暂停状态恢复默认
                 isPlaying: true,
                 isPaused: false,
+            },()=>{
+                this.props.reloadCurrTime("查找下一题...");
             })
+
             let tempData = this.props.dataSource;
             //找下一步
             this.props.getNextStep(tempData.topicInfo, tempData.examContent, tempData.gropObj, tempData.topObj);
             // this.props.getNextGroup(tempData.topicInfo, tempData.examContent, tempData.gropObj);
-        },500)
+        // },500)
     }
 
     //加载录音播放按钮
