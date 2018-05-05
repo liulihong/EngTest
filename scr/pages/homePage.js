@@ -1,5 +1,5 @@
 import React, { Compnents, Component } from 'react';
-import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, DeviceEventEmitter, Alert, Platform,BackHandler,ToastAndroid } from 'react-native';
+import { ScrollView, StyleSheet, View, Button, TouchableOpacity, Text, DeviceEventEmitter, Alert, Platform, BackHandler, ToastAndroid } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import VideoCard from '../components/videoCard';
 import utils from '../utils'
@@ -22,14 +22,14 @@ class HomeScreen extends Component {
             isLoading: false,
         }
         this.props.GetPaperList();//获取试题列表
-        this.props.getCommon((url)=>{
+        this.props.getCommon((url) => {
             this.prepareDown(url);
         });//获取下载共用音频URL
     }
 
     //组件加载完成
     componentDidMount() {
-        
+
         DeviceEventEmitter.addListener('reloadVideoList', (obj) => {
             // utils.showDevInfo(JSON.stringify(obj));
             //检查网络
@@ -39,16 +39,16 @@ class HomeScreen extends Component {
             }
             // this.reloadListAndCheckCommon(obj.isCheck);
 
-            let that=this;
-            if(obj.isCheck){
-                that.props.getCommon((url)=>{
+            let that = this;
+            if (obj.isCheck) {
+                that.props.getCommon((url) => {
                     that.prepareDown(url);
                 });//获取下载共用音频URL
             }
             this.props.GetPaperList();//获取试题列表
         });
     }
-    componentWillUnmount(){
+    componentWillUnmount() {
         DeviceEventEmitter.removeAllListeners('reloadVideoList');
     }
 
@@ -63,7 +63,7 @@ class HomeScreen extends Component {
     prepareDown(url) {
         let isDown = false;
         if (this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0) {
-            isDown = this.props.videoData.downedUrls.some((v) => { return v.CityID === this.props.logResult.CityID});
+            isDown = this.props.videoData.downedUrls.some((v) => { return v.CityID === this.props.logResult.CityID });
             // if (isDown) {//如果已经下载过的话  当前下载地址和下一个下载地址是否一样 不一样的话应该重新下载
             //     isDown = url === this.props.videoData.getCommenUrl;
             // }
@@ -122,7 +122,7 @@ class HomeScreen extends Component {
 
     componentWillReceiveProps(nextProps) {
         // if (nextProps.logResult && nextProps.videoData && nextProps.videoData.getCommenUrl) {//共用音频下载
-            // this.prepareDown(nextProps);
+        // this.prepareDown(nextProps);
         // }
     }
 
@@ -130,24 +130,26 @@ class HomeScreen extends Component {
         return (
             <View style={{ backgroundColor: utils.COLORS.background1 }}>
                 <NavBar navtitle="模拟考试" isBack={false} />
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    {
-                        (this.props.logResult && this.props.logResult !== undefined) ? <View style={styles.whiteView}>
-                            <Text style={{ marginLeft: 10, color: "#666666" , fontSize: 14*utils.SCREENRATE }}>{" " + this.props.logResult.CityText + " → " + this.props.logResult.GradeText + " → 模拟考试列表"}</Text>
-                            <View style={styles.line}></View>
-                        </View> : <View />
-                    }
-                    <View style={styles.contain}>
+                <View style={{height:utils.SCREENHEIGHT-64-49}}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
                         {
-                            this.props.videoData.paperList && this.props.videoData.paperList !== undefined && this.props.videoData.paperList.length > 0 ?
-                                this.props.videoData.paperList.map((element, i) => {
-                                    // const url = element.DownPath;
-                                    const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.docName === element.ID });
-                                    return <VideoCard cardDic={element} key={i} isDown={isDown} ishome={false} navigation={this.props.navigation} />
-                                }) : <View />
+                            (this.props.logResult && this.props.logResult !== undefined) ? <View style={styles.whiteView}>
+                                <Text style={{ marginLeft: 10, color: "#666666", fontSize: 14 * utils.SCREENRATE }}>{" " + this.props.logResult.CityText + " → " + this.props.logResult.GradeText + " → 模拟考试列表"}</Text>
+                                <View style={styles.line}></View>
+                            </View> : <View />
                         }
-                    </View>
-                </ScrollView>
+                        <View style={styles.contain}>
+                            {
+                                this.props.videoData.paperList && this.props.videoData.paperList !== undefined && this.props.videoData.paperList.length > 0 ?
+                                    this.props.videoData.paperList.map((element, i) => {
+                                        // const url = element.DownPath;
+                                        const isDown = this.props.videoData.downedUrls && this.props.videoData.downedUrls.length > 0 && this.props.videoData.downedUrls.some((v) => { return v.docName === element.ID });
+                                        return <VideoCard cardDic={element} key={i} isDown={isDown} ishome={false} navigation={this.props.navigation} />
+                                    }) : <View />
+                            }
+                        </View>
+                    </ScrollView>
+                </View>
             </View>
         );
     }
@@ -156,17 +158,17 @@ class HomeScreen extends Component {
 const styles = StyleSheet.create({
     contain: {
         margin: utils.SCREENWIDTH * 0.02,
-        display: 'flex',
+        // display: 'flex',
         width: '100%',
         flexDirection: 'row',
-        height: utils.SCREENHEIGHT,
+        // height: utils.SCREENHEIGHT,
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
     },
     whiteView: {
         width: '100%',
-        height: 40*utils.SCREENRATE,
+        height: 40 * utils.SCREENRATE,
         backgroundColor: 'white',
         flexDirection: "column",
         justifyContent: 'center',
