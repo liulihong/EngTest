@@ -117,8 +117,8 @@ class AnswerScreen extends Component {
                 <View style={styles.userInfo}>
                     <Text style={styles.userTxt}>{"姓名："+(this.props.logResult.Name?this.props.logResult.Name:this.props.logResult.LoginName)}</Text>
                     <Text style={styles.userTxt}>{"类型："+(this.props.answerRecord.ishome?"作业":"模拟练习")}</Text>
-                    <Text style={styles.userTxt}>{"时间："+((this.state.serverAnswer&&this.state.serverAnswer.StartTime)?(utils.getTimeStr(this.state.serverAnswer.StartTime,"MM-dd hh:mm")):"")}</Text>
-                    <Text style={styles.userTxt}>{"用时："+((this.state.serverAnswer&&this.state.serverAnswer.StartTime)?(utils.getTimeCha(this.state.serverAnswer.StartTime,this.state.serverAnswer.EndTime)):"")}</Text>
+                    <Text style={styles.userTxt}>{"时间："+((this.state.serverAnswer&&this.state.serverAnswer.StartTime)?(utils.getTimeStr(this.state.serverAnswer.StartTime,"MM-dd hh:mm")):"--")}</Text>
+                    <Text style={styles.userTxt}>{"用时："+((this.state.serverAnswer&&this.state.serverAnswer.StartTime)?(utils.getTimeCha(this.state.serverAnswer.StartTime,this.state.serverAnswer.EndTime)):"--")}</Text>
                 </View>
                 {
                     this.state.isTop === false ? <TouchableOpacity style={[styles.maxBtn, { position: "absolute", bottom: 0,height:40*utils.SCREENRATE }]}

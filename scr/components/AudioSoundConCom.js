@@ -570,17 +570,17 @@ class AudioSoundConCom extends Component {
             }
         } else {
 
-            // if(this.state.isPlaying && this.state.isPaused){//如果是暂停
-            //     this.continue();
-            // }
-            // Sound1.soundStop();
-            this.props.reloadCurrTime("查找下一步...");
-            this.clickNext = true;
-            this.setState({
-                isPaused: false,
-            });
+            if(this.state.isPlaying && this.state.isPaused){//如果是暂停
+                this.continue();
+            }
             Sound1.soundStop();
-            this.findProgress(timeInteval);
+            // this.props.reloadCurrTime("查找下一步...");
+            // this.clickNext = true;
+            // this.setState({
+            //     isPaused: false,
+            // });
+            // Sound1.soundStop();
+            // this.findProgress(timeInteval);
         }
     }
 
@@ -643,7 +643,7 @@ class AudioSoundConCom extends Component {
         if (this.props.dataSource.topicInfo.currLevel !== "finished") {
             return <View style={styles.conBtnView}>
                 <TouchableOpacity style={styles.conBtn1}
-                    onPress={() => utils.callOnceInInterval(() => this.nextStep())}>
+                    onPress={() => utils.callOnceInInterval(this.nextStep)}>
                     <Text style={styles.conBtnText}>下一步</Text>
                 </TouchableOpacity>
                 {

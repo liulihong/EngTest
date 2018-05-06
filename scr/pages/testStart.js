@@ -343,7 +343,7 @@ class TestStart extends Component {
 
                 {
                     (this.props.answerRecord.isSubmit === undefined || this.props.answerRecord.isSubmit === true) ?
-                        <TouchableOpacity onPress={() => utils.callOnceInInterval(this.showBlowInfo, 2000)}>
+                        <TouchableOpacity onPress={() => utils.callOnceInInterval(this.showBlowInfo, 1000)}>
                             <Text style={styles.scoreText}>{"查看考试记录 > "}</Text>
                         </TouchableOpacity> : <View><Text style={styles.scoreText}>{this.props.examContent && this.props.examContent.PriTitle}</Text></View>
                 }
