@@ -221,7 +221,7 @@ class AudioSoundConCom extends Component {
     //开始播放
     startPlay(path) {
 
-        if(this.state.currPath === path) return;//防止复读
+        if (this.state.currPath === path) return;//防止复读
 
         this.getDefaultTime();
         this.clearInteval();
@@ -264,25 +264,25 @@ class AudioSoundConCom extends Component {
 
     //刷新页面播放进度 播放完毕寻找下一步
     reloadData() {
-        this.clickNext=false;
+        this.clickNext = false;
         timeInteval = setInterval(() => {
             if (Sound1 !== null) {
                 let isLoaded = Sound1.soundIsLoaded();
-                if (isLoaded&&this.clickNext===false) {
+                if (isLoaded && this.clickNext === false) {
                     Sound1.soundGetCurrentTime((time, isPlaying) => {
-                        
-                            let time1 = time.toFixed(0)
-                            let time2 = Sound1.soundDuring().toFixed(0);
-                            //处理数据显示
-                            time1=(time1>0)?time1:0;
-                            time2=(time2>0)?time2:0;
-                            let currTime = time1 + ' / ' + time2;
-                            this.props.reloadCurrTime("播放中 " + currTime);
-    
-                            if (isPlaying === false) {
-                                this.findProgress(timeInteval);
-                            }
-                        
+
+                        let time1 = time.toFixed(0)
+                        let time2 = Sound1.soundDuring().toFixed(0);
+                        //处理数据显示
+                        time1 = (time1 > 0) ? time1 : 0;
+                        time2 = (time2 > 0) ? time2 : 0;
+                        let currTime = time1 + ' / ' + time2;
+                        this.props.reloadCurrTime("播放中 " + currTime);
+
+                        if (isPlaying === false) {
+                            this.findProgress(timeInteval);
+                        }
+
                     });
                 }
             }
@@ -294,7 +294,7 @@ class AudioSoundConCom extends Component {
         //清除计时器
         clearInterval(timeInteval);
         //刷新当前播放进度
-        // this.props.reloadCurrTime("");
+        this.props.reloadCurrTime("查找下一步...");
 
         if (this.state.isPaused)//判断是否是暂停
             return;
@@ -569,30 +569,18 @@ class AudioSoundConCom extends Component {
                 this.goAnswer();//去答题
             }
         } else {
-            
+
             // if(this.state.isPlaying && this.state.isPaused){//如果是暂停
             //     this.continue();
             // }
             // Sound1.soundStop();
             this.props.reloadCurrTime("查找下一步...");
-            this.clickNext=true;
+            this.clickNext = true;
             this.setState({
                 isPaused: false,
             });
             Sound1.soundStop();
             this.findProgress(timeInteval);
-
-            // if (this.state.isPlaying && this.state.isPaused) {//如果是暂停
-            //     this.setState({
-            //         isPaused: false,
-            //     }, () => {
-            //         this.findProgress(timeInteval);
-            //     })
-            // } else {
-            //     Sound1.soundStop();
-            //     this.findProgress(timeInteval);
-            // }
-            // this.props.reloadCurrTime("查找下一步...");
         }
     }
 
@@ -602,23 +590,21 @@ class AudioSoundConCom extends Component {
         this.clearInteval();//取消所有计时器
 
         this.getDefaultTime();//恢复默认时间
-        
-        
-        // setTimeout(()=>{
-            this.clickNext=true;
-            this.stopPlayAndRecord();//停止播放停止录音
-            this.setState({//播放暂停状态恢复默认
-                isPlaying: true,
-                isPaused: false,
-            },()=>{
-                this.props.reloadCurrTime("查找下一题...");
-            })
 
-            let tempData = this.props.dataSource;
-            //找下一步
-            this.props.getNextStep(tempData.topicInfo, tempData.examContent, tempData.gropObj, tempData.topObj);
-            // this.props.getNextGroup(tempData.topicInfo, tempData.examContent, tempData.gropObj);
-        // },500)
+        this.clickNext = true;
+        this.stopPlayAndRecord();//停止播放停止录音
+        this.setState({//播放暂停状态恢复默认
+            isPlaying: true,
+            isPaused: false,
+        }, () => {
+            this.props.reloadCurrTime("查找下一题...");
+        })
+
+        let tempData = this.props.dataSource;
+        //找下一步
+        this.props.getNextStep(tempData.topicInfo, tempData.examContent, tempData.gropObj, tempData.topObj);
+        // this.props.getNextGroup(tempData.topicInfo, tempData.examContent, tempData.gropObj);
+
     }
 
     //加载录音播放按钮
@@ -629,21 +615,21 @@ class AudioSoundConCom extends Component {
                 <Text>{"交卷成功，将自动返回到开始考试页，点击查看考试记录进入考试记录详情"}</Text>
             </View>
         } else if (this.state.isPlaying && this.state.isPaused === false) {//点击按钮暂停播放
-            return <TouchableOpacity style={styles.button} onPress={() =>utils.callOnceInInterval(this.pause)}>
+            return <TouchableOpacity style={styles.button} onPress={() => utils.callOnceInInterval(this.pause)}>
                 <Image
                     style={{ width: '100%', height: '100%' }}
                     source={require('../imgs/testIcon/ks_bf_icon.png')}
                 />
             </TouchableOpacity>
         } else if (this.state.isPlaying && this.state.isPaused) {//点击按钮继续播放
-            return <TouchableOpacity style={styles.button} onPress={() =>utils.callOnceInInterval(this.continue)}>
+            return <TouchableOpacity style={styles.button} onPress={() => utils.callOnceInInterval(this.continue)}>
                 <Image
                     style={{ width: '100%', height: '100%' }}
                     source={require('../imgs/testIcon/ks_zt_icon.png')}
                 />
             </TouchableOpacity>
         } else {//点击按钮停止录音
-            return <TouchableOpacity style={styles.button} onPress={() =>utils.callOnceInInterval(this.stopRecord)}>
+            return <TouchableOpacity style={styles.button} onPress={() => utils.callOnceInInterval(this.stopRecord)}>
                 <Image
                     style={{ width: '100%', height: '100%' }}
                     source={require('../imgs/testIcon/ks_tz_icon.png')}
@@ -677,36 +663,12 @@ class AudioSoundConCom extends Component {
     render() {
         return (
             <View style={styles.audio}>
-                {/*<TouchableOpacity style={styles.button} onPress={() => Audio1.startRecord(audioPath)}>*/}
-                {/*<Text>录音</Text>*/}
-                {/*</TouchableOpacity>*/}
-                {/*<TouchableOpacity style={styles.button} onPress={Audio1.stopRecord}>*/}
-                {/*<Text>停止录音</Text>*/}
-                {/*</TouchableOpacity>*/}
-                {/*<TouchableOpacity style={styles.button} onPress={Audio1.pauseRecord}>*/}
-                {/*<Text>暂停录音</Text>*/}
-                {/*</TouchableOpacity>*/}
-
-                {/*<TouchableOpacity style={styles.button} onPress={() => this.startPlay(this.props.soundPath)}>*/}
-                {/*<Text>播放录音</Text>*/}
-                {/*</TouchableOpacity>*/}
 
                 {
                     this.getButton()
                 }
 
-                {/*<TouchableOpacity style={styles.button} onPress={Sound1.soundStop}>*/}
-                {/*<Text>停止播放</Text>*/}
-                {/*</TouchableOpacity>*/}
-                {/*<TouchableOpacity style={styles.button} onPress={Sound1.soundContinue}>*/}
-                {/*<Text>继续播放</Text>*/}
-                {/*</TouchableOpacity>*/}
-                {/*<TouchableOpacity style={styles.button} onPress={Sound1.soundPause}>*/}
-                {/*<Text>暂停播放</Text>*/}
-                {/*</TouchableOpacity>*/}
-
-                <Text style={{ marginLeft: 10*utils.SCREENRATE,fontSize:15*utils.SCREENRATE }}>{this.props.dataSource.topicInfo.currLevel === "finished" ? "" : this.props.currPlayTime}</Text>
-
+                <Text style={{ marginLeft: 10 * utils.SCREENRATE, fontSize: 15 * utils.SCREENRATE }}>{this.props.dataSource.topicInfo.currLevel === "finished" ? "" : this.props.currPlayTime}</Text>
 
                 {
                     this.getConBtn()
@@ -790,19 +752,19 @@ export default connect(mapStateToProps, mapDispatchToProps)(AudioSoundConCom);
 const styles = StyleSheet.create({
     audio: {
         // marginTop:10,
-        width: utils.SCREENWIDTH - 30*utils.SCREENRATE,
-        height: 100*utils.SCREENRATE,
+        width: utils.SCREENWIDTH - 30 * utils.SCREENRATE,
+        height: 100 * utils.SCREENRATE,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         flexWrap: 'wrap',
         alignItems: 'center',
         // backgroundColor:'#dddddd',
         position: "absolute",
-        bottom: utils.PLATNAME === "IOS" ? 10*utils.SCREENRATE : 30*utils.SCREENRATE,
+        bottom: utils.PLATNAME === "IOS" ? 10 * utils.SCREENRATE : 30 * utils.SCREENRATE,
     },
     button: {
-        width: 60*utils.SCREENRATE,
-        height: 60*utils.SCREENRATE,
+        width: 60 * utils.SCREENRATE,
+        height: 60 * utils.SCREENRATE,
         // backgroundColor: "#cccccc",
         // borderRadius: 75*utils.SCREENRATE / 2,
         // borderWidth: 1,
@@ -812,25 +774,25 @@ const styles = StyleSheet.create({
         position: "absolute",
         // bottom:utils.PLATNAME==="IOS"?10:30,
         right: 0,
-        width: 100*utils.SCREENRATE,
+        width: 100 * utils.SCREENRATE,
         height: '100%',
     },
     conBtn1: {
         width: '100%',
-        height: 30*utils.SCREENRATE,
+        height: 30 * utils.SCREENRATE,
         backgroundColor: utils.COLORS.theme,
-        marginBottom: 5*utils.SCREENRATE,
-        borderRadius: 3*utils.SCREENRATE,
+        marginBottom: 5 * utils.SCREENRATE,
+        borderRadius: 3 * utils.SCREENRATE,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
     },
     conBtn2: {
         width: '100%',
-        height: 30*utils.SCREENRATE,
+        height: 30 * utils.SCREENRATE,
         backgroundColor: '#ff6169',
         // marginTop:5,
-        borderRadius: 3*utils.SCREENRATE,
+        borderRadius: 3 * utils.SCREENRATE,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -838,7 +800,7 @@ const styles = StyleSheet.create({
     conBtnText: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 15*utils.SCREENRATE,
+        fontSize: 15 * utils.SCREENRATE,
         fontWeight: '600',
     }
 });

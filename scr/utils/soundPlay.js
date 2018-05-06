@@ -39,7 +39,7 @@ module.exports = class MySound {
         
         let loadedTime = 0;//加载次数
         let timeInteval = setInterval(() => {
-            if (sound.isLoaded() === true) {
+            if (sound!==null && sound.isLoaded() === true) {
                 clearInterval(timeInteval);
                 this.soundSetCurrentTime();//设置播放进度
                 sound.play((success) => {
@@ -69,6 +69,7 @@ module.exports = class MySound {
         this.soundPlay(path);
     }
     soundIsLoaded() {
+        if(sound==null) return false;
         return sound.isLoaded();
     }
     //暂停播放

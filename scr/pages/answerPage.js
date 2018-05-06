@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
         // marginBottom: 30 * utils.SCREENRATE,
         position: "absolute",
         right: 6*utils.SCREENRATE,
-        bottom: 55*utils.SCREENRATE,
+        bottom: 55*utils.SCREENRATE+(utils.PLATNAME==="IOS"?0:10),
     },
     scoreTxt: {
         color: "#ffffff",

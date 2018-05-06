@@ -192,7 +192,7 @@ class TestStart extends Component {
                 this.props.getTopicInfo(this.props.examContent);
                 this.props.saveAnswerInfo({ version, lastPath, examPath, currPath, finish, ...LogInfo });
                 this.props.navigation.navigate('VideoTest');
-                RNFS.unlink(this.props.path + anserDic.lastPath);
+                RNFS.unlink(this.props.path + '/answer' + anserDic.version);
             })
         });
     }
@@ -233,8 +233,8 @@ class TestStart extends Component {
                     DeviceEventEmitter.emit('replaceRoute', { isLogin: false });
                 }
             } else {
-                let ishome = this.props.navigation.state.params.ishome == true && this.props.navigation.state.params.isFinish === false;
-                let taskId = this.props.taskId;
+                let ishome = taskId!=="" ;
+                let taskId = taskId;
                 let isSubmit = false;//是否提交到服务器
 
                 let examInfo = { ...result, taskId, ishome, isSubmit, UserID };

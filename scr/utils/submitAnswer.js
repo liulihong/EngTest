@@ -50,6 +50,10 @@ class TaskProgress {
                     Items: paraArr,
                 }
 
+                if(gropObj.Type===3){
+                    utils.showDevInfo("正在提交第三题答案哦！ ");
+                }
+
                 fetchPost(submitExamTopic, paramts).then((result) => {
                     if (result.ErrorCode !== undefined) {
                         // alert("非音频提交失败" + utils.findErrorInfo(error));

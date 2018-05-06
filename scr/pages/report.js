@@ -47,9 +47,15 @@ export default class Report extends Component {
                         style={styles.txtInput}
                         multiline={true}
                         // numberOfLines={10}
-                        placeholder={"赶紧提出意见吧，我们会更加完美的"}
+                        placeholder={"赶紧提出意见吧，我们会更加完美的（ 200字以内 ）"}
                         placeholderTextColor={"#666666"}
-                        onChangeText={(text) => this.setState({ text })}
+                        // onChangeText={(text) => this.setState({ text })}
+                        onChangeText={(text) => {
+                            if(text.length>200){//限制1-200位
+                                this.setState({ text:text.substring(0,10) })
+                            }else
+                                this.setState({ text })
+                        }}
                         value={this.state.text}
                     />
                 </View>
