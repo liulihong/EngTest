@@ -116,7 +116,7 @@ class AudioSoundConCom extends Component {
         if (isChange === false) return;//当前信息没改变 不提交
         let isTopObj = currProps.dataSource.topicInfo.currLevel === "topObj";
         if (isTopObj === false) return;//当前播放不是小题 不提交
-        if (nextProps.dataSource.topObj === currProps.dataSource.topicObj) return;//跟上次同一个小题 不提交
+        if (nextProps.dataSource.topObj === currProps.dataSource.topObj) return;//跟上次同一个小题 不提交
         if (nextProps.answers === undefined) return;//没有答题记录
 
 
