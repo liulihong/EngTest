@@ -94,7 +94,7 @@ module.exports = class MySound {
         if (sound !== null) {
             sound.stop();
             sound.release();
-            sound=null;
+            // sound=null;
             isRealse=true;
         }
     }

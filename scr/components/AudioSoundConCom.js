@@ -266,9 +266,9 @@ class AudioSoundConCom extends Component {
     reloadData() {
         this.clickNext = false;
         timeInteval = setInterval(() => {
-            if (Sound1 !== null) {
+            if (Sound1 !== null && this.clickNext === false) {
                 let isLoaded = Sound1.soundIsLoaded();
-                if (isLoaded && this.clickNext === false) {
+                if (isLoaded) {
                     Sound1.soundGetCurrentTime((time, isPlaying) => {
 
                         let time1 = time.toFixed(0)
@@ -458,7 +458,7 @@ class AudioSoundConCom extends Component {
             }
         }
 
-        if (answerTime > 0) {//如果有答题时间
+        if (answerTime >= 0) {//如果有答题时间
             let timeProgress = "答题倒计时: ";
             if (isRecord) {//如果是录音 答题时间开始答题
                 this.audioAnswerRecord();
@@ -479,6 +479,7 @@ class AudioSoundConCom extends Component {
                 }
                 // this.props.reloadCurrTime(timeProgress + answerTime);
                 if (answerTime <= 0) {
+                    answerTime=0;
                     clearInterval(timeInteval3);
                     if (isRecord) {
                         this.stopRecord();
@@ -515,8 +516,9 @@ class AudioSoundConCom extends Component {
 
     //停止录音
     stopRecord() {
+        
+        this.clearInteval();
         answerTime = 0;
-        this.clearInteval(timeInteval3);
 
         Audio1.stopRecord();
 
@@ -530,11 +532,14 @@ class AudioSoundConCom extends Component {
     //下一步点击事件
     nextStep() {
         // alert('click next step');
+        this.clearInteval();//取消所有计时器
         let tempData = this.state.tempData;
         if (readTime > 0) {//如果是读题时间    跳过读题时间      去读内容
-            readTime = 0;
+            // clearInterval(timeInteval2);
+            // readTime = 0;
+            this.getDefaultTime();//恢复默认时间
             this.props.reloadCurrTime("跳过读题时间");
-            clearInterval(timeInteval2);
+            
 
             if (tempData.gropObj.Type === 5 && tempData.topObj.IsHideAudioPath === false) {
                 //如果是短文朗读并且隐藏AudioPath内容音频 不需要读内容
@@ -546,8 +551,9 @@ class AudioSoundConCom extends Component {
                 this.startPlay(contentPath);
             }
         } else if (answerTime > 0) {// 如果是答题时间的话     跳过答题时间     去走下一步
-            clearInterval(timeInteval3);
-            answerTime = 0;
+            // clearInterval(timeInteval3);
+            // answerTime = 0;
+            this.getDefaultTime();//恢复默认时间
             this.props.reloadCurrTime("跳过答题时间");
 
             if (this.state.isPlaying === false) {//如果是正在录音
@@ -559,9 +565,11 @@ class AudioSoundConCom extends Component {
                 this.props.getNextStep(tempData1.topicInfo, tempData1.examContent, tempData1.gropObj, tempData1.topObj);
             }
         } else if (readyTime > 0) {
-            readyTime = 0;
+            // clearInterval(timeInteval4);
+            // readyTime = 0;
+            this.getDefaultTime();//恢复默认时间
             this.props.reloadCurrTime("跳过准备时间");
-            clearInterval(timeInteval4);
+            
             //是否有录音前提示语(录音题有可能有录音前提示语)
             if (tempData.topObj.RecordTip !== null || tempData.topObj.RecordAudio !== null) {
                 this.props.setReporteTip(tempData.topicInfo, tempData.examContent, tempData.gropObj, tempData.topObj, "RecordTip");
@@ -570,17 +578,19 @@ class AudioSoundConCom extends Component {
             }
         } else {
 
-            if(this.state.isPlaying && this.state.isPaused){//如果是暂停
-                this.continue();
-            }
-            Sound1.soundStop();
-            // this.props.reloadCurrTime("查找下一步...");
-            // this.clickNext = true;
-            // this.setState({
-            //     isPaused: false,
-            // });
+            // if(this.state.isPlaying && this.state.isPaused){//如果是暂停
+            //     this.continue();
+            // }
             // Sound1.soundStop();
-            // this.findProgress(timeInteval);
+            // clearInterval(timeInteval);
+            this.getDefaultTime();//恢复默认时间
+            this.props.reloadCurrTime("查找下一步...");
+            this.clickNext = true;
+            Sound1.soundStop();
+            this.setState({
+                isPaused: false,
+            });
+            this.findProgress(timeInteval);
         }
     }
 
