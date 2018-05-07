@@ -85,7 +85,7 @@ const getTimeCha = (timestamp1, timestamp2) => {
 
     let dayNum = (timeCha / day).toFixed(0);
     let hourNum = ((timeCha % day) / hour).toFixed(0);
-    let minuteNum = ((timeCha % hourNum) / minute).toFixed(0);
+    let minuteNum = ((timeCha % hour) / minute).toFixed(0);
     let miaoNum = timeCha % minute;
     if (timeCha > day) {
         return dayNum + "天 " + hourNum + "小时 " + minuteNum + "分钟 " + miaoNum + "秒";

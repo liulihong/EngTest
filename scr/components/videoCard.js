@@ -133,7 +133,7 @@ class VideoCard extends Component {
 
 
     render() {
-        let BackImg = this.props.isDown ? require("../imgs/testIcon/ks_sj_bg.png") : require("../imgs/testIcon/ks_s_bg_ls.png");
+        let BackImg = (this.props.isDown===true) ? require("../imgs/testIcon/ks_sj_bg.png") : require("../imgs/testIcon/ks_s_bg_ls.png");
         // let scoreRecord=this.props.isDown?"":"未下载";
         // let scoreRecord="";
         return (

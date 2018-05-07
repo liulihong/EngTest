@@ -583,14 +583,16 @@ class AudioSoundConCom extends Component {
             // }
             // Sound1.soundStop();
             // clearInterval(timeInteval);
-            this.getDefaultTime();//恢复默认时间
-            this.props.reloadCurrTime("查找下一步...");
-            this.clickNext = true;
-            Sound1.soundStop();
-            this.setState({
-                isPaused: false,
-            });
-            this.findProgress(timeInteval);
+
+            if(this.state.isPlaying && this.state.isPaused){//如果是暂停
+                this.continue();
+            }else{
+                this.getDefaultTime();//恢复默认时间
+                this.props.reloadCurrTime("查找下一步...");
+                this.clickNext = true;
+                Sound1.soundStop();
+                this.findProgress(timeInteval);
+            }
         }
     }
 
@@ -602,7 +604,11 @@ class AudioSoundConCom extends Component {
         this.getDefaultTime();//恢复默认时间
 
         this.clickNext = true;
-        this.stopPlayAndRecord();//停止播放停止录音
+
+        if(!(this.state.isPlaying && this.state.isPaused)){//如果不是暂停
+            this.stopPlayAndRecord();//停止播放停止录音
+        }
+        
         this.setState({//播放暂停状态恢复默认
             isPlaying: true,
             isPaused: false,

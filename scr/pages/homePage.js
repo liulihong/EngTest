@@ -71,7 +71,7 @@ class HomeScreen extends Component {
 
 
         //判断是否下载过
-        if (!isDown && this.state.isLoading === false) {
+        if (!isDown) {
             //检查网络
             if (utils.netInfo.isConnected===false) {
                 Alert.alert("", "请检查网络！");
