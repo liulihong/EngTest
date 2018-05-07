@@ -112,15 +112,18 @@ class AudioSoundConCom extends Component {
     //提交答案到服务器
     submitToServer(nextProps, currProps, isFinish) {
 
-        
+
         let isChange = nextProps.dataSource.topicInfo !== currProps.dataSource.topicInfo;
         if (isChange === false) return;//当前信息没改变 不提交
         let isTopObj = currProps.dataSource.topicInfo.currLevel === "topObj";
         if (isTopObj === false) return;//当前播放不是小题 不提交
+        // if(this.props.dataSource.gropObj.Type===3)
         // utils.showDevInfo("111 是小题");
         if (nextProps.dataSource.gropObj === currProps.dataSource.gropObj && nextProps.dataSource.topObj === currProps.dataSource.topObj) return;//跟上次同一个小题 不提交
+        // if(this.props.dataSource.gropObj.Type===3)
         // utils.showDevInfo("222 跟上次不是同一小题");
         if (nextProps.answers === undefined) return;//没有答题记录
+        // if(this.props.dataSource.gropObj.Type===3)
         // utils.showDevInfo("333 有答案");
 
         let gropObj1 = currProps.dataSource.gropObj;//当前数组
@@ -246,19 +249,39 @@ class AudioSoundConCom extends Component {
     pause() {
         this.clearInteval();
         // this.stopPlayAndRecord();
+        this.setState({isPaused: true});
+        if (readTime > 0 || readyTime > 0 || answerTime > 0) return;//倒计时的话
+
+        //如果是音频播放的话
         this.setState({
             isPlaying: true,
-            isPaused: true,
+            // isPaused: true,
         }, () => {
             Sound1.soundPause();
         })
+
     }
 
     //继续
     continue() {
+        this.setState({isPaused: false});
+        if (readTime > 0 || readyTime > 0 || answerTime > 0) {//倒计时的话
+            if (readTime > 0) 
+                this.startReadContent(this.props.dataSource);
+            
+            if (readyTime > 0) 
+                this.readyAnswer();
+            
+            if (answerTime > 0) 
+                this.goAnswer();
+            
+            return ;
+        }
+
+        //如果是音频播放的话
         this.setState({
             isPlaying: true,
-            isPaused: false,
+            // isPaused: false,
         }, () => {
             Sound1.soundContinue(this.state.currPath);
             this.reloadData();
@@ -279,10 +302,11 @@ class AudioSoundConCom extends Component {
                         //处理数据显示
                         time1 = (time1 > 0) ? time1 : 0;
                         time2 = (time2 > 0) ? time2 : 0;
+                        time1 = (time1 > time2) ? time2 : time1;//进度超过周期处理
                         let currTime = time1 + ' / ' + time2;
                         this.props.reloadCurrTime("播放中 " + currTime);
 
-                        if (isPlaying === false) {
+                        if ( (isPlaying === false) || (time1 > time2) ) {
                             this.findProgress(timeInteval);
                         }
 
@@ -482,7 +506,7 @@ class AudioSoundConCom extends Component {
                 }
                 // this.props.reloadCurrTime(timeProgress + answerTime);
                 if (answerTime <= 0) {
-                    answerTime=0;
+                    answerTime = 0;
                     clearInterval(timeInteval3);
                     if (isRecord) {
                         this.stopRecord();
@@ -519,7 +543,7 @@ class AudioSoundConCom extends Component {
 
     //停止录音
     stopRecord() {
-        
+
         this.clearInteval();
         answerTime = 0;
 
@@ -542,7 +566,7 @@ class AudioSoundConCom extends Component {
             // readTime = 0;
             this.getDefaultTime();//恢复默认时间
             this.props.reloadCurrTime("跳过读题时间");
-            
+
 
             if (tempData.gropObj.Type === 5 && tempData.topObj.IsHideAudioPath === false) {
                 //如果是短文朗读并且隐藏AudioPath内容音频 不需要读内容
@@ -572,7 +596,7 @@ class AudioSoundConCom extends Component {
             // readyTime = 0;
             this.getDefaultTime();//恢复默认时间
             this.props.reloadCurrTime("跳过准备时间");
-            
+
             //是否有录音前提示语(录音题有可能有录音前提示语)
             if (tempData.topObj.RecordTip !== null || tempData.topObj.RecordAudio !== null) {
                 this.props.setReporteTip(tempData.topicInfo, tempData.examContent, tempData.gropObj, tempData.topObj, "RecordTip");
@@ -587,9 +611,9 @@ class AudioSoundConCom extends Component {
             // Sound1.soundStop();
             // clearInterval(timeInteval);
 
-            if(this.state.isPlaying && this.state.isPaused){//如果是暂停
+            if (this.state.isPlaying && this.state.isPaused) {//如果是暂停
                 this.continue();
-            }else{
+            } else {
                 this.getDefaultTime();//恢复默认时间
                 this.props.reloadCurrTime("查找下一步...");
                 this.clickNext = true;
@@ -608,10 +632,10 @@ class AudioSoundConCom extends Component {
 
         this.clickNext = true;
 
-        if(!(this.state.isPlaying && this.state.isPaused)){//如果不是暂停
+        if (!(this.state.isPlaying && this.state.isPaused)) {//如果不是暂停
             this.stopPlayAndRecord();//停止播放停止录音
         }
-        
+
         this.setState({//播放暂停状态恢复默认
             isPlaying: true,
             isPaused: false,

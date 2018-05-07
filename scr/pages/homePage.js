@@ -92,9 +92,11 @@ class HomeScreen extends Component {
     }
 
     downLoad(getCommenUrl) {
-        this.setState({
-            isLoading: true,
-        });
+        // this.setState({
+        //     isLoading: true,
+        // });
+        if(this.isLoading===true) return;//如果正在下载 不去下载
+        this.isLoading=true;//设置为下载状态
         DeviceEventEmitter.emit('startDownloadSound');
         //得到的URL去下载共用音频
         download(getCommenUrl, "common", (obj) => {
@@ -103,14 +105,16 @@ class HomeScreen extends Component {
                 DeviceEventEmitter.emit('endDownloadSound');
                 obj.CityID = this.props.logResult.CityID;
                 this.props.saveUrl(obj);
-                this.setState({
-                    isLoading: false,
-                });
+                this.isLoading=false;//设置为非下载状态
+                // this.setState({
+                //     isLoading: false,
+                // });
             } else if (obj.status === "faild" || obj.unzip === "faild") {
                 DeviceEventEmitter.emit('endDownloadSound');
-                this.setState({
-                    isLoading: false,
-                });
+                this.isLoading=false;//设置为非下载状态
+                // this.setState({
+                //     isLoading: false,
+                // });
             }
             this.props.saveDownInfo(obj);
 

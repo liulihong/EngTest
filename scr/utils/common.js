@@ -2,7 +2,7 @@ import { define } from "../config"
 
 //以某字符串结尾
 const isLastIndex = (minStr, maxStr) => {
-    if (minStr === undefined || maxStr === undefined) {
+    if (minStr === undefined || maxStr===null || maxStr === undefined || minStr === null ) {
         return false;
     }
 
