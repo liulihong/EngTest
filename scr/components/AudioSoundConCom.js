@@ -112,13 +112,16 @@ class AudioSoundConCom extends Component {
     //提交答案到服务器
     submitToServer(nextProps, currProps, isFinish) {
 
+        
         let isChange = nextProps.dataSource.topicInfo !== currProps.dataSource.topicInfo;
         if (isChange === false) return;//当前信息没改变 不提交
         let isTopObj = currProps.dataSource.topicInfo.currLevel === "topObj";
         if (isTopObj === false) return;//当前播放不是小题 不提交
-        if (nextProps.dataSource.topObj === currProps.dataSource.topObj) return;//跟上次同一个小题 不提交
+        // utils.showDevInfo("111 是小题");
+        if (nextProps.dataSource.gropObj === currProps.dataSource.gropObj && nextProps.dataSource.topObj === currProps.dataSource.topObj) return;//跟上次同一个小题 不提交
+        // utils.showDevInfo("222 跟上次不是同一小题");
         if (nextProps.answers === undefined) return;//没有答题记录
-
+        // utils.showDevInfo("333 有答案");
 
         let gropObj1 = currProps.dataSource.gropObj;//当前数组
         let gropObj = copy.cloneDeep(gropObj1);
