@@ -52,6 +52,8 @@ class AnswerScreen extends Component {
 
     getExamAnserInfo() {
         let LogID = this.props.answerRecord.LogID;
+        // debugger
+        // alert(JSON.stringify(this.props.answerRecord));
         fetchPost(getExamLog, { LogID }).then((result) => {
             // alert("result: "+JSON.stringify(result));
             if (result.LogList !== undefined) {
@@ -116,7 +118,7 @@ class AnswerScreen extends Component {
                 </ImageBackground>
                 <View style={styles.userInfo}>
                     <Text numberOfLines={1} style={styles.userTxt}>{"姓名："+(this.props.logResult.Name?this.props.logResult.Name:this.props.logResult.LoginName)}</Text>
-                    <Text numberOfLines={1} style={styles.userTxt}>{"类型："+(this.props.answerRecord.ishome?"作业":"模拟练习")}</Text>
+                    <Text numberOfLines={1} style={styles.userTxt}>{"类型："+((this.props.answerRecord.ishome===true)?"作业":"模拟练习")}</Text>
                     {
                         (this.state.serverAnswer&&this.state.serverAnswer.StartTime)?<Text numberOfLines={1} style={styles.userTxt}>{"时间："+ utils.getTimeStr(this.state.serverAnswer.StartTime,"MM-dd hh:mm") }</Text>:<Text/>
                     }

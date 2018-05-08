@@ -211,18 +211,22 @@ class TestStart extends Component {
             Alert.alert("", "作业已完成，现在为模拟练习");
 
         let UserID = this.props.UserID;
-        let taskId = (this.props.navigation.state.params.isFinish === true) ? "" : this.props.taskId;
-
+        let taskId = "";
+        
+        taskId = (this.props.navigation.state.params.isFinish === true) ? "" : this.props.taskId;
+        
         if (this.props.answerRecord && this.props.answerRecord.isSubmit === true && this.props.answerRecord.taskId === taskId && this.props.navigation.state.params.isFinish === false) {//如果已经提交过
             Alert.alert("", "你已做完作业，现在为模拟练习");
             taskId = "";
         }
+        
         let params = {
             "PaperID": this.props.navigation.state.params.ID,
             "UserID": UserID,
             "Total": totalScore,
             "TaskID": taskId,
         }
+       
         fetchPost(startExam, params).then((result) => {
             // alert("开始考试记录:"+JSON.stringify(result));
             //result  LogID,TaskLogID
@@ -233,10 +237,11 @@ class TestStart extends Component {
                     DeviceEventEmitter.emit('replaceRoute', { isLogin: false });
                 }
             } else {
-                let ishome = taskId!=="" ;
+                
+                let ishome = !(result.TaskLogID==="00000000-0000-0000-0000-000000000000") ;
                 let taskId = taskId;
                 let isSubmit = false;//是否提交到服务器
-
+                // debugger
                 let examInfo = { ...result, taskId, ishome, isSubmit, UserID };
                 callBack(examInfo);//不报错五信息  回调考试
             }
