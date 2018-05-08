@@ -302,11 +302,11 @@ class AudioSoundConCom extends Component {
                         //处理数据显示
                         time1 = (time1 > 0) ? time1 : 0;
                         time2 = (time2 > 0) ? time2 : 0;
-                        time1 = (time1 > time2) ? time2 : time1;//进度超过周期处理
+                        // time1 = (time1 > time2) ? time2 : time1;//进度超过周期处理
                         let currTime = time1 + ' / ' + time2;
                         this.props.reloadCurrTime("播放中 " + currTime);
 
-                        if ( (isPlaying === false) || (time1 > time2) ) {
+                        if ( isPlaying === false ) {
                             this.findProgress(timeInteval);
                         }
 

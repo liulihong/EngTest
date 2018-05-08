@@ -115,10 +115,14 @@ class AnswerScreen extends Component {
                     <Text style={[styles.scoreTxt, { color: (scoreTxt === "正在计分\n请稍后") ? "#fc9141" : "#ff0000" }]}>{scoreTxt}</Text>
                 </ImageBackground>
                 <View style={styles.userInfo}>
-                    <Text style={styles.userTxt}>{"姓名："+(this.props.logResult.Name?this.props.logResult.Name:this.props.logResult.LoginName)}</Text>
-                    <Text style={styles.userTxt}>{"类型："+(this.props.answerRecord.ishome?"作业":"模拟练习")}</Text>
-                    <Text style={styles.userTxt}>{"时间："+((this.state.serverAnswer&&this.state.serverAnswer.StartTime)?(utils.getTimeStr(this.state.serverAnswer.StartTime,"MM-dd hh:mm")):"--")}</Text>
-                    <Text style={styles.userTxt}>{"用时："+((this.state.serverAnswer&&this.state.serverAnswer.StartTime)?(utils.getTimeCha(this.state.serverAnswer.StartTime,this.state.serverAnswer.EndTime)):"--")}</Text>
+                    <Text numberOfLines={1} style={styles.userTxt}>{"姓名："+(this.props.logResult.Name?this.props.logResult.Name:this.props.logResult.LoginName)}</Text>
+                    <Text numberOfLines={1} style={styles.userTxt}>{"类型："+(this.props.answerRecord.ishome?"作业":"模拟练习")}</Text>
+                    {
+                        (this.state.serverAnswer&&this.state.serverAnswer.StartTime)?<Text numberOfLines={1} style={styles.userTxt}>{"时间："+ utils.getTimeStr(this.state.serverAnswer.StartTime,"MM-dd hh:mm") }</Text>:<Text/>
+                    }
+                    {
+                        (this.state.serverAnswer&&this.state.serverAnswer.StartTime)?<Text numberOfLines={1} style={styles.userTxt}>{"用时："+ utils.getTimeCha(this.state.serverAnswer.StartTime,this.state.serverAnswer.EndTime)}</Text>:<Text/>
+                    }
                 </View>
                 {
                     this.state.isTop === false ? <TouchableOpacity style={[styles.maxBtn, { position: "absolute", bottom: 0,height:40*utils.SCREENRATE }]}
@@ -286,7 +290,7 @@ const styles = StyleSheet.create({
     userInfo: {
         marginTop:14*utils.SCREENRATE,
         marginLeft:25*utils.SCREENRATE,
-        width:"100%",
+        width:"58%",
         // height:"40%",
         // backgroundColor:"rgba(0,0,0,0.1)",
         flexDirection:"column",
@@ -297,6 +301,7 @@ const styles = StyleSheet.create({
         lineHeight:26 * utils.SCREENRATE,
         fontWeight: "400",
         textAlign: "left",
+        height:26 * utils.SCREENRATE,
         width:"100%",
     },
 });
