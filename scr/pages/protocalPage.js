@@ -33,18 +33,18 @@ export default class WebViewPage extends React.Component {
             forwardButtonEnabled: false,
             loading: true,
             scalesPageToFit: true,
-          };
+        };
     }
 
     inputText = '';
 
-  handleTextInputChange = (event) => {
-    var url = event.nativeEvent.text;
-    if (!/^[a-zA-Z-_]+:/.test(url)) {
-      url = 'http://' + url;
-    }
-    this.inputText = url;
-  };
+    handleTextInputChange = (event) => {
+        var url = event.nativeEvent.text;
+        if (!/^[a-zA-Z-_]+:/.test(url)) {
+            url = 'http://' + url;
+        }
+        this.inputText = url;
+    };
 
     render() {
         return (
@@ -54,7 +54,7 @@ export default class WebViewPage extends React.Component {
                     ref={WEBVIEW_REF}
                     automaticallyAdjustContentInsets={false}
                     style={styles.webView}
-                    source={{ uri: protocal}}
+                    source={{ uri: protocal }}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}
                     decelerationRate="normal"
@@ -69,32 +69,32 @@ export default class WebViewPage extends React.Component {
 
     goForward = () => {
         this.refs[WEBVIEW_REF].goForward();
-      };
-    
-      reload = () => {
+    };
+
+    reload = () => {
         this.refs[WEBVIEW_REF].reload();
-      };
-    
-      onShouldStartLoadWithRequest = (event) => {
+    };
+
+    onShouldStartLoadWithRequest = (event) => {
         // Implement any custom loading logic here, don't forget to return!
         return true;
-      };
-    
-      onNavigationStateChange = (navState) => {
+    };
+
+    onNavigationStateChange = (navState) => {
         this.setState({
-          backButtonEnabled: navState.canGoBack,
-          forwardButtonEnabled: navState.canGoForward,
-          url: navState.url,
-          status: navState.title,
-          loading: navState.loading,
-          scalesPageToFit: true
+            backButtonEnabled: navState.canGoBack,
+            forwardButtonEnabled: navState.canGoForward,
+            url: navState.url,
+            status: navState.title,
+            loading: navState.loading,
+            scalesPageToFit: true
         });
-      };
-    
-      onSubmitEditing = (event) => {
+    };
+
+    onSubmitEditing = (event) => {
         this.pressGoButton();
-      };
-    
+    };
+
 }
 
 const styles = StyleSheet.create({
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff"
     },
     webView: {
-        width:utils.SCREENWIDTH,
+        width: utils.SCREENWIDTH,
         // height:100,
         // backgroundColor:"red",
     },

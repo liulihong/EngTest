@@ -21,6 +21,8 @@ import RNFS from 'react-native-fs';
 import AnswerScreen from "./answerPage";
 import { fetchPost } from "../request/fetch";
 
+// import CurrProgress from "../module/proCon/progressManger";
+import PaperController from "../module/proCon/paperController";
 
 let totalScore = 0;
 const typeEnum = { 1: '听后选择', 2: '听后回答', 3: '听后记录', 4: '转述信息', 5: '短文朗读', 10: '听后选图' };
@@ -133,6 +135,14 @@ class TestStart extends Component {
         let jsonPath = this.props.path + '/exam.json';
         FileManager.readFile(jsonPath, (result) => {
             this.props.getExamDetail(JSON.parse(result));
+            
+            this.paperCon =new PaperController(this.props.path,JSON.parse(result),(progressInfo)=>{
+                //播放信息
+                console.log(progressInfo);
+            },()=>{
+                alert("考试结束了");
+            });
+            this.paperCon.initNewStep(true);
         });
 
         DeviceEventEmitter.addListener('ChangeUI', () => {
@@ -173,7 +183,7 @@ class TestStart extends Component {
                 let anserDic = { "version": 1, "lastPath": null, "examPath": this.props.path, currPath, "finish": false, ...LogInfo };
                 this.props.getTopicInfo(this.props.examContent);
                 this.props.saveAnswerInfo(anserDic);
-                this.props.navigation.navigate('VideoTest',{isNew:true});
+                this.props.navigation.navigate('VideoTest');
             })
         });
     }
@@ -192,7 +202,7 @@ class TestStart extends Component {
             RNFS.mkdir(currPath).then(() => {
                 this.props.getTopicInfo(this.props.examContent);
                 this.props.saveAnswerInfo({ version, lastPath, examPath, currPath, finish, ...LogInfo });
-                this.props.navigation.navigate('VideoTest',{isNew:true});
+                this.props.navigation.navigate('VideoTest');
                 RNFS.unlink(this.props.path + '/answer' + anserDic.version);
             })
         });
@@ -310,11 +320,11 @@ class TestStart extends Component {
                     let answerRecord = JSON.parse(result);
                     this.props.saveAnswerRecord(answerRecord);//获取之前答题记录
                     this.props.getTestProgress(anserDic);
-                    this.props.navigation.navigate('VideoTest',{isNew:false});
+                    this.props.navigation.navigate('VideoTest');
                 })
             } else {
                 this.props.getTestProgress(anserDic);
-                this.props.navigation.navigate('VideoTest',{isNew:false});
+                this.props.navigation.navigate('VideoTest');
             }
         })
 
