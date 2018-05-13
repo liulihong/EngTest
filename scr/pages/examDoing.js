@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, ActivityIndicator,DeviceEventEmitter } from "react-native";
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Image, ActivityIndicator, DeviceEventEmitter } from "react-native";
 import utils from "../utils";
 import NavBar from '../components/navBar';
 
 import { connect } from "react-redux";
-import { saveAnswerRecord } from "../store/actions";
+import { saveAnswerRecord,saveCurrExamAnswers } from "../store/actions";
 
 import HearSelect from '../components/HearSelectCom';
 import HearRecord from '../components/HearRecordCom';
@@ -14,6 +14,9 @@ import AudioSoundConCom from '../components/ExamConCom'
 import AnswerCom from '../components/answerCom';
 import RNFS from "react-native-fs";
 import { detail } from "../store/reducer";
+import SubmitAnswer from "../utils/submitAnswer";
+import { fetchPost } from '../request/fetch';
+import { endExam } from '../request/requestUrl';
 
 import RNIdle from 'react-native-idle'//屏保常亮
 import PaperController from "../module/proCon/paperController";
@@ -65,12 +68,20 @@ class VideoTest extends Component {
         this.getContent = this.getContent.bind(this);
         this.getComponent = this.getComponent.bind(this);
         this.setScroInfo = this.setScroInfo.bind(this);
+        this.submitExamFinish = this.submitExamFinish.bind(this);
+        this.setRecordPath = this.setRecordPath.bind(this);
+        this.saveRecordAnswer = this.saveRecordAnswer.bind(this);
         this.state = {
             currPage: pageStatus.examIng,
         };
 
         let that = this;
         this.paperCon = new PaperController(this.props.examPath, this.props.examContent, (stepInfo, progressInfo) => {
+            let name = stepInfo.data.ID;
+            if(stepInfo.levType===levelType.minSubject && stepInfo.data.isRecord===true)//如果是录音小题 给步骤控制器设置录音地址
+                that.paperCon.stepCon.recordPath=that.setRecordPath(name);
+            if(stepInfo.isRecording)//如果是录音 保存录音信息
+                that.saveRecordAnswer(name,stepInfo.data);
             //播放信息
             that.setState({
                 stepInfo: stepInfo,
@@ -79,10 +90,30 @@ class VideoTest extends Component {
                 levelType: stepInfo.levType,
                 progressInfo: progressInfo,
             });
-        }, () => {
+        }, () => { 
+            let answerDic = this.props.answerRecord;
+            answerDic.finish = true;//设置试卷为已完成
+            this.props.saveAnswerInfo(answerDic);
             that.setState({ currPage: pageStatus.sureSubmit });
             that.paperCon.stepCon.end(true);
         });
+    }
+
+    // 设置录音地址
+    setRecordPath(name){
+        let lastname = (utils.PLATNAME === "IOS") ? '.wav' : '';
+        let currAnPath = this.props.examPath + "/answer" + this.props.answerRecord.version;
+        let path = currAnPath + '/' + name + lastname; //录音地址
+        return path;
+    }
+    //保存录音答案
+    saveRecordAnswer(name,topObj){
+        let currAnPath = this.props.examPath + "/answer" + this.props.answerRecord.version;
+        let type = topObj.Type;
+        let id = topObj.TopicInfoList[0].UniqueID;
+        let num = topObj.TopicInfoList[0].ID;
+        let lastPath = currAnPath + '/' + name + '.wav';
+        this.props.saveAnswer(type, id, num, lastPath);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -93,43 +124,67 @@ class VideoTest extends Component {
     }
 
     componentDidMount() {
+
         RNIdle.disableIdleTimer()    //保持屏幕常亮
 
-        if(this.props.navigation.state.params.isNew){
+        let LogID = this.props.answerRecord.LogID;
+        this.submitModel = new SubmitAnswer(this.submitExamFinish, LogID);
+        this.submitModel.haveSubmit = false;
+        this.paperCon.answerVersion = this.props.answerRecord.version;
+
+        if (this.props.navigation.state.params.isNew) {
             this.paperCon.initNewStep(true);//初始化步骤
-        }else{
-            setTimeout(()=>{
-                this.paperCon.initNewStep(false,this.props.answerRecord);
-            },2000);
-            
+        } else {
+            this.paperCon.initNewStep(false, this.props.answerRecord);
         }
-        
-        DeviceEventEmitter.addListener("reloadProgress",(progress)=>{
-            let newProgress=this.props.answerRecord;
-            newProgress.progress=progress;
-            newProgress.examPath=this.props.examPath;
-            this.props.saveAnswerInfo(newProgress);
-        })
+
+        //保存答案进度
+        let that = this;
+        DeviceEventEmitter.addListener("reloadProgress", (progress) => {
+            let newProgress = this.props.answerRecord;
+            newProgress.progress = progress;
+            newProgress.examPath = this.props.examPath;
+            that.props.saveAnswerInfo(newProgress);
+        });
+        //提交小题答案
+        DeviceEventEmitter.addListener("submitAnswer", (topObj, groupObj) => {
+            if(that.props.answers && that.props.answers[groupObj.Type] && topObj.TopicInfoList){
+                let answer = that.props.answers[groupObj.Type];
+                that.submitModel.addSubmitTask(groupObj, answer, topObj);
+            }
+        });
     }
     componentWillUnmount() {
+        DeviceEventEmitter.emit('ChangeUI');//通知开始考试页面刷新UI
         RNIdle.enableIdleTimer()     //退出屏幕常亮
         DeviceEventEmitter.removeAllListeners('reloadProgress');
+        DeviceEventEmitter.removeAllListeners('submitAnswer');
     }
-    saveAnsweRecord(){//保存答题进度
 
-    }
     getComponent() {
         if (this.state.stepInfo) {
             if (this.state.stepInfo.data.Type === 1) {//听后选择
                 return <HearSelect contentData={this.state.stepInfo.data.TopicInfoList} />;
             } else if (this.state.stepInfo.data.Type === 2) {//听后回答
-                return <Text style={styles.title}>{this.state.stepInfo.data.TopicInfoList[0].Title}</Text>;
+                return <View>
+                    {
+                        this.state.stepInfo.data.TopicInfoList.map((topicObj,i)=>{
+                            return <Text key={i} style={styles.title}>{topicObj.Title}</Text>
+                        })
+                    }
+                </View>
             } else if (this.state.stepInfo.data.Type === 3) {//听后记录
                 return <HearRecord contentData={this.state.stepInfo.data.TopicInfoList} examPath={this.props.examPath} type={this.state.stepInfo.data.Type} />;
             } else if (this.state.stepInfo.data.Type === 4) {//转述信息
                 return <HearRecord contentData={this.state.stepInfo.data.TopicInfoList} examPath={this.props.examPath} type={this.state.stepInfo.data.Type} />;
             } else if (this.state.stepInfo.data.Type === 5) {//短文朗读
-                return <Text style={styles.title}>{this.state.stepInfo.data.TopicInfoList.Title}</Text>;
+                return <View>
+                    {
+                        this.state.stepInfo.data.TopicInfoList.map((topicObj,i)=>{
+                            return <Text key={i} style={styles.title}>{topicObj.Title}</Text>
+                        })
+                    }
+                </View>;
             } else if (this.state.stepInfo.data.Type === 10) {//听后选图
                 return <HearSelPic contentData={this.state.stepInfo.data.TopicInfoList} examPath={this.props.examPath} imgList={this.state.stepInfo.data.ImgList} />;
             }
@@ -138,7 +193,7 @@ class VideoTest extends Component {
 
     //如果不是读标题  内容展示区
     getContent() {
-        if (this.state.levelType === levelType.minSubject) {
+        if (this.state.levelType === levelType.minSubject ) {
             return (
                 <View style={{ padding: 5 * utils.SCREENRATE }}>
                     <Text style={styles.title}>{this.state.stepInfo.data.Title}</Text>
@@ -163,6 +218,34 @@ class VideoTest extends Component {
         // debugger
         if (this.state.isTop === null || isTop1 !== this.state.isTop) this.setState({ isTop: isTop1 });
         if (this.state.isBottom === null || isBottom1 !== this.state.isBottom) this.setState({ isBottom: isBottom1 });
+    }
+
+    //服务器交卷
+    submitExamFinish() {
+
+        if (this.submitModel.taskNum <= 0 && this.submitModel.haveSubmit === true) {
+
+            this.submitModel.haveSubmit === false;
+            let LogID = this.props.answerRecord.LogID;
+            let TaskLogID = this.props.answerRecord.TaskLogID;
+            fetchPost(endExam, { LogID, TaskLogID }).then((res) => {
+
+                if (res.success === true) {
+                    let answerDic = this.props.answerRecord;
+                    answerDic.isSubmit = true;
+                    this.props.saveAnswerInfo(answerDic);
+
+                    this.props.navigation.goBack();
+                    // alert("考试完成，静待考试结果吧");
+                } else {
+                    alert("交卷错误:  " + JSON.stringify(res));
+                }
+
+            }, (error) => {
+
+                alert("交卷错误:  " + JSON.stringify(error));
+            })
+        }
     }
 
     render() {
@@ -248,7 +331,13 @@ class VideoTest extends Component {
                                     style={{ width: utils.SCREENWIDTH * 0.3, margin: 10 * utils.SCREENRATE, backgroundColor: "#999999", borderRadius: 5 * utils.SCREENRATE }}>
                                     <Text style={{ textAlign: "center", color: "white", fontWeight: "600", lineHeight: 40 * utils.SCREENRATE, fontSize: 15 * utils.SCREENRATE }}>{"再做一次"}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { this.setState({ currPage: pageStatus.submitIng }); }}
+                                <TouchableOpacity onPress={() => {
+                                    //交卷接口
+                                    this.submitModel.haveSubmit = true;//可以交卷
+                                    this.submitExamFinish();
+                                    //显示交卷中页面
+                                    this.setState({ currPage: pageStatus.submitIng });
+                                }}
                                     style={{ width: utils.SCREENWIDTH * 0.3, margin: 10 * utils.SCREENRATE, backgroundColor: utils.COLORS.theme, borderRadius: 5 * utils.SCREENRATE }}>
                                     <Text style={{ textAlign: "center", color: "white", fontWeight: "600", lineHeight: 40 * utils.SCREENRATE, fontSize: 15 * utils.SCREENRATE }}>{"确认交卷"}</Text>
                                 </TouchableOpacity>
@@ -291,6 +380,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         saveAnswerInfo: (answerDic) => {
             dispatch(saveAnswerRecord(answerDic));
+        },
+        saveAnswer: (Type, id, num, answer) => {
+            dispatch(saveCurrExamAnswers(Type, id, num, answer));
         },
     }
 };

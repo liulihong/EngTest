@@ -6,12 +6,16 @@ export default class PaperController { //试卷控制器
     //path试卷路径  试卷实体  步骤信息回调  考试结束回调
     constructor(path, paper, stepInfo, examEnd) {
         this.examEnd=examEnd;
+
+        //试卷进度
         this.proObj = new CurrProgress(paper,(haveNewStep)=>{
             if(haveNewStep) //有下一步 开始下一步
                 this.startStep();
             else //找不到下一步了 回调考试结束
                 examEnd();
         });
+
+        //步骤控制器
         this.stepCon = new StepCon((progressInfo)=>{
             stepInfo(this.proObj.currStep,progressInfo);
         },()=>{
@@ -26,10 +30,10 @@ export default class PaperController { //试卷控制器
 
     //初始化新步骤
     initNewStep( isNew , progressRecord ){ 
-        if(isNew)
-            this.proObj.initProgress();//新开始试卷
-        else
+        if(isNew===false && progressRecord && progressRecord.progress )
             this.proObj.readHisProgress(progressRecord);//找历史记录
+        else
+            this.proObj.initProgress();//新开始试卷
     }
 
     //开始一个步骤

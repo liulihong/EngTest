@@ -4,6 +4,7 @@ import PaperManager from "./paperManager";
 import { levelType, StatusType, PlayType, WaitType } from "./paperStatus";
 import FindSteps from "./currObjAllSteps";
 import { DeviceEventEmitter } from "react-native";
+import copy from 'lodash';
 
 
 export default class ProgressManager {
@@ -23,8 +24,9 @@ export default class ProgressManager {
 
     //读取记录进度(如果是继续考试的话查找记录)
     readHisProgress(progressRecord) {
-        this.level = progressRecord.progress.levelType;
-        if (this.level === levelType.minSubject || this.level === levelType.bigSubTitle) {
+        this.level = levelType.paperTitle;//读试卷标题
+        if (progressRecord.progress.levelType === levelType.minSubject || progressRecord.progress.levelType === levelType.bigSubTitle) {
+            this.level = progressRecord.progress.levelType;
             this.paperManager.initHisData(progressRecord);
             this.setCurrLevelAllSteps();
             this.nextStep();
@@ -50,6 +52,11 @@ export default class ProgressManager {
         }
 
         //存储进度信息
+        this.noticeCurrProgress();
+    }
+
+    //通知最新进度
+    noticeCurrProgress(){
         let progress = {};
         progress.levelType = this.level;
         if (progress.levelType !== levelType.paperTitle && progress.levelType !== levelType.endPaper) {
@@ -58,6 +65,15 @@ export default class ProgressManager {
                 progress.topIndex = this.paperManager.topObj.index;
         }
         DeviceEventEmitter.emit("reloadProgress", progress);
+    }
+
+    //通知需要提交答案
+    noticeSubmitAnswer(){
+        if(this.level===levelType.minSubject){//如果是小题的话
+            let groupObj = copy.cloneDeep(this.paperManager.groupObj);
+            let topObj=copy.cloneDeep(this.paperManager.topObj);
+            DeviceEventEmitter.emit("submitAnswer", topObj,groupObj);
+        }
     }
 
     //查找下一个级别
@@ -109,11 +125,12 @@ export default class ProgressManager {
         if (this.findStepsObj.allSteps.length > nextIndex) {//如果有下一步的话
             this.currStep = this.findStepsObj.allSteps[nextIndex];
             this.currStep.index = nextIndex;
-
+            
             this.stepNotice(true);//找到下一个步骤 通知试卷控制器
         } else if (this.level === levelType.endPaper) {
-            this.stepNotice(false);
+            this.stepNotice(false);//没有下一个步骤了  通知试卷控制器
         } else { //如果没有下一步 找下一个节点
+            this.noticeSubmitAnswer();
             this.currStep = null;
             this.setNewLevel();
             this.setCurrLevelAllSteps();

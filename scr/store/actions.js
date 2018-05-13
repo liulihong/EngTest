@@ -335,8 +335,6 @@ export const getAnswerBlow = (result) => {
 //答题进度记录
 export const saveAnswerRecord = (result) => {
     let newAnswer = result;
-    let finish = result.topicInfo && result.topicInfo.currLevel === "finished";
-    newAnswer.finish = finish;
     let jsonPath = result.examPath + "/answer.json";
     RNFS.writeFile(jsonPath, JSON.stringify(newAnswer), 'utf8').then(() => { });
     return { result: newAnswer, type: SAVEANSDIC }

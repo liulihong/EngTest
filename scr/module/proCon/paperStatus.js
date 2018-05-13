@@ -29,9 +29,9 @@ export const PlayType = {
 
 export const WaitType = {
     /* 读题时间   准备时间   答题时间 */
-    readTime : "读题时间",
-    readyTime : "准备时间",
-    answerTime : "答题时间",
+    readTime : "读题",
+    readyTime : "准备",
+    answerTime : "答题",
 };
 
 

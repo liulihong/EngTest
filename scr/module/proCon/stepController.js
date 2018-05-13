@@ -37,7 +37,7 @@ export default class StepCon { //试卷控制器
             this.dataSouce.isRecording=(this.dataSouce.stepType === WaitType.answerTime && this.dataSouce.data.isRecord === true);
             
             if (this.dataSouce.isRecording) {//如果是录音
-                let recordPath = (utils.PLATNAME === "IOS") ? (utils.DOWNLOADDOCUMENTPATH + '/test.wav') : (utils.DOWNLOADDOCUMENTPATH + '/test');
+                let recordPath = this.recordPath;
                 Audio1.startRecord(recordPath);
             }
         }
@@ -86,7 +86,7 @@ export default class StepCon { //试卷控制器
     progressInfo_wait(){
         //倒计时信息
         this.time = this.time - 1 ;
-        let waitInfo = this.dataSouce.stepType + this.time;
+        let waitInfo = this.dataSouce.stepType + "倒计时: " + this.time;
         if(this.time<0){ //如果倒计时小于0
             this.end(false);//步骤自动结束
         }else{

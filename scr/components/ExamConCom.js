@@ -58,10 +58,6 @@ class AudioSoundConCom extends Component {
     //组件加载完成
     componentDidMount() {
         Audio1.getPermission(audioPath);//检查录音权限
-
-        let LogID = this.props.answerRecord.LogID;
-        this.submitModel = new SubmitAnswer(this.submitExamFinish, LogID);
-        this.submitModel.haveSubmit = false;
     }
 
     componentWillMount() {
@@ -70,14 +66,12 @@ class AudioSoundConCom extends Component {
         }
     }
     onBackAndroid = () => {
-        this.props.paperCon.stepCon.endTimer();
+        this.props.paperCon.stepCon.end(true);
         this.props.paperCon=null;
     };
 
     //组件卸载 播放停止
     componentWillUnmount() {
-        DeviceEventEmitter.emit('ChangeUI');
-
         this.onBackAndroid();
         if (Platform.OS === 'android') {
             BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
@@ -155,42 +149,19 @@ class AudioSoundConCom extends Component {
 const mapStateToProps = (state) => {
     // 那个里面有所有数据   就是 长度
     let dataSource = state.detail;
-    const taskId = dataSource.taskId;
     let examPath = dataSource.currentExamPath;
     let answerRecord = dataSource.answerRecord;
     let answers = dataSource.answers;
-    let soundPath = '';
-    if (dataSource.topicInfo) {
-        if (dataSource.topicInfo.audioPath !== null) {
-            let path = dataSource.topicInfo.audioPath;
-            if (path == null) {
-                path = "common/t3_1_tip.mp3";
-            }
-            soundPath = utils.findPlayPath(path, examPath);
-        } else {
-            soundPath = utils.findPlayPath(dataSource.topicInfo.contentPath, examPath);
-        }
-    }
-    let currPlayTime = state.detail.currPlayTime;
+    
     return {
-        soundPath,
-        currPlayTime,
         dataSource,
         examPath,
         answerRecord,
         answers,
-        taskId,
-        Alert,
     };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-
-        commitExam: () => {
-            // dispatch(commintCurrExam());
-
-        },
-
     }
 };
 

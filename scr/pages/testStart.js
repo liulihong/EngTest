@@ -47,19 +47,19 @@ const styles = StyleSheet.create({
         width: utils.SCREENWIDTH,
         height: utils.SCREENHEIGHT - 140 * utils.SCREENRATE - (utils.PLATNAME === "IOS" ? 64 : 44) - 24 * utils.SCREENRATE,
     },
-    maxBtn:{
-        backgroundColor: "rgba(0,0,0,0)", 
-        width: "100%", 
-        height: 30 * utils.SCREENRATE, 
-        alignItems: "center", 
+    maxBtn: {
+        backgroundColor: "rgba(0,0,0,0)",
+        width: "100%",
+        height: 30 * utils.SCREENRATE,
+        alignItems: "center",
         justifyContent: "center",
     },
     scrStyle: {
-        backgroundColor: "rgba(0,0,0,0)", 
-        width: "100%", 
-        flexDirection: "column", 
+        backgroundColor: "rgba(0,0,0,0)",
+        width: "100%",
+        flexDirection: "column",
         alignItems: "center",
-        alignSelf:"center", 
+        alignSelf: "center",
         justifyContent: "center",
     },
     whiteView: {
@@ -147,6 +147,7 @@ class TestStart extends Component {
 
     //获取答题总记录
     getLastRecord() {
+
         let jsonPath = this.props.path + "/answer.json";
         RNFS.exists(jsonPath).then((isExit) => {
             if (isExit === true) {
@@ -163,6 +164,8 @@ class TestStart extends Component {
                 })
             }
         });
+
+
     }
 
     //开始考试
@@ -173,7 +176,7 @@ class TestStart extends Component {
                 let anserDic = { "version": 1, "lastPath": null, "examPath": this.props.path, currPath, "finish": false, ...LogInfo };
                 this.props.getTopicInfo(this.props.examContent);
                 this.props.saveAnswerInfo(anserDic);
-                this.props.navigation.navigate('VideoTest',{isNew:true});
+                this.props.navigation.navigate('VideoTest', { isNew: true });
             })
         });
     }
@@ -191,8 +194,9 @@ class TestStart extends Component {
 
             RNFS.mkdir(currPath).then(() => {
                 this.props.getTopicInfo(this.props.examContent);
-                this.props.saveAnswerInfo({ version, lastPath, examPath, currPath, finish, ...LogInfo });
-                this.props.navigation.navigate('VideoTest',{isNew:true});
+                let newDic = { version, lastPath, examPath, currPath, finish, ...LogInfo };
+                this.props.saveAnswerInfo(newDic);
+                this.props.navigation.navigate('VideoTest', { isNew: true });
                 RNFS.unlink(this.props.path + '/answer' + anserDic.version);
             })
         });
@@ -214,7 +218,7 @@ class TestStart extends Component {
 
         //检查网络
         // this.props.netInfo !== undefined && this.props.netInfo.isConnected === false
-        if (utils.netInfo.isConnected===false) {
+        if (utils.netInfo.isConnected === false) {
             Alert.alert("", "请检查网络！");
             return;
         }
@@ -224,21 +228,21 @@ class TestStart extends Component {
 
         let UserID = this.props.UserID;
         let taskId = "";
-        
+
         taskId = (this.props.navigation.state.params.isFinish === true) ? "" : this.props.taskId;
-        
+
         if (this.props.answerRecord && this.props.answerRecord.isSubmit === true && this.props.answerRecord.taskId === taskId && this.props.navigation.state.params.isFinish === false) {//如果已经提交过
             Alert.alert("", "你已做完作业，现在为模拟练习");
             taskId = "";
         }
-        
+
         let params = {
             "PaperID": this.props.navigation.state.params.ID,
             "UserID": UserID,
             "Total": totalScore,
             "TaskID": taskId,
         }
-       
+
         fetchPost(startExam, params).then((result) => {
             // alert("开始考试记录:"+JSON.stringify(result));
             //result  LogID,TaskLogID
@@ -249,8 +253,8 @@ class TestStart extends Component {
                     DeviceEventEmitter.emit('replaceRoute', { isLogin: false });
                 }
             } else {
-                
-                let ishome = !(result.TaskLogID==="00000000-0000-0000-0000-000000000000") ;
+
+                let ishome = !(result.TaskLogID === "00000000-0000-0000-0000-000000000000");
                 let taskId = taskId;
                 let isSubmit = false;//是否提交到服务器
                 // debugger
@@ -267,7 +271,7 @@ class TestStart extends Component {
 
         //检查网络
         // this.props.netInfo !== undefined && this.props.netInfo.isConnected === false
-        if (utils.netInfo.isConnected===false) {
+        if (utils.netInfo.isConnected === false) {
             Alert.alert("", "请检查网络！");
             return;
         }
@@ -310,11 +314,11 @@ class TestStart extends Component {
                     let answerRecord = JSON.parse(result);
                     this.props.saveAnswerRecord(answerRecord);//获取之前答题记录
                     this.props.getTestProgress(anserDic);
-                    this.props.navigation.navigate('VideoTest',{isNew:false});
+                    this.props.navigation.navigate('VideoTest', { isNew: false });
                 })
             } else {
                 this.props.getTestProgress(anserDic);
-                this.props.navigation.navigate('VideoTest',{isNew:false});
+                this.props.navigation.navigate('VideoTest', { isNew: false });
             }
         })
 
@@ -342,9 +346,7 @@ class TestStart extends Component {
     }
 
     getWhiteView() {
-        let anserDic = this.props.answerRecord;
-
-        if (anserDic === undefined) {//为开始考试 考试标题
+        if (this.props.answerRecord === undefined) {//为开始考试 考试标题
             return <View style={styles.whiteView}>
                 <View><Text style={styles.scoreText}>{this.props.examContent && this.props.examContent.PriTitle}</Text></View>
 
@@ -355,11 +357,11 @@ class TestStart extends Component {
                     <Text style={styles.buttonText}>{"开始考试"}</Text>
                 </TouchableOpacity>
             </View>
-        } else if (anserDic.finish === true) {//当前考试已完成  显示 重新考试 查看最近成绩
+        } else if (this.props.answerRecord.finish === true) {//当前考试已完成  显示 重新考试 查看最近成绩
             return <View style={styles.whiteView}>
 
                 {
-                    (this.props.answerRecord.isSubmit === undefined || this.props.answerRecord.isSubmit === true) ?
+                    (this.props.answerRecord.isSubmit === true) ?
                         <TouchableOpacity onPress={() => utils.callOnceInInterval(this.showBlowInfo, 1000)}>
                             <Text style={styles.scoreText}>{"查看考试记录 > "}</Text>
                         </TouchableOpacity> : <View><Text style={styles.scoreText}>{this.props.examContent && this.props.examContent.PriTitle}</Text></View>
@@ -398,9 +400,9 @@ class TestStart extends Component {
 
     render() {
         let answerRecord = this.props.answerRecord;
-        let selectType = this.props.examContent ? this.props.examContent.Groups[0].Type : 0;
-        if (answerRecord !== undefined && answerRecord.finish === false && answerRecord.gropObj !== undefined && answerRecord.gropObj !== null) {
-            selectType = answerRecord.gropObj.Type;
+        let selectIndex =  0;
+        if (answerRecord && answerRecord.finish === false && answerRecord.progress && answerRecord.progress.groupIndex ) {
+            selectIndex = answerRecord.progress.groupIndex;
         }
         return (
 
@@ -432,25 +434,25 @@ class TestStart extends Component {
                             ref={(scroll) => this._scroll = scroll}
                             showsVerticalScrollIndicator={false}
                             onContentSizeChange={(contentWidth, contentHeight) => {
-                                this.contentHeight=contentHeight;
-                                let isMax=(contentHeight-20*utils.SCREENRATE) > this.scrHeight;
+                                this.contentHeight = contentHeight;
+                                let isMax = (contentHeight - 20 * utils.SCREENRATE) > this.scrHeight;
                                 this.setState({ isTop: !isMax, isBottom: !isMax });
                             }}
                         >
-                                {
-                                    this.props.examContent && this.props.examContent.Groups.map((element, i) => {
-                                        element.ExamTopics.map((topObj, j) => {
-                                            topObj.TopicInfoList.map((sObj, k) => {
-                                                totalScore = (i === 0 && j === 0 && k === 0) ? sObj.Score : (sObj.Score + totalScore);
-                                            })
+                            {
+                                this.props.examContent && this.props.examContent.Groups.map((element, i) => {
+                                    element.ExamTopics.map((topObj, j) => {
+                                        topObj.TopicInfoList.map((sObj, k) => {
+                                            totalScore = (i === 0 && j === 0 && k === 0) ? sObj.Score : (sObj.Score + totalScore);
                                         })
-
-                                        const isSelect = element.Type === selectType;
-                                        const num = i + 1;
-                                        const title = typeEnum[element.Type];
-                                        return <ProgressButton key={element.Type} isSelect={isSelect} num={num} title={title+"\t"} />
                                     })
-                                }
+
+                                    const isSelect = i === selectIndex;
+                                    const num = i + 1;
+                                    const title = typeEnum[element.Type];
+                                    return <ProgressButton key={element.Type} isSelect={isSelect} num={num} title={title + "\t"} />
+                                })
+                            }
                         </ScrollView>
                         {
                             this.state.isBottom === false ? <TouchableOpacity style={styles.maxBtn}

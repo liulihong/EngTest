@@ -79,6 +79,9 @@ export default class PaperManager {
             this.topObj = this.groupObj.ExamTopics[progress.topIndex];
             this.topObj.index = progress.topIndex;
             this.topObj.haveNext = ((progress.topIndex + 1) < this.groupObj.ExamTopics.length);
+            this.topObj.Type = this.groupObj.Type;
+            this.topObj.ImgList = this.groupObj.ImgList;
+            this.topObj.isRecord = (this.groupObj.Type === 2 || this.groupObj.Type === 4 || this.groupObj.Type === 5)
         }
     }
 

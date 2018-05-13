@@ -166,7 +166,7 @@ class AnswerScreen extends Component {
                         let newTitle = title + ' ( ' + totalScore.toFixed(2) + ' / ' + tempScore.toFixed(2) + ' )';
                         let examPath = this.props.currentExamPath;
                         return (
-                            <TouchableOpacity key={element.Type} onPress={() => {
+                            <TouchableOpacity key={i} onPress={() => {
                                 let tempScore = 0;//计算大题题目总分
                                 element.ExamTopics.map((topObj) => {
                                     topObj.TopicInfoList.map((sObj) => {

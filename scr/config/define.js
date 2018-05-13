@@ -17,7 +17,7 @@ const downloadDest=(instructions==="IOS"?RNFS.DocumentDirectoryPath:RNFS.Externa
 
 const version_android = 6;
 const version_ios = 6;
-const currVersion = instructions==="IOS"?version_ios:version_android;
+const currVersion = instructions==="IOS"? version_ios: version_android;
 
 //颜色
 const colors  = {
