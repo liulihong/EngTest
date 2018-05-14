@@ -11,7 +11,8 @@ import { fetchPost } from '../request/fetch';
 import { submitExamTopic, endExam } from '../request/requestUrl';
 import copy from 'lodash';
 import RNFS from 'react-native-fs';
-import SubmitAnswer from "../utils/submitAnswer"
+import SubmitAnswer from "../utils/submitAnswer";
+// import CircleProgressView from "./examComs/CircleProgressView";
 
 
 let Sound1 = new MySound;
@@ -67,7 +68,7 @@ class AudioSoundConCom extends Component {
     }
     onBackAndroid = () => {
         this.props.paperCon.stepCon.end(true);
-        this.props.paperCon=null;
+        this.props.paperCon = null;
     };
 
     //组件卸载 播放停止
@@ -105,18 +106,28 @@ class AudioSoundConCom extends Component {
     }
 
     render() {
+        let Progress = require('react-native-progress');
         return (
             <View style={styles.audio}>
+                {/* <Progress.Circle size={30} indeterminate={true} /> */}
+                <Progress.Circle
+                    color={this.props.isRecording ? "#ff6169" : utils.COLORS.theme}
+                    borderColor={"#cccccc"}
+                    progress={(this.props.progressInfo && this.props.progressInfo.percent) ? this.props.progressInfo.percent : 0}
+                    size={70 * utils.SCREENRATE}>
+                    <TouchableOpacity style={styles.button} onPress={() => utils.callOnceInInterval(this.conBtnClick)}>
+                        <Image
+                            style={{ width: '100%', height: '100%' }}
+                            source={this.getBtnPic()}
+                        />
+                    </TouchableOpacity>
+                </Progress.Circle>
+                {/* <Progress.Circle size={30} indeterminate={true} />
+                <Progress.CircleSnail colors={['red', 'green', 'blue']} /> */}
 
-                <TouchableOpacity style={styles.button} onPress={() => utils.callOnceInInterval(this.conBtnClick)}>
-                    <Image
-                        style={{ width: '100%', height: '100%' }}
-                        source={this.getBtnPic()}
-                    />
-                </TouchableOpacity>
 
                 <Text style={{ marginLeft: 10 * utils.SCREENRATE, fontSize: 15 * utils.SCREENRATE }}>
-                    {(this.props.progressInfo&&this.props.progressInfo.info)?this.props.progressInfo.info:""}
+                    {(this.props.progressInfo && this.props.progressInfo.info) ? this.props.progressInfo.info : ""}
                 </Text>
 
                 <ConBtn
@@ -154,7 +165,7 @@ const mapStateToProps = (state) => {
     let examPath = dataSource.currentExamPath;
     let answerRecord = dataSource.answerRecord;
     let answers = dataSource.answers;
-    
+
     return {
         dataSource,
         examPath,
@@ -185,10 +196,10 @@ const styles = StyleSheet.create({
         width: 70 * utils.SCREENRATE,
         height: 70 * utils.SCREENRATE,
         borderRadius: 35 * utils.SCREENRATE,
-        borderColor: "#cccccc",
-        borderWidth: 2,
-        backgroundColor : "white",
-
+        // borderColor: "#cccccc",
+        // borderWidth: 2,
+        // backgroundColor: "white",
+        position: "absolute",
     },
     conBtnView: {
         position: "absolute",

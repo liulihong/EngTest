@@ -57,6 +57,7 @@
 		C21612F42074A4E6003F6BF0 /* IQToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C21612B62074A4E5003F6BF0 /* IQToolbar.m */; };
 		C21612F52074A4E6003F6BF0 /* IQUIView+IQKeyboardToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = C21612B82074A4E5003F6BF0 /* IQUIView+IQKeyboardToolbar.m */; };
 		C21612F62074A4E6003F6BF0 /* IQKeyboardManager.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C21612BB2074A4E5003F6BF0 /* IQKeyboardManager.bundle */; };
+		C22F732C20A9A082006693BE /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C22F732920A9A050006693BE /* libART.a */; };
 		F1021498D7B84ED7B48DB8F0 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69BA0419E7C14678B7396452 /* libRNSound.a */; };
 /* End PBXBuildFile section */
 
@@ -362,6 +363,20 @@
 			remoteGlobalIDString = 9936F32F1F5F2E5B0010BF04;
 			remoteInfo = "privatedata-tvOS";
 		};
+		C22F732820A9A050006693BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C22F732320A9A04F006693BE /* ART.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
+			remoteInfo = ART;
+		};
+		C22F732A20A9A050006693BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C22F732320A9A04F006693BE /* ART.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 323A12871E5F266B004975B8;
+			remoteInfo = "ART-tvOS";
+		};
 		C230C2CB202BE5B3002F710A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 22411AE131994FD7AB2D674A /* RCTSplashScreen.xcodeproj */;
@@ -460,6 +475,7 @@
 		C21612B82074A4E5003F6BF0 /* IQUIView+IQKeyboardToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IQUIView+IQKeyboardToolbar.m"; sourceTree = "<group>"; };
 		C21612B92074A4E5003F6BF0 /* KeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardManager.h; sourceTree = "<group>"; };
 		C21612BB2074A4E5003F6BF0 /* IQKeyboardManager.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = IQKeyboardManager.bundle; sourceTree = "<group>"; };
+		C22F732320A9A04F006693BE /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		E013338BA0F4481AB2FC2651 /* RNAudio.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNAudio.xcodeproj; path = "../node_modules/react-native-audio/ios/RNAudio.xcodeproj"; sourceTree = "<group>"; };
 		F1CF05B867484C28B4914A7E /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		F88B16AFC95544A6AA3FC44C /* libRCTSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTSplashScreen.a; sourceTree = "<group>"; };
@@ -478,6 +494,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C22F732C20A9A082006693BE /* libART.a in Frameworks */,
 				BC95C4D0203B1FED007ED732 /* libRCTCordova.a in Frameworks */,
 				BC95C4CF203B1FD4007ED732 /* libRCTZip.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
@@ -671,6 +688,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				C22F732320A9A04F006693BE /* ART.xcodeproj */,
 				BC95C4C9203B1FA8007ED732 /* RCTZip.xcodeproj */,
 				BC95C4C3203B1F92007ED732 /* RCTCordova.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
@@ -842,6 +860,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		C22F732420A9A04F006693BE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C22F732920A9A050006693BE /* libART.a */,
+				C22F732B20A9A050006693BE /* libART-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		C230C2A2202BE5B2002F710A /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -1005,6 +1032,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = C22F732420A9A04F006693BE /* Products */;
+					ProjectRef = C22F732320A9A04F006693BE /* ART.xcodeproj */;
+				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
@@ -1380,6 +1411,20 @@
 			remoteRef = C2255C0520206A2F00D3E994 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		C22F732920A9A050006693BE /* libART.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libART.a;
+			remoteRef = C22F732820A9A050006693BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C22F732B20A9A050006693BE /* libART-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libART-tvOS.a";
+			remoteRef = C22F732A20A9A050006693BE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		C230C2CC202BE5B3002F710A /* libRCTSplashScreen.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1635,6 +1680,7 @@
 					"$(SRCROOT)/../node_modules/react-native-filesystem/ios/RNFileSystem",
 					"$(SRCROOT)/IQKeyboardManager",
 					"$(SRCROOT)/../node_modules/react-native-idle/ios/RNIdle",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/ART",
 				);
 				INFOPLIST_FILE = EHearTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1672,6 +1718,7 @@
 					"$(SRCROOT)/../node_modules/react-native-filesystem/ios/RNFileSystem",
 					"$(SRCROOT)/IQKeyboardManager",
 					"$(SRCROOT)/../node_modules/react-native-idle/ios/RNIdle",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/ART",
 				);
 				INFOPLIST_FILE = EHearTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -1972,6 +2019,7 @@
 					"$(SRCROOT)/../node_modules/react-native-filesystem/ios/RNFileSystem",
 					"$(SRCROOT)/IQKeyboardManager",
 					"$(SRCROOT)/../node_modules/react-native-idle/ios/RNIdle",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/ART",
 				);
 				INFOPLIST_FILE = EHearTest/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;

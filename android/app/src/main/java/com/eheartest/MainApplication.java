@@ -3,6 +3,7 @@ package com.eheartest;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.remobile.zip.RCTZipPackage;
 import com.github.wusuopu.RNIdle.RNIdlePackage;
 import com.eheartest.ReactNativeAudioPackage;
 import com.zmxv.RNSound.RNSoundPackage;
@@ -32,12 +33,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RCTZipPackage(),
             new RNIdlePackage(),
             new ReactNativeAudioPackage(),
             new RNSoundPackage(),
             new RNFSPackage(),
-            new SplashScreenPackage(),
-            new RCTZipPackage()
+            new SplashScreenPackage()
       );
     }
 

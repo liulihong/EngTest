@@ -146,6 +146,7 @@ android {
 }
 
 dependencies {
+    compile project(':@remobile/react-native-zip')
     compile project(':react-native-idle')
     compile project(':react-native-audio')
     compile project(':react-native-sound')

@@ -159,7 +159,7 @@ class VideoTest extends Component {
         DeviceEventEmitter.addListener("reloadProgress", (progress) => {
             this.setProgressToSave("progress", progress);
         });
-        
+
         //提交小题答案
         DeviceEventEmitter.addListener("submitAnswer", (topObj, groupObj) => {
             if (this.props.answers && this.props.answers[groupObj.Type] && topObj.TopicInfoList) {
@@ -229,7 +229,7 @@ class VideoTest extends Component {
                     <Text style={styles.title}>{this.state.stepInfo.data.Desc}</Text>
                     {
                         //提示语
-                        (this.state.stepInfo.anaInfo.tip) ? <Text style={[styles.title, { color: "red" }]}>{"Tip: " + this.state.stepInfo.anaInfo.tip}</Text> : <View />
+                        (this.state.stepInfo.anaInfo.tip) ? <Text style={[styles.title, { color: "#ff6169" }]}>{"Tip: " + this.state.stepInfo.anaInfo.tip}</Text> : <View />
                     }
                     {
                         this.getComponent()

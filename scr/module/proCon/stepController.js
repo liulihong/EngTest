@@ -37,7 +37,7 @@ export default class StepCon { //试卷控制器
             // alert("等待时间" + time);
             this.dataSouce.isRecording = (this.dataSouce.stepType === WaitType.answerTime && this.dataSouce.data.isRecord === true);
             let waitInfo = this.dataSouce.stepType + "倒计时: " + this.time;
-            this.stepInfo({percent:100,info:waitInfo});
+            this.stepInfo({percent:1,info:waitInfo});
             if (this.dataSouce.isRecording) {//如果是录音
                 let recordPath = this.recordPath;
                 Audio1.startRecord(recordPath);
@@ -66,7 +66,7 @@ export default class StepCon { //试卷控制器
             Sound1.soundGetCurrentTime((time, isPlaying) => {
                 
                 if (isPlaying === false) {//如果播放停止之后
-                    this.stepInfo({percent:100,info:""});
+                    this.stepInfo({percent:1,info:""});
                     this.end(false);//步骤自动结束
                 }else{
                     let time1 = time;
@@ -75,7 +75,7 @@ export default class StepCon { //试卷控制器
                     time1 = (time1 > 0) ? time1 : 0;
                     time2 = (time2 > 0) ? time2 : 0;
                     //播放信息
-                    this.stepInfo({percent:(time1/time2*100),info:(utils.getTimeStr(time,"mm:ss"))});
+                    this.stepInfo({percent:(time1/time2),info:(utils.getTimeStr(time,"mm:ss"))});
                 }
             });
         }
@@ -89,7 +89,7 @@ export default class StepCon { //试卷控制器
         if (this.time <= 0) { //如果倒计时小于0
             this.end(false);//步骤自动结束
         } else {
-            this.stepInfo({percent:(this.time/this.dataSouce.anaInfo.time*100),info:waitInfo});
+            this.stepInfo({percent:(this.time/this.dataSouce.anaInfo.time),info:waitInfo});
         }
     }
 
