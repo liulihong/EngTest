@@ -117,17 +117,17 @@ class AnswerScreen extends Component {
                     <Text style={[styles.scoreTxt, { color: (scoreTxt === "正在计分\n请稍后") ? "#fc9141" : "#ff0000" }]}>{scoreTxt}</Text>
                 </ImageBackground>
                 <View style={styles.userInfo}>
-                    <Text numberOfLines={1} style={styles.userTxt}>{"姓名："+(this.props.logResult.Name?this.props.logResult.Name:this.props.logResult.LoginName)}</Text>
-                    <Text numberOfLines={1} style={styles.userTxt}>{"类型："+((this.props.answerRecord.ishome===true)?"作业":"模拟练习")}</Text>
+                    <Text numberOfLines={1} style={styles.userTxt}>{"姓名：" + (this.props.logResult.Name ? this.props.logResult.Name : this.props.logResult.LoginName)}</Text>
+                    <Text numberOfLines={1} style={styles.userTxt}>{"类型：" + ((this.props.answerRecord.ishome === true) ? "作业" : "模拟练习")}</Text>
                     {
-                        (this.state.serverAnswer&&this.state.serverAnswer.StartTime)?<Text numberOfLines={1} style={styles.userTxt}>{"时间："+ utils.getTimeStr(this.state.serverAnswer.StartTime,"MM-dd hh:mm") }</Text>:<Text/>
+                        (this.state.serverAnswer && this.state.serverAnswer.StartTime) ? <Text numberOfLines={1} style={styles.userTxt}>{"时间：" + utils.getTimeStr(this.state.serverAnswer.StartTime, "MM-dd hh:mm")}</Text> : <Text />
                     }
                     {
-                        (this.state.serverAnswer&&this.state.serverAnswer.StartTime)?<Text numberOfLines={1} style={styles.userTxt}>{"用时："+ utils.getTimeCha(this.state.serverAnswer.StartTime,this.state.serverAnswer.EndTime)}</Text>:<Text/>
+                        (this.state.serverAnswer && this.state.serverAnswer.StartTime) ? <Text numberOfLines={1} style={styles.userTxt}>{"用时：" + utils.getTimeCha(this.state.serverAnswer.StartTime, this.state.serverAnswer.EndTime)}</Text> : <Text />
                     }
                 </View>
                 {
-                    this.state.isTop === false ? <TouchableOpacity style={[styles.maxBtn, { position: "absolute", bottom: 0,height:40*utils.SCREENRATE }]}
+                    this.state.isTop === false ? <TouchableOpacity style={[styles.maxBtn, { position: "absolute", bottom: 0, height: 40 * utils.SCREENRATE }]}
                         onPress={() => {
                             this._scroll.scrollTo({ y: 0 });
                         }}
@@ -156,14 +156,23 @@ class AnswerScreen extends Component {
                         const sResetAnswer = (this.state.resetAnswer[element.Type] !== undefined) ? this.state.resetAnswer[element.Type] : {};
 
                         let tempScore = 0;//计算大题题目总分.
+                        let tempScore2 = 0;//计算大题得分
                         element.ExamTopics.map((topObj) => {
                             topObj.TopicInfoList.map((sObj) => {
                                 tempScore += sObj.Score;
+                                if (this.state.serverAnswer && this.state.serverAnswer.LogList) {
+                                    for (let i = 0; i < this.state.serverAnswer.LogList.length; i++) {
+                                        if (this.state.serverAnswer.LogList[i].ID === sObj.UniqueID) {
+                                            tempScore2 += this.state.serverAnswer.LogList[i].Score;
+                                            break;
+                                        }
+                                    }
+                                }
                             })
                         })
-                        // alert(JSON.stringify(sResetAnswer));
+                        sResetAnswer.totalScore=tempScore2;
 
-                        let newTitle = title + ' ( ' + totalScore.toFixed(2) + ' / ' + tempScore.toFixed(2) + ' )';
+                        let newTitle = title + ' ( ' + tempScore2.toFixed(2) + ' / ' + tempScore.toFixed(2) + ' )';
                         let examPath = this.props.currentExamPath;
                         return (
                             <TouchableOpacity key={i} onPress={() => {
@@ -186,18 +195,17 @@ class AnswerScreen extends Component {
                             }} >
                                 <ProgressButton backStyle={{ backgroundColor: utils.COLORS.theme }} isSelect={isSelect} num={num} title={newTitle} />
                             </TouchableOpacity>
-
                         )
                     })
                 }
             </ScrollView>
-            {this.state.isBottom===false?<TouchableOpacity style={[styles.maxBtn, { height: (utils.PLATNAME === "IOS" ? 35 : 55), paddingTop: (utils.PLATNAME === "IOS" ? 8 : 3), justifyContent: "flex-start" }]}
+            {this.state.isBottom === false ? <TouchableOpacity style={[styles.maxBtn, { height: (utils.PLATNAME === "IOS" ? 35 : 55), paddingTop: (utils.PLATNAME === "IOS" ? 8 : 3), justifyContent: "flex-start" }]}
                 onPress={() => {
                     this._scroll.scrollToEnd();
                 }}
             >
                 <Text style={{ color: "#cccccc", fontSize: 18 * utils.SCREENRATE }}>{"︾"}</Text>
-            </TouchableOpacity>:<View style={[styles.maxBtn, { height: (utils.PLATNAME === "IOS" ? 35 : 55), paddingTop: (utils.PLATNAME === "IOS" ? 8 : 3), justifyContent: "flex-start" }]} />}
+            </TouchableOpacity> : <View style={[styles.maxBtn, { height: (utils.PLATNAME === "IOS" ? 35 : 55), paddingTop: (utils.PLATNAME === "IOS" ? 8 : 3), justifyContent: "flex-start" }]} />}
         </View>
     }
 
@@ -270,8 +278,8 @@ const styles = StyleSheet.create({
         // alignItems:"center",
     },
     totalScore: {
-        width: 332/2 * utils.SCREENRATE,
-        height: 245/2 * utils.SCREENRATE,
+        width: 332 / 2 * utils.SCREENRATE,
+        height: 245 / 2 * utils.SCREENRATE,
         paddingTop: 40 * utils.SCREENRATE,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -280,8 +288,8 @@ const styles = StyleSheet.create({
         // marginTop: 10 * utils.SCREENRATE,
         // marginBottom: 30 * utils.SCREENRATE,
         position: "absolute",
-        right: 6*utils.SCREENRATE,
-        bottom: 55*utils.SCREENRATE+(utils.PLATNAME==="IOS"?0:10),
+        right: 6 * utils.SCREENRATE,
+        bottom: 55 * utils.SCREENRATE + (utils.PLATNAME === "IOS" ? 0 : 10),
     },
     scoreTxt: {
         color: "#ffffff",
@@ -290,20 +298,20 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     userInfo: {
-        marginTop:14*utils.SCREENRATE,
-        marginLeft:25*utils.SCREENRATE,
-        width:"58%",
+        marginTop: 14 * utils.SCREENRATE,
+        marginLeft: 25 * utils.SCREENRATE,
+        width: "58%",
         // height:"40%",
         // backgroundColor:"rgba(0,0,0,0.1)",
-        flexDirection:"column",
+        flexDirection: "column",
     },
-    userTxt:{
+    userTxt: {
         color: "#ffffff",
         fontSize: 16 * utils.SCREENRATE,
-        lineHeight:26 * utils.SCREENRATE,
+        lineHeight: 26 * utils.SCREENRATE,
         fontWeight: "400",
         textAlign: "left",
-        height:26 * utils.SCREENRATE,
-        width:"100%",
+        height: 26 * utils.SCREENRATE,
+        width: "100%",
     },
 });

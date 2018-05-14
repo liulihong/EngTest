@@ -4,7 +4,7 @@ import utils from "../utils";
 import NavBar from '../components/navBar';
 
 import { connect } from "react-redux";
-import { saveAnswerRecord,saveCurrExamAnswers } from "../store/actions";
+import { saveAnswerRecord, saveCurrExamAnswers } from "../store/actions";
 
 import HearSelect from '../components/HearSelectCom';
 import HearRecord from '../components/HearRecordCom';
@@ -71,43 +71,57 @@ class VideoTest extends Component {
         this.submitExamFinish = this.submitExamFinish.bind(this);
         this.setRecordPath = this.setRecordPath.bind(this);
         this.saveRecordAnswer = this.saveRecordAnswer.bind(this);
+        this.newStepCallBack = this.newStepCallBack.bind(this);
+        this.paperEndCallBack = this.paperEndCallBack.bind(this);
+
         this.state = {
             currPage: pageStatus.examIng,
         };
 
-        let that = this;
-        this.paperCon = new PaperController(this.props.examPath, this.props.examContent, (stepInfo, progressInfo) => {
-            let name = stepInfo.data.ID;
-            if(stepInfo.levType===levelType.minSubject && stepInfo.data.isRecord===true)//如果是录音小题 给步骤控制器设置录音地址
-                that.paperCon.stepCon.recordPath=that.setRecordPath(name);
-            if(stepInfo.isRecording)//如果是录音 保存录音信息
-                that.saveRecordAnswer(name,stepInfo.data);
-            //播放信息
-            that.setState({
-                stepInfo: stepInfo,
-                isRecording: stepInfo.isRecording,
-                stepType: stepInfo.stepType,
-                levelType: stepInfo.levType,
-                progressInfo: progressInfo,
-            });
-        }, () => { 
-            let answerDic = this.props.answerRecord;
-            answerDic.finish = true;//设置试卷为已完成
-            this.props.saveAnswerInfo(answerDic);
-            that.setState({ currPage: pageStatus.sureSubmit });
-            that.paperCon.stepCon.end(true);
+        //初始化试卷控制器
+        this.paperCon = new PaperController(
+            this.props.examPath,
+            this.props.examContent,
+            (stepInfo, progressInfo) => this.newStepCallBack(stepInfo,progressInfo),
+            this.paperEndCallBack
+        );
+    }
+
+    //新步骤回调
+    newStepCallBack(stepInfo, progressInfo) {
+        let name = stepInfo.data.ID;
+        if (stepInfo.levType === levelType.minSubject && stepInfo.data.isRecord === true)//如果是录音小题 给步骤控制器设置录音地址
+            this.paperCon.stepCon.recordPath = this.setRecordPath(name);
+        if (stepInfo.isRecording)//如果是录音 保存录音信息
+            this.saveRecordAnswer(name, stepInfo.data);
+        //播放信息
+        this.setState({
+            stepInfo: stepInfo,
+            isRecording: stepInfo.isRecording,
+            stepType: stepInfo.stepType,
+            levelType: stepInfo.levType,
+            progressInfo: progressInfo,
         });
     }
 
-    // 设置录音地址
-    setRecordPath(name){
+    //试卷结束回调
+    paperEndCallBack() {
+        //试卷结束回调
+        this.setProgressToSave("finish", true);//设置试卷为已完成
+        this.setState({ currPage: pageStatus.sureSubmit });
+        this.paperCon.stepCon.end(true);
+    }
+
+    //设置录音地址
+    setRecordPath(name) {
         let lastname = (utils.PLATNAME === "IOS") ? '.wav' : '';
         let currAnPath = this.props.examPath + "/answer" + this.props.answerRecord.version;
         let path = currAnPath + '/' + name + lastname; //录音地址
         return path;
     }
-    //保存录音答案
-    saveRecordAnswer(name,topObj){
+
+    //保存录音答案信息
+    saveRecordAnswer(name, topObj) {
         let currAnPath = this.props.examPath + "/answer" + this.props.answerRecord.version;
         let type = topObj.Type;
         let id = topObj.TopicInfoList[0].UniqueID;
@@ -116,6 +130,7 @@ class VideoTest extends Component {
         this.props.saveAnswer(type, id, num, lastPath);
     }
 
+    //属性数据改变
     componentWillReceiveProps(nextProps) {
         if (nextProps.answers !== this.props.answers) {
             let path = this.props.examPath + "/answer" + this.props.answerRecord.version + '/answer.json';
@@ -123,37 +138,37 @@ class VideoTest extends Component {
         }
     }
 
+    //组件加载完成
     componentDidMount() {
 
         RNIdle.disableIdleTimer()    //保持屏幕常亮
 
-        let LogID = this.props.answerRecord.LogID;
-        this.submitModel = new SubmitAnswer(this.submitExamFinish, LogID);
-        this.submitModel.haveSubmit = false;
-        this.paperCon.answerVersion = this.props.answerRecord.version;
-
+        //初始化步骤
         if (this.props.navigation.state.params.isNew) {
-            this.paperCon.initNewStep(true);//初始化步骤
+            this.paperCon.initNewStep(true);
         } else {
             this.paperCon.initNewStep(false, this.props.answerRecord);
         }
 
-        //保存答案进度
-        let that = this;
+        //提交答案实例初始化
+        let LogID = this.props.answerRecord.LogID;
+        this.submitModel = new SubmitAnswer(this.submitExamFinish, LogID);
+        this.submitModel.haveSubmit = false;
+
+        //保存考试进度
         DeviceEventEmitter.addListener("reloadProgress", (progress) => {
-            let newProgress = this.props.answerRecord;
-            newProgress.progress = progress;
-            newProgress.examPath = this.props.examPath;
-            that.props.saveAnswerInfo(newProgress);
+            this.setProgressToSave("progress", progress);
         });
         //提交小题答案
         DeviceEventEmitter.addListener("submitAnswer", (topObj, groupObj) => {
-            if(that.props.answers && that.props.answers[groupObj.Type] && topObj.TopicInfoList){
-                let answer = that.props.answers[groupObj.Type];
-                that.submitModel.addSubmitTask(groupObj, answer, topObj);
+            if (this.props.answers && this.props.answers[groupObj.Type] && topObj.TopicInfoList) {
+                let answer = this.props.answers[groupObj.Type];
+                this.submitModel.addSubmitTask(groupObj, answer, topObj);
             }
         });
     }
+
+    //组件将要销毁
     componentWillUnmount() {
         DeviceEventEmitter.emit('ChangeUI');//通知开始考试页面刷新UI
         RNIdle.enableIdleTimer()     //退出屏幕常亮
@@ -161,43 +176,60 @@ class VideoTest extends Component {
         DeviceEventEmitter.removeAllListeners('submitAnswer');
     }
 
+    //设置考试进度 name属性名 value属性值
+    setProgressToSave(name, value) {
+        let newProgress = this.props.answerRecord;
+        newProgress[name] = value;
+        // newProgress.examPath = this.props.examPath;
+        this.props.saveAnswerInfo(newProgress);
+    }
+
+    //获取组件内容
     getComponent() {
-        if (this.state.stepInfo) {
-            if (this.state.stepInfo.data.Type === 1) {//听后选择
-                return <HearSelect contentData={this.state.stepInfo.data.TopicInfoList} />;
-            } else if (this.state.stepInfo.data.Type === 2) {//听后回答
-                return <View>
-                    {
-                        this.state.stepInfo.data.TopicInfoList.map((topicObj,i)=>{
-                            return <Text key={i} style={styles.title}>{topicObj.Title}</Text>
-                        })
-                    }
-                </View>
-            } else if (this.state.stepInfo.data.Type === 3) {//听后记录
-                return <HearRecord contentData={this.state.stepInfo.data.TopicInfoList} examPath={this.props.examPath} type={this.state.stepInfo.data.Type} />;
-            } else if (this.state.stepInfo.data.Type === 4) {//转述信息
-                return <HearRecord contentData={this.state.stepInfo.data.TopicInfoList} examPath={this.props.examPath} type={this.state.stepInfo.data.Type} />;
-            } else if (this.state.stepInfo.data.Type === 5) {//短文朗读
-                return <View>
-                    {
-                        this.state.stepInfo.data.TopicInfoList.map((topicObj,i)=>{
-                            return <Text key={i} style={styles.title}>{topicObj.Title}</Text>
-                        })
-                    }
-                </View>;
-            } else if (this.state.stepInfo.data.Type === 10) {//听后选图
-                return <HearSelPic contentData={this.state.stepInfo.data.TopicInfoList} examPath={this.props.examPath} imgList={this.state.stepInfo.data.ImgList} />;
+        if (this.state.stepInfo && this.state.stepInfo.data) {
+            let topObj = this.state.stepInfo.data;
+            switch (topObj.Type) {
+                case 1:
+                    return <HearSelect contentData={topObj.TopicInfoList} />;
+                case 2:
+                    return <View>
+                        {
+                            topObj.TopicInfoList.map((topicObj, i) => {
+                                return <Text key={i} style={styles.title}>{topicObj.Title}</Text>
+                            })
+                        }
+                    </View>
+                case 3:
+                    return <HearRecord contentData={topObj.TopicInfoList} examPath={this.props.examPath} type={topObj.Type} />;
+                case 4:
+                    return <HearRecord contentData={topObj.TopicInfoList} examPath={this.props.examPath} type={topObj.Type} />;
+                case 5:
+                    return <View>
+                        {
+                            topObj.TopicInfoList.map((topicObj, i) => {
+                                return <Text key={i} style={styles.title}>{topicObj.Title}</Text>
+                            })
+                        }
+                    </View>;
+                case 10:
+                    return <HearSelPic contentData={topObj.TopicInfoList} examPath={this.props.examPath} imgList={topObj.ImgList} />;
+                default:
+                    return null;
             }
         }
     }
 
     //如果不是读标题  内容展示区
     getContent() {
-        if (this.state.levelType === levelType.minSubject ) {
+        if (this.state.levelType === levelType.minSubject) {
             return (
                 <View style={{ padding: 5 * utils.SCREENRATE }}>
                     <Text style={styles.title}>{this.state.stepInfo.data.Title}</Text>
                     <Text style={styles.title}>{this.state.stepInfo.data.Desc}</Text>
+                    {
+                        //提示语
+                        (this.state.stepInfo.anaInfo.tip) ? <Text style={[styles.title, { color: "red" }]}>{"Tip: " + this.state.stepInfo.anaInfo.tip}</Text> : <View />
+                    }
                     {
                         this.getComponent()
                     }
@@ -231,10 +263,7 @@ class VideoTest extends Component {
             fetchPost(endExam, { LogID, TaskLogID }).then((res) => {
 
                 if (res.success === true) {
-                    let answerDic = this.props.answerRecord;
-                    answerDic.isSubmit = true;
-                    this.props.saveAnswerInfo(answerDic);
-
+                    this.setProgressToSave("isSubmit", true);
                     this.props.navigation.goBack();
                     // alert("考试完成，静待考试结果吧");
                 } else {
@@ -321,28 +350,30 @@ class VideoTest extends Component {
                         </View>
 
                             <AudioSoundConCom navigation={this.props.navigation} paperCon={this.paperCon} isRecording={this.state.isRecording} progressInfo={this.state.progressInfo} /></View>
-                        : (this.state.currPage === pageStatus.sureSubmit) ? <View style={{ flexDirection: "row", justifyContent: "center", flexWrap: "wrap" }}>
-                            <Image style={{ marginTop: 60 * utils.SCREENRATE }} source={require("../imgs/testIcon/zy-k-iocn.png")} />
-                            <Text style={{ lineHeight: 24 * utils.SCREENRATE, fontSize: 15 * utils.SCREENRATE, marginTop: 20 * utils.SCREENRATE, color: utils.COLORS.theme1 }} >
-                                {"温馨提示:\n考试已完成，确认交卷吗？\n1.如您误操作可重新答题哦！\n2.对此次考试不满意可选择不交卷哦！"}
-                            </Text>
-                            <View style={{ width: utils.SCREENWIDTH, flexDirection: "row", justifyContent: "center" }}>
-                                <TouchableOpacity onPress={() => { this.props.navigation.goBack(); }}
-                                    style={{ width: utils.SCREENWIDTH * 0.3, margin: 10 * utils.SCREENRATE, backgroundColor: "#999999", borderRadius: 5 * utils.SCREENRATE }}>
-                                    <Text style={{ textAlign: "center", color: "white", fontWeight: "600", lineHeight: 40 * utils.SCREENRATE, fontSize: 15 * utils.SCREENRATE }}>{"再做一次"}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => {
-                                    //交卷接口
-                                    this.submitModel.haveSubmit = true;//可以交卷
-                                    this.submitExamFinish();
-                                    //显示交卷中页面
-                                    this.setState({ currPage: pageStatus.submitIng });
-                                }}
-                                    style={{ width: utils.SCREENWIDTH * 0.3, margin: 10 * utils.SCREENRATE, backgroundColor: utils.COLORS.theme, borderRadius: 5 * utils.SCREENRATE }}>
-                                    <Text style={{ textAlign: "center", color: "white", fontWeight: "600", lineHeight: 40 * utils.SCREENRATE, fontSize: 15 * utils.SCREENRATE }}>{"确认交卷"}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View> : <View style={{ width: "80%", backgroundColor: "rgba(0,0,0,0)" }}>
+                        : (this.state.currPage === pageStatus.sureSubmit) ?
+                            <View style={{ flexDirection: "row", justifyContent: "center", flexWrap: "wrap" }}>
+                                <Image style={{ marginTop: 60 * utils.SCREENRATE }} source={require("../imgs/testIcon/zy-k-iocn.png")} />
+                                <Text style={{ lineHeight: 24 * utils.SCREENRATE, fontSize: 15 * utils.SCREENRATE, marginTop: 20 * utils.SCREENRATE, color: utils.COLORS.theme1 }} >
+                                    {"温馨提示:\n考试已完成，确认交卷吗？\n1.如您误操作可重新答题哦！\n2.对此次考试不满意可选择不交卷哦！"}
+                                </Text>
+                                <View style={{ width: utils.SCREENWIDTH, flexDirection: "row", justifyContent: "center" }}>
+                                    <TouchableOpacity onPress={() => { this.props.navigation.goBack(); }}
+                                        style={{ width: utils.SCREENWIDTH * 0.3, margin: 10 * utils.SCREENRATE, backgroundColor: "#999999", borderRadius: 5 * utils.SCREENRATE }}>
+                                        <Text style={{ textAlign: "center", color: "white", fontWeight: "600", lineHeight: 40 * utils.SCREENRATE, fontSize: 15 * utils.SCREENRATE }}>{"再做一次"}</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => {
+                                        //交卷接口
+                                        this.submitModel.haveSubmit = true;//可以交卷
+                                        this.submitExamFinish();
+                                        //显示交卷中页面
+                                        this.setState({ currPage: pageStatus.submitIng });
+                                    }}
+                                        style={{ width: utils.SCREENWIDTH * 0.3, margin: 10 * utils.SCREENRATE, backgroundColor: utils.COLORS.theme, borderRadius: 5 * utils.SCREENRATE }}>
+                                        <Text style={{ textAlign: "center", color: "white", fontWeight: "600", lineHeight: 40 * utils.SCREENRATE, fontSize: 15 * utils.SCREENRATE }}>{"确认交卷"}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View> :
+                            <View style={{ width: "80%", backgroundColor: "rgba(0,0,0,0)" }}>
                                 <ActivityIndicator
                                     animating={true}
                                     style={[{

@@ -13,7 +13,7 @@ const isLastIndex = (minStr, maxStr) => {
 
 //查找播放路径
 const findPlayPath = (path, examPath) => {
-    let oriPath = path.replace(/\\/g, "/");//替换反斜杠为斜杠
+    let oriPath = path?path.replace(/\\/g, "/"):"";//替换反斜杠为斜杠
     let contentPath;
     let isCommon = oriPath.indexOf("common/");
     if (isCommon === 0) {//如果是共用音频

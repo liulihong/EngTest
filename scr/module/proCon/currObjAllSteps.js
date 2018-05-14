@@ -43,7 +43,11 @@ export default class FindSteps {
         
         this.addStep(dataSource, WaitType.readTime);//读题时间
         
-        this.addStep(dataSource, PlayType.midSubContent);//读小题内容
+        if(dataSource.Type === 5 && dataSource.IsHideAudioPath === false){
+            //如果是短文朗读并且隐藏AudioPath内容音频 不需要读内容
+        }else{
+            this.addStep(dataSource, PlayType.midSubContent);//读小题内容
+        }
         
         this.addStep(dataSource, PlayType.reporting);//答题前提示语
         

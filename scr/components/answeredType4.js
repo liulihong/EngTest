@@ -47,7 +47,7 @@ export default class AnsweredType4 extends Component {
         }, 1000);
     }
 
-    stopPlay(){
+    stopPlay() {
         Sound1.soundStop();
         this.setState({
             palyPath: "",
@@ -71,60 +71,64 @@ export default class AnsweredType4 extends Component {
 
                 {
                     groupObj.ExamTopics.map((topObj, i) => {
-                        {/* topObj */ }
+                        /* topObj */ 
                         let path = utils.findPlayPath(topObj.AudioPath, examPath);
                         let isPlay = (path === this.state.palyPath);
                         let source = isPlay ? require("../imgs/aswerIcon/dt_bf_icon.png") : require("../imgs/aswerIcon/dt_zt_icon.png");
                         let picPath = utils.findPicturePath(topObj.TopicInfoList[0].Img, examPath);
                         return (
                             <View key={i} style={styles.topObj}>
-                                {/* 小标题 */}
-                                <TouchableOpacity style={styles.audioInfo} onPress={() => {
-                                    if (isPlay) {
-                                        this.stopPlay();
-                                    } else {
-                                        this.startPlay(path);
-                                    }
-                                }} >
-                                    <Text style={styles.minTitle}>
-                                        <Image style={styles.audioBtn}
-                                            source={source}
-                                        />
-                                        {"  听力原文如下："}
-                                    </Text>
-                                </TouchableOpacity>
-                                {/* 音频内容 */}
-                                <Text style={styles.articleTxt}>
-                                    {topObj.AudioText}
-                                    {/* <Image style={styles.audioBtn}
+                                {
+                                    // 小标题 
+                                    topObj.AudioText ? <View>
+                                        <TouchableOpacity style={styles.audioInfo} onPress={() => {
+                                            if (isPlay) {
+                                                this.stopPlay();
+                                            } else {
+                                                this.startPlay(path);
+                                            }
+                                        }} >
+                                            <Text style={styles.minTitle}>
+                                                <Image style={styles.audioBtn}
+                                                    source={source}
+                                                />
+                                                {"  听力原文如下："}
+                                            </Text>
+                                        </TouchableOpacity>
+                                        {/* 音频内容 */}
+                                        <Text style={styles.articleTxt}>
+                                            {topObj.AudioText}
+                                            {/* <Image style={styles.audioBtn}
                                             source={require("../imgs/aswerIcon/dt_zt_icon.png")}
                                         /> */}
-                                </Text>
-
-                                
-                                <Image source={{ uri: picPath }}
-                                    onLoadEnd={()=>{
-                                        Image.getSize(picPath, (width, height1) => {
-                                            let newheight = utils.SCREENWIDTH * 0.835 / width * height1; //按照屏幕宽度进行等比缩放
-                                            this.setState({ height: newheight });
-                                        })
-                                    }}
-                                    style={{
-                                        width: utils.SCREENWIDTH * 0.835,
-                                        height: this.state.height||10*utils.SCREENRATE,
-                                        marginBottom: 20*utils.SCREENRATE,
-                                        marginLeft:10*utils.SCREENRATE,
-                                    }} />
+                                        </Text>
+                                        <Image source={{ uri: picPath }}
+                                            onLoadEnd={() => {
+                                                Image.getSize(picPath, (width, height1) => {
+                                                    let newheight = utils.SCREENWIDTH * 0.835 / width * height1; //按照屏幕宽度进行等比缩放
+                                                    this.setState({ height: newheight });
+                                                })
+                                            }}
+                                            style={{
+                                                width: utils.SCREENWIDTH * 0.835,
+                                                height: this.state.height || 10 * utils.SCREENRATE,
+                                                marginBottom: 20 * utils.SCREENRATE,
+                                                marginLeft: 10 * utils.SCREENRATE,
+                                            }}
+                                        />
+                                    </View> : 
+                                    <Text style={styles.articleTxt}>{topObj.Desc}</Text>
+                                }
 
                                 {
                                     topObj.TopicInfoList.map((minObj, j) => {
                                         {/* 每小题 */ }
                                         let oriAns = minObj.Correct;
                                         let newAns = "";
-  
-                                        if (localAnswer && localAnswer[minObj.UniqueID] !== undefined){
+
+                                        if (localAnswer && localAnswer[minObj.UniqueID] !== undefined) {
                                             // newAns = localAnswer[minObj.UniqueID].answer; //绝对路径改为相对路径
-                                            newAns=this.props.examPath + "/answer" + this.props.answerVersion + "/" + topObj.ID + ".wav";
+                                            newAns = this.props.examPath + "/answer" + this.props.answerVersion + "/" + topObj.ID + ".wav";
                                         }
 
                                         let isCorrect = false;
@@ -147,7 +151,7 @@ export default class AnsweredType4 extends Component {
                                                 }
                                             }
                                         }
-                                        
+
                                         let isPlay2 = (newAns === this.state.palyPath);
                                         let source = isPlay2 ? require("../imgs/aswerIcon/dt_rw_zt.png") : require("../imgs/aswerIcon/dt_rw_zt2.png");
 
@@ -159,7 +163,7 @@ export default class AnsweredType4 extends Component {
                                                     <Text style={isCorrect ? styles.correctScore : styles.errorScore}>{scoreStr}</Text>
                                                 </Text>
                                                 {
-                                                    (scoreStr === "(未作答)") ? <View /> : <TouchableOpacity onPress={() => { 
+                                                    (scoreStr === "(未作答)") ? <View /> : <TouchableOpacity onPress={() => {
                                                         if (isPlay2) {
                                                             this.stopPlay();
                                                         } else {
@@ -176,7 +180,7 @@ export default class AnsweredType4 extends Component {
                                                 }
                                                 <Text style={[styles.specialTxt, styles.correctScore]} >{"参考答案："}</Text>
                                                 <Text style={[styles.specialTxt, styles.correctScore]} >{minObj.ExampleContent}</Text>
-                                                
+
                                             </View>
                                         )
                                     })
@@ -195,27 +199,27 @@ const styles = StyleSheet.create({
         //    backgroundColor:"#eeeeee",  
     },
     totalScore: {
-        padding: 10*utils.SCREENRATE,
+        padding: 10 * utils.SCREENRATE,
         color: "#ff6169",
         textAlign: "center",
-        fontSize: 18*utils.SCREENRATE,
+        fontSize: 18 * utils.SCREENRATE,
     },
     maxTitle: {
-        padding: 10*utils.SCREENRATE,
+        padding: 10 * utils.SCREENRATE,
         color: "#333333",
-        fontSize: 18*utils.SCREENRATE,
+        fontSize: 18 * utils.SCREENRATE,
         fontWeight: "600",
     },
     topObj: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
-        marginBottom: 30*utils.SCREENRATE,
+        marginBottom: 30 * utils.SCREENRATE,
         // backgroundColor:"#eeeeee",  
     },
     audioInfo: {//音频对应文本描述
         // margin:10,
-        padding: 10*utils.SCREENRATE,
+        padding: 10 * utils.SCREENRATE,
         // paddingBottom:0,
         // paddingTop:0,
         flexDirection: 'row',
@@ -227,43 +231,43 @@ const styles = StyleSheet.create({
     minTitle: {//小标题
         // margin:10,
         color: "#333333",
-        fontSize: 16*utils.SCREENRATE,
+        fontSize: 16 * utils.SCREENRATE,
         fontWeight: "600",
-        lineHeight: 26*utils.SCREENRATE,
+        lineHeight: 26 * utils.SCREENRATE,
         textAlign: "justify",
     },
     audioBtn: {//原音频播放按钮
-        width: utils.PLATNAME === "IOS" ? 16*utils.SCREENRATE : 32*utils.SCREENRATE,
-        height: utils.PLATNAME === "IOS" ? 16*utils.SCREENRATE : 32*utils.SCREENRATE,
+        width: utils.PLATNAME === "IOS" ? 16 * utils.SCREENRATE : 32 * utils.SCREENRATE,
+        height: utils.PLATNAME === "IOS" ? 16 * utils.SCREENRATE : 32 * utils.SCREENRATE,
         resizeMode: "contain",
         alignItems: "center",
         position: "absolute",
-        top: 8*utils.SCREENRATE,
-        bottom: 8*utils.SCREENRATE,
+        top: 8 * utils.SCREENRATE,
+        bottom: 8 * utils.SCREENRATE,
     },
     articleTxt: {
-        padding: 10*utils.SCREENRATE,
+        padding: 10 * utils.SCREENRATE,
         paddingTop: 0,
         paddingBottom: 0,
         color: "#333333",
-        fontSize: 15*utils.SCREENRATE,
+        fontSize: 15 * utils.SCREENRATE,
         fontWeight: "400",
-        lineHeight: 26*utils.SCREENRATE,
+        lineHeight: 26 * utils.SCREENRATE,
     },
     specialTxt: {//文字图片混排
         color: "#333333",
-        fontSize: 16*utils.SCREENRATE,
+        fontSize: 16 * utils.SCREENRATE,
         fontWeight: "400",
-        lineHeight: 26*utils.SCREENRATE,
+        lineHeight: 26 * utils.SCREENRATE,
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
         alignItems: "flex-start",
-        textAlign:"justify"
+        textAlign: "justify"
     },
     contentSty: {//每个小题
-        margin: 10*utils.SCREENRATE,
-        marginBottom: 10*utils.SCREENRATE,
+        margin: 10 * utils.SCREENRATE,
+        marginBottom: 10 * utils.SCREENRATE,
         marginTop: 0,
     },
     correctScore: {//小题正确打分记录
@@ -273,8 +277,8 @@ const styles = StyleSheet.create({
         color: "#ee6666",
     },
     resultBtn: {//正确、错误 图标
-        width: utils.PLATNAME === "IOS" ? 18*utils.SCREENRATE : 32*utils.SCREENRATE,
-        height: utils.PLATNAME === "IOS" ? 12*utils.SCREENRATE : 24*utils.SCREENRATE,
+        width: utils.PLATNAME === "IOS" ? 18 * utils.SCREENRATE : 32 * utils.SCREENRATE,
+        height: utils.PLATNAME === "IOS" ? 12 * utils.SCREENRATE : 24 * utils.SCREENRATE,
         resizeMode: "contain",
         // position:"absolute",
     }

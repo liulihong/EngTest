@@ -312,6 +312,7 @@ class TestStart extends Component {
             if (isExit === true) {
                 RNFS.readFile(jsonPath).then((result) => {
                     let answerRecord = JSON.parse(result);
+                    answerRecord.examPath=this.props.examPath;
                     this.props.saveAnswerRecord(answerRecord);//获取之前答题记录
                     this.props.getTestProgress(anserDic);
                     this.props.navigation.navigate('VideoTest', { isNew: false });
@@ -450,7 +451,7 @@ class TestStart extends Component {
                                     const isSelect = i === selectIndex;
                                     const num = i + 1;
                                     const title = typeEnum[element.Type];
-                                    return <ProgressButton key={element.Type} isSelect={isSelect} num={num} title={title + "\t"} />
+                                    return <ProgressButton key={i} isSelect={isSelect} num={num} title={title + "\t"} />
                                 })
                             }
                         </ScrollView>
