@@ -9,13 +9,13 @@ let Sound1 = new MySound();
 export default class StepCon { //试卷控制器
 
     //stepInfo 步骤进度信息     stepEnd 步骤自动结束回调
-    constructor(stepInfo,stepEnd) {
+    constructor(stepInfo, stepEnd) {
         this.start = this.start.bind(this);
-        this.startTimer=this.startTimer.bind(this);
-        this.progressInfo_play=this.progressInfo_play.bind(this);
-        this.progressInfo_wait=this.progressInfo_wait.bind(this);
-        this.endTimer=this.endTimer.bind(this);
-        this.end=this.end.bind(this);
+        this.startTimer = this.startTimer.bind(this);
+        this.progressInfo_play = this.progressInfo_play.bind(this);
+        this.progressInfo_wait = this.progressInfo_wait.bind(this);
+        this.endTimer = this.endTimer.bind(this);
+        this.end = this.end.bind(this);
 
         this.stepInfo = stepInfo;
         this.stepEnd = stepEnd;
@@ -28,14 +28,16 @@ export default class StepCon { //试卷控制器
         this.staType = this.dataSouce.staType;
         //步骤实例  staType播放/等待  stepType步骤类型   levType级别类型   anaInfo解析数据   data数据源
         if (this.staType === StatusType.play) { //开始播放
-            this.path = utils.findPlayPath(this.dataSouce.anaInfo.audio,this.examPath);
+            this.path = utils.findPlayPath(this.dataSouce.anaInfo.audio, this.examPath);
             Sound1.startPlay(this.path);
+            this.stepInfo(this.dataSouce.stepType);
             // alert("播放路径" + this.path);
         } else {
             this.time = this.dataSouce.anaInfo.time;
             // alert("等待时间" + time);
-            this.dataSouce.isRecording=(this.dataSouce.stepType === WaitType.answerTime && this.dataSouce.data.isRecord === true);
-            
+            this.dataSouce.isRecording = (this.dataSouce.stepType === WaitType.answerTime && this.dataSouce.data.isRecord === true);
+            let waitInfo = this.dataSouce.stepType + "倒计时: " + this.time;
+            this.stepInfo(waitInfo);
             if (this.dataSouce.isRecording) {//如果是录音
                 let recordPath = this.recordPath;
                 Audio1.startRecord(recordPath);
@@ -47,10 +49,10 @@ export default class StepCon { //试卷控制器
     //计时器开始
     startTimer() {
         this.timer = setInterval(() => {
-            if(this.timer){ //保证计时器存在
+            if (this.timer) { //保证计时器存在
                 if (this.staType === StatusType.play) { //播放
                     this.progressInfo_play();
-                }else{
+                } else {
                     this.progressInfo_wait();
                 }
             }
@@ -58,24 +60,23 @@ export default class StepCon { //试卷控制器
     }
 
     //播放进度的信息
-    progressInfo_play(){
+    progressInfo_play() {
         let isLoaded = Sound1.soundIsLoaded();
         if (isLoaded) {
             Sound1.soundGetCurrentTime((time, isPlaying) => {
+                
                 if (isPlaying === false) {//如果播放停止之后
+                    this.stepInfo("100 %");
                     this.end(false);//步骤自动结束
                 }else{
-                    let time1 = time.toFixed(0)
-                    let time2 = Sound1.soundDuring().toFixed(0);
+                    let time1 = time;
+                    let time2 = Sound1.soundDuring();
                     //处理数据显示
                     time1 = (time1 > 0) ? time1 : 0;
                     time2 = (time2 > 0) ? time2 : 0;
-                    // time1 = (time1 > time2) ? time2 : time1;//进度超过周期处理
-                    let currTime = time1 + ' / ' + time2;
-    
+                    let currTime = (time1/time2*100).toFixed(0) + " %";
                     //播放信息
                     let playInfo = "播放中 " + currTime;
-
                     this.stepInfo(playInfo);
                 }
             });
@@ -83,13 +84,13 @@ export default class StepCon { //试卷控制器
     }
 
     //等待倒计时的进度信息
-    progressInfo_wait(){
+    progressInfo_wait() {
         //倒计时信息
-        this.time = this.time - 1 ;
+        this.time = this.time - 1;
         let waitInfo = this.dataSouce.stepType + "倒计时: " + this.time;
-        if(this.time<0){ //如果倒计时小于0
+        if (this.time <= 0) { //如果倒计时小于0
             this.end(false);//步骤自动结束
-        }else{
+        } else {
             this.stepInfo(waitInfo);
         }
     }
@@ -120,7 +121,7 @@ export default class StepCon { //试卷控制器
         } else if (this.dataSouce.isRecording) { //如果是录音的话
             Audio1.stopRecord();
         }
-        if(isActive===false){//如果是自动结束完当前步骤 去回调 通知去找下一个步骤
+        if (isActive === false) {//如果是自动结束完当前步骤 去回调 通知去找下一个步骤
             this.stepEnd();
         }
     }

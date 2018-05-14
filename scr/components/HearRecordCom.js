@@ -15,16 +15,20 @@ class HearRecord extends Component {
         this.state = {
             answer: [],
             width: utils.SCREENWIDTH * 0.835,
-            height: utils.SCREENWIDTH * 0.835,
+            height: 0,
         }
     }
 
     componentDidMount() {
-        let path = utils.findPicturePath(this.props.contentData[0].Img, this.props.examPath);
-        Image.getSize(path, (width, height1) => {
-            let newheight = this.state.width / width * height1; //按照屏幕宽度进行等比缩放
-            this.setState({ height: newheight });
-        })
+
+        if (this.props.contentData[0].Img && this.props.contentData[0].Img.length) {
+            let path = utils.findPicturePath(this.props.contentData[0].Img, this.props.examPath);
+            Image.getSize(path, (width, height1) => {
+                let newheight = this.state.width / width * height1; //按照屏幕宽度进行等比缩放
+                this.setState({ height: newheight });
+            })
+        }
+
 
 
         if (this.props.type === 3) {
@@ -91,12 +95,12 @@ class HearRecord extends Component {
                     {
                         this.props.contentData[0].ExampleAnswer.map((element, i) => {
                             let newNum = num + i;
-                            return <View key={newNum + i} style={{height: 40 * utils.SCREENRATE,width: "70%",marginTop:10*utils.SCREENRATE, borderRadius: 5 * utils.SCREENRATE, borderColor: utils.COLORS.theme, borderWidth: 1, backgroundColor: "rgba(18,183,247,.5)"}}>
+                            return <View key={newNum + i} style={{ height: 40 * utils.SCREENRATE, width: "70%", marginTop: 10 * utils.SCREENRATE, borderRadius: 5 * utils.SCREENRATE, borderColor: utils.COLORS.theme, borderWidth: 1, backgroundColor: "rgba(18,183,247,.5)" }}>
                                 <TextInput
                                     ref={"textInput"}
                                     autoCapitalize={"none"} //不自动大写
                                     underlineColorAndroid={'transparent'}
-                                    style={{ height:"100%",width:"100%",padding:8*utils.SCREENRATE, fontSize: 16 * utils.SCREENRATE, textAlign: 'center',}}
+                                    style={{ height: "100%", width: "100%", padding: 8 * utils.SCREENRATE, fontSize: 16 * utils.SCREENRATE, textAlign: 'center', }}
                                     multiline={false}
                                     placeholder={newNum + ''}
                                     secureTextEntry={false}
@@ -125,17 +129,22 @@ class HearRecord extends Component {
     }
 
     render() {
-
-        let path = utils.findPicturePath(this.props.contentData[0].Img, this.props.examPath);
+        let path = null;
+        if (this.props.contentData[0].Img && this.props.contentData[0].Img.length)
+            path = utils.findPicturePath(this.props.contentData[0].Img, this.props.examPath);
+        else path = null;
 
         return (
             <View>
-                <Image source={{ uri: path }}
-                    style={{
-                        width: this.state.width,
-                        height: this.state.height,
-                        marginTop: 10 * utils.SCREENRATE,
-                    }} />
+                {
+                    (path !== null) ? <Image source={{ uri: path }}
+                        style={{
+                            width: this.state.width,
+                            height: this.state.height,
+                            marginTop: 10 * utils.SCREENRATE,
+                        }}
+                    /> : <View />
+                }
                 {
                     this.getShowUI()
                 }

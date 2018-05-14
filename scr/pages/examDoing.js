@@ -82,7 +82,7 @@ class VideoTest extends Component {
         this.paperCon = new PaperController(
             this.props.examPath,
             this.props.examContent,
-            (stepInfo, progressInfo) => this.newStepCallBack(stepInfo,progressInfo),
+            (stepInfo, progressInfo) => this.newStepCallBack(stepInfo, progressInfo),
             this.paperEndCallBack
         );
     }
@@ -159,6 +159,7 @@ class VideoTest extends Component {
         DeviceEventEmitter.addListener("reloadProgress", (progress) => {
             this.setProgressToSave("progress", progress);
         });
+        
         //提交小题答案
         DeviceEventEmitter.addListener("submitAnswer", (topObj, groupObj) => {
             if (this.props.answers && this.props.answers[groupObj.Type] && topObj.TopicInfoList) {
