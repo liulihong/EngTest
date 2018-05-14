@@ -115,7 +115,9 @@ class AudioSoundConCom extends Component {
                     />
                 </TouchableOpacity>
 
-                <Text style={{ marginLeft: 10 * utils.SCREENRATE, fontSize: 15 * utils.SCREENRATE }}>{this.props.progressInfo}</Text>
+                <Text style={{ marginLeft: 10 * utils.SCREENRATE, fontSize: 15 * utils.SCREENRATE }}>
+                    {(this.props.progressInfo&&this.props.progressInfo.info)?this.props.progressInfo.info:""}
+                </Text>
 
                 <ConBtn
                     clickNextStep={() => {
@@ -180,8 +182,13 @@ const styles = StyleSheet.create({
         // bottom: utils.PLATNAME === "IOS" ? 10 * utils.SCREENRATE : 30 * utils.SCREENRATE,
     },
     button: {
-        width: 60 * utils.SCREENRATE,
-        height: 60 * utils.SCREENRATE,
+        width: 70 * utils.SCREENRATE,
+        height: 70 * utils.SCREENRATE,
+        borderRadius: 35 * utils.SCREENRATE,
+        borderColor: "#cccccc",
+        borderWidth: 2,
+        backgroundColor : "white",
+
     },
     conBtnView: {
         position: "absolute",

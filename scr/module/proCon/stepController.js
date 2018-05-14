@@ -30,14 +30,14 @@ export default class StepCon { //试卷控制器
         if (this.staType === StatusType.play) { //开始播放
             this.path = utils.findPlayPath(this.dataSouce.anaInfo.audio, this.examPath);
             Sound1.startPlay(this.path);
-            this.stepInfo(this.dataSouce.stepType);
+            this.stepInfo({percent:0,info:this.dataSouce.stepType});
             // alert("播放路径" + this.path);
         } else {
             this.time = this.dataSouce.anaInfo.time;
             // alert("等待时间" + time);
             this.dataSouce.isRecording = (this.dataSouce.stepType === WaitType.answerTime && this.dataSouce.data.isRecord === true);
             let waitInfo = this.dataSouce.stepType + "倒计时: " + this.time;
-            this.stepInfo(waitInfo);
+            this.stepInfo({percent:100,info:waitInfo});
             if (this.dataSouce.isRecording) {//如果是录音
                 let recordPath = this.recordPath;
                 Audio1.startRecord(recordPath);
@@ -66,7 +66,7 @@ export default class StepCon { //试卷控制器
             Sound1.soundGetCurrentTime((time, isPlaying) => {
                 
                 if (isPlaying === false) {//如果播放停止之后
-                    this.stepInfo("100 %");
+                    this.stepInfo({percent:100,info:""});
                     this.end(false);//步骤自动结束
                 }else{
                     let time1 = time;
@@ -74,10 +74,8 @@ export default class StepCon { //试卷控制器
                     //处理数据显示
                     time1 = (time1 > 0) ? time1 : 0;
                     time2 = (time2 > 0) ? time2 : 0;
-                    let currTime = (time1/time2*100).toFixed(0) + " %";
                     //播放信息
-                    let playInfo = "播放中 " + currTime;
-                    this.stepInfo(playInfo);
+                    this.stepInfo({percent:(time1/time2*100),info:(utils.getTimeStr(time,"mm:ss"))});
                 }
             });
         }
@@ -91,7 +89,7 @@ export default class StepCon { //试卷控制器
         if (this.time <= 0) { //如果倒计时小于0
             this.end(false);//步骤自动结束
         } else {
-            this.stepInfo(waitInfo);
+            this.stepInfo({percent:(this.time/this.dataSouce.anaInfo.time*100),info:waitInfo});
         }
     }
 
