@@ -7,6 +7,7 @@ let sound = null;
 let isRealse = false;
 let currTime = 0;
 // let playNum=0;
+let timeInteval;
 
 module.exports = class MySound {
     constructor() {
@@ -36,9 +37,9 @@ module.exports = class MySound {
     //播放
     soundPlay(path) {
         // playNum++;
-        
+        clearInterval(timeInteval);
         let loadedTime = 0;//加载次数
-        let timeInteval = setInterval(() => {
+        timeInteval = setInterval(() => {
             if (sound!==null && sound.isLoaded() === true) {
                 clearInterval(timeInteval);
                 this.soundSetCurrentTime();//设置播放进度
@@ -75,7 +76,11 @@ module.exports = class MySound {
     //暂停播放
     soundPause() {
         if (sound !== null) {
-            sound.pause();
+            if(utils.PLANTNAME === "IOS"){
+                sound.pause();
+            }else{
+                this.soundStop();
+            }   
         }
     }
     //继续播放
@@ -126,7 +131,7 @@ module.exports = class MySound {
     //判断是否正在播放
     isPlay() {
         if(sound==null) return false;
-        return sound.isPlaying();// 这个方法是判断是否播放吗 恩
+        return sound.isPlaying();
     }
 
     isPaused() {

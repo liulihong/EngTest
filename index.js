@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import App from './scr/App';
+import App from './src/App';
 
 AppRegistry.registerComponent('EHearTest', () => App);

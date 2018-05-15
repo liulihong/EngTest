@@ -62,9 +62,9 @@ class AudioSoundConCom extends Component {
     }
 
     componentWillMount() {
-        if (Platform.OS === 'android') {
-            BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
-        }
+        // if (Platform.OS === 'android') {
+        //     BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
+        // }
     }
     onBackAndroid = () => {
         this.props.paperCon.stepCon.end(true);
@@ -74,9 +74,9 @@ class AudioSoundConCom extends Component {
     //组件卸载 播放停止
     componentWillUnmount() {
         this.onBackAndroid();
-        if (Platform.OS === 'android') {
-            BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
-        }
+        // if (Platform.OS === 'android') {
+        //     BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+        // }
     }
 
     //暂停

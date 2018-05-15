@@ -4,7 +4,7 @@ import MySound from "../../utils/soundPlay";
 let Audio1;
 Audio1 = require("../../utils/audioPlay");
 let Sound1 = new MySound();
-
+let period = 100; //时间间隔100毫秒
 
 export default class StepCon { //试卷控制器
 
@@ -56,7 +56,7 @@ export default class StepCon { //试卷控制器
                     this.progressInfo_wait();
                 }
             }
-        }, 1000)
+        }, period );
     }
 
     //播放进度的信息
@@ -84,8 +84,8 @@ export default class StepCon { //试卷控制器
     //等待倒计时的进度信息
     progressInfo_wait() {
         //倒计时信息
-        this.time = this.time - 1;
-        let waitInfo = this.dataSouce.stepType + "倒计时: " + this.time;
+        this.time = this.time - (period/1000);
+        let waitInfo = this.dataSouce.stepType + "倒计时: " + this.time.toFixed(0);
         if (this.time <= 0) { //如果倒计时小于0
             this.end(false);//步骤自动结束
         } else {
